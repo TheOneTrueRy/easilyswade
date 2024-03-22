@@ -9,7 +9,7 @@ export class CharactersController extends BaseController {
       .get('')
       .get('/:characterId')
       .use(Auth0Provider.getAuthorizedUserInfo)
-      .post('')
+      .post('', this.createCharacter)
       .put('/:characterId')
       .delete('/:characterId')
   }
