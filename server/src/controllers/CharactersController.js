@@ -10,7 +10,7 @@ export class CharactersController extends BaseController {
       .get('/:characterId', this.getCharacterById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createCharacter)
-      .put('/:characterId')
+      .put('/:characterId', this.updateCharacter)
       .delete('/:characterId')
   }
 
@@ -39,6 +39,18 @@ export class CharactersController extends BaseController {
       const characterData = req.body
       characterData.creatorId = user.id
       const character = await charactersService.createCharacter(characterData)
+      res.send(character)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async updateCharacter(req, res, next) {
+    try {
+      const user = req.user
+      const characterData = req.body
+      const characterId = req.params.characterId
+      const character = await charactersService.updateCharacter(characterId, characterData, user.id)
       res.send(character)
     } catch (error) {
       next(error)
