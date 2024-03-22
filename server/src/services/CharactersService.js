@@ -2,6 +2,11 @@ import { dbContext } from "../db/DbContext.js";
 import { Forbidden } from "../utils/Errors.js";
 
 class CharactersService {
+  async createCharacter(characterData) {
+    let character = await dbContext.Character.create(characterData)
+    return character
+  }
+
   async getAllCharacters() {
     let characters = await dbContext.Character.find()
       .populate('creator')
