@@ -6,12 +6,31 @@ export class CharactersController extends BaseController {
   constructor() {
     super('api/characters')
     this.router
-      .get('')
-      .get('/:characterId')
+      .get('', this.getAllCharacters)
+      .get('/:characterId', this.getCharacterById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createCharacter)
       .put('/:characterId')
       .delete('/:characterId')
+  }
+
+  async getAllCharacters(req, res, next) {
+    try {
+      const characters = await charactersService.getAllCharacters()
+      res.send(characters)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getCharacterById(req, res, next) {
+    try {
+      const characterId = req.params.characterId
+      const character = await charactersService.getCharacterById(characterId)
+      res.send(character)
+    } catch (error) {
+      next(error)
+    }
   }
 
   async createCharacter(req, res, next) {
