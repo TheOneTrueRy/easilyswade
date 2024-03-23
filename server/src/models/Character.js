@@ -33,12 +33,12 @@ export const CharacterSchema = new Schema(
     rank: { type: String, enum: ['Novice', 'Seasoned', 'Veteran', 'Heroic', 'Legendary'], default: 'Novice' },
     powerPoints: { type: Number },
     art: [ArtSchema],
-    hindrances: [HindranceSchema],
-    edges: [EdgeSchema],
+    hindrances: [Object],
+    edges: [Object],
     gear: { type: [String], maxLength: 120 },
-    weapons: [WeaponSchema],
-    powers: [PowerSchema],
-    skills: [SkillSchema],
+    weapons: [Object],
+    powers: [Object],
+    skills: [Object],
     sheetStyle: { type: String, required: true, default: 'Default' }
   }, defaultSchemaOptions
 )
