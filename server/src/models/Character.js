@@ -11,7 +11,6 @@ import { SkillSchema } from "./Skill.js";
 export const CharacterSchema = new Schema(
   {
     creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Profile' },
-    dungeonMasterId: { type: Schema.Types.ObjectId, ref: 'Profile' },
     name: { type: String, required: true, maxLength: 100 },
     race: { type: String, required: true, maxLength: 100 },
     age: { type: Number },
@@ -48,10 +47,4 @@ CharacterSchema.virtual('creator', {
   foreignField: '_id',
   ref: 'Profile',
   justOne: true
-})
-
-CharacterSchema.virtual('dungeonMaster', {
-  localField: 'dungeonMasterId',
-  foreignField: '_id',
-  ref: 'Profile'
 })
