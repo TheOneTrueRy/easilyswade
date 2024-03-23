@@ -7,6 +7,7 @@ import { ArtSchema } from "../models/Art.js";
 import { WeaponSchema } from "../models/Weapon.js";
 import { PowerSchema } from "../models/Power.js";
 import { SkillSchema } from "../models/Skill.js";
+import { EdgeSchema } from "../models/Edge.js";
 
 class DbContext {
   Values = mongoose.model('Value', ValueSchema);
@@ -17,6 +18,7 @@ class DbContext {
   Weapon = mongoose.model('Weapon', WeaponSchema);
   Power = mongoose.model('Power', PowerSchema);
   Skill = mongoose.model('Skill', SkillSchema);
+  Edge = mongoose.model('Edge', EdgeSchema);
 }
 
 export const dbContext = new DbContext()
