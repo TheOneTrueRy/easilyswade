@@ -4,17 +4,17 @@ import { Forbidden } from "../utils/Errors.js";
 class PartiesService {
   async getAllParties() {
     let parties = await dbContext.Party.find();
-    return (parties);
+    return parties;
   }
 
   async getPartyById(partyId) {
     let party = await dbContext.Party.findById(partyId);
-    return (party);
+    return party;
   }
 
   async createParty(partyData) {
     let party = await dbContext.Party.create(partyData);
-    return (party);
+    return party;
   }
 
   async updateParty(requestorId, updateData) {
