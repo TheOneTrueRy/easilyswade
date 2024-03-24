@@ -6,11 +6,11 @@ export class StoriesController extends BaseController {
   constructor() {
     super('api/stories')
     this.router
-      .get('')
-      .get('/:storyId')
+      .get('', this.getAllStories)
+      .get('/:storyId', this.getStoryById)
       .use(Auth0Provider.getAuthorizedUserInfo)
-      .post('')
-      .put('/:storyId')
+      .post('', this.createStory)
+      .put('/:storyId', this.updateStory)
   }
 
   async getAllStories(req, res, next) {
