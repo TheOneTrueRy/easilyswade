@@ -1,6 +1,5 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import BaseController from "../utils/BaseController.js";
-import { dbContext } from "../db/DbContext.js";
 import { partiesService } from "../services/PartiesService.js";
 
 export class PartiesController extends BaseController {
