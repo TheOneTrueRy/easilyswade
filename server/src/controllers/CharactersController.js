@@ -35,7 +35,7 @@ export class CharactersController extends BaseController {
 
   async createCharacter(req, res, next) {
     try {
-      const user = req.user
+      const user = req.userInfo
       const characterData = req.body
       characterData.creatorId = user.id
       const character = await charactersService.createCharacter(characterData)
@@ -47,7 +47,7 @@ export class CharactersController extends BaseController {
 
   async updateCharacter(req, res, next) {
     try {
-      const user = req.user
+      const user = req.userInfo
       const characterData = req.body
       const characterId = req.params.characterId
       const character = await charactersService.updateCharacter(characterId, characterData, user.id)
