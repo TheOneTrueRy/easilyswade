@@ -9,7 +9,7 @@ class CharactersService {
 
   async getAllCharacters() {
     let characters = await dbContext.Character.find()
-      .populate('creator')
+      .populate('creator', 'name picture')
     return characters
   }
 
