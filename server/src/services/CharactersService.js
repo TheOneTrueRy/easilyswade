@@ -23,7 +23,8 @@ class CharactersService {
     let character = await this.getCharacterById(characterId)
     if (requestorId == character.creatorId) {
       await dbContext.Character.findByIdAndUpdate(characterId, characterData)
-      return character
+      let updatedCharacter = await this.getCharacterById(characterId)
+      return updatedCharacter
     } else {
       throw new Forbidden("That's not your character to update!")
     }
