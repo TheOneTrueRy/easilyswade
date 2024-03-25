@@ -15,7 +15,7 @@ class CharactersService {
 
   async getCharacterById(characterId) {
     let character = await dbContext.Character.findById(characterId)
-      .populate('creator')
+      .populate('creator', 'name picture')
     return character
   }
 

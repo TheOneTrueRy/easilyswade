@@ -3,12 +3,14 @@ import { Forbidden } from "../utils/Errors.js";
 
 class PartiesService {
   async getAllParties() {
-    let parties = await dbContext.Party.find();
+    let parties = await dbContext.Party.find()
+      .populate('creator', 'name picture')
     return parties;
   }
 
   async getPartyById(partyId) {
-    let party = await dbContext.Party.findById(partyId);
+    let party = await dbContext.Party.findById(partyId)
+      .populate('creator', 'name picture')
     return party;
   }
 
