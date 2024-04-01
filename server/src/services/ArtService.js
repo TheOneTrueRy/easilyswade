@@ -12,6 +12,11 @@ class ArtService {
       .populate('creator')
     return art
   }
+
+  async createArt(artData) {
+    let art = await dbContext.Art.create(artData)
+    return art
+  }
 }
 
 export const artService = new ArtService();
