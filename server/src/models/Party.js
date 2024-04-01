@@ -9,7 +9,8 @@ export const PartySchema = new Schema(
     dungeonMasterIds: { type: [Schema.Types.ObjectId], ref: 'Account' },
     characterIds: { type: [Schema.Types.ObjectId], ref: 'Character' },
     name: { type: String, required: true, minLength: 2, maxLength: 100 },
-    description: { type: String, maxLength: 3000 }
+    description: { type: String, maxLength: 3000 },
+    picture: { type: String, maxLength: 2000 }
   }, defaultSchemaOptions
 )
 

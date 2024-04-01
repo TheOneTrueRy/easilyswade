@@ -15,7 +15,7 @@ export class StoriesController extends BaseController {
 
   async getAllStories(req, res, next) {
     try {
-      const stories = await storiesService.getAllStores();
+      const stories = await storiesService.getAllStories();
       res.send(stories);
     } catch (error) {
       next(error);

@@ -29,6 +29,11 @@ class CharactersService {
       throw new Forbidden("That's not your character to update!")
     }
   }
+
+  async getCharactersByProfile(profileId) {
+    let characters = await dbContext.Character.find({ creatorId: profileId })
+    return characters
+  }
 };
 
 export const charactersService = new CharactersService();
