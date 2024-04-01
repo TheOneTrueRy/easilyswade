@@ -38,6 +38,7 @@ export const CharacterSchema = new Schema(
     powers: [PowerSchema],
     skills: [SkillSchema],
     deactivated: { type: Boolean, required: true, default: false },
+    playerCharacter: { type: Boolean, required: true, default: true },
     sheetStyle: { type: String, required: true, default: 'Default' }
   }, defaultSchemaOptions
 )

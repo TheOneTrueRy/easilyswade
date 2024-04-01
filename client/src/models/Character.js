@@ -30,6 +30,7 @@ export class Character {
     this.powers = data.powers
     this.skills = data.skills
     this.deactivated = data.deactivated
+    this.playerCharacter = data.playerCharacter
     this.sheetStyle = data.sheetStyle
   }
 }
