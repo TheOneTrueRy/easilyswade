@@ -6,6 +6,7 @@ export const AppState = reactive({
   account: {},
 
   profile: null,
+  profiles: [],
 
   character: null,
   characters: [],
@@ -15,5 +16,6 @@ export const AppState = reactive({
 
   art: null || [],
 
-  story: null
+  story: null,
+
 })
