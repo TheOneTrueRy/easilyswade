@@ -1,6 +1,6 @@
 export class Art {
   constructor(data) {
-    this.Id = data.Id
+    this.id = data.id
     this.creatorId = data.creatorId
     this.creator = data.creator
     this.title = data.title

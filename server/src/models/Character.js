@@ -31,7 +31,6 @@ export const CharacterSchema = new Schema(
     secret: { type: String, maxLength: 5000 },
     rank: { type: String, enum: ['Novice', 'Seasoned', 'Veteran', 'Heroic', 'Legendary'], default: 'Novice' },
     powerPoints: { type: Number },
-    art: [ArtSchema],
     hindrances: [HindranceSchema],
     edges: [EdgeSchema],
     gear: { type: [String], maxLength: 120 },
