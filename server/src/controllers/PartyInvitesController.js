@@ -9,6 +9,7 @@ export class PartyInvitesController extends BaseController {
       .get('', this.getAllPartyInvites)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.sendPartyInvite)
+      .put('', this.markPartyInvitesSeen)
       .delete('/:partyInviteId', this.deletePartyInvite)
   }
 
@@ -28,6 +29,16 @@ export class PartyInvitesController extends BaseController {
       partyInviteData.creatorId = user.id
       const partyInvite = await partyInvitesService.sendPartyInvite(partyInviteData)
       res.send(partyInvite)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async markPartyInvitesSeen(req, res, next) {
+    try {
+      const userId = req.userInfo.id
+      const partyInvites = await partyInvitesService.markPartyInvitesSeen(userId)
+      res.send(partyInvites)
     } catch (error) {
       next(error)
     }
