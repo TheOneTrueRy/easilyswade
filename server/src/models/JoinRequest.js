@@ -4,6 +4,7 @@ import { defaultSchemaOptions } from "../db/Constants.js";
 export const JoinRequestSchema = new Schema(
   {
     creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' },
+    receiverId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' },
     partyId: { type: Schema.Types.ObjectId, required: true, ref: 'Party' },
     characterId: { type: Schema.Types.ObjectId, required: true, ref: 'Character' },
     seen: { type: Boolean, required: true, default: false }
