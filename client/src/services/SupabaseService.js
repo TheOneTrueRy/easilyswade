@@ -33,8 +33,6 @@ class SupabaseService {
           }
         }
       })
-      //  things to call when supabase is initialized, like listing all files a user has uploaded
-      this.list(AppState.account.id)
     } catch (error) {
       logger.log(error)
     }
