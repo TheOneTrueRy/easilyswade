@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext.js";
+import { Forbidden } from "../utils/Errors.js";
 
 class ArtService {
   async getAllArt() {
@@ -37,6 +38,26 @@ class ArtService {
     let art = await dbContext.Art.find({ partyId: partyId })
       .populate('creator', 'name picture')
     return art
+  }
+
+  async updateArt(artId, artData, requestorId) {
+    let art = await this.getArtById(artId)
+    if (requestorId != art.creatorId) {
+      throw new Forbidden("Hey! That's not your art to update!")
+    }
+    await dbContext.Art.findByIdAndUpdate(art.id, artData)
+    let updatedArt = await this.getArtById(artId)
+    return updatedArt
+  }
+
+  async deleteArt(artId, requestorId) {
+    let art = await this.getArtById(artId)
+    if (requestorId != art.creatorId) {
+      throw new Forbidden("Hey! That's not your art to delete!")
+    }
+    //@ts-ignore
+    await art.remove()
+    return "Art post successfully deleted!"
   }
 }
 

@@ -26,7 +26,7 @@ class CharactersService {
       let updatedCharacter = await this.getCharacterById(characterId)
       return updatedCharacter
     } else {
-      throw new Forbidden("That's not your character to update!")
+      throw new Forbidden("Hey! That's not your character to update!")
     }
   }
 

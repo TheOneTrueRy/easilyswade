@@ -10,6 +10,8 @@ export class ArtController extends BaseController {
       .get('/:artId', this.getArtById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createArt)
+      .put('/:artId', this.updateArt)
+      .delete('/:artId', this.deleteArt)
   }
 
   async getAllArt(req, res, next) {
@@ -37,6 +39,29 @@ export class ArtController extends BaseController {
       const artData = req.body
       artData.creatorId = user.id
       const art = await artService.createArt(artData)
+      res.send(art)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async updateArt(req, res, next) {
+    try {
+      const userId = req.userInfo.id
+      const artData = req.body
+      const artId = req.params.artId
+      const art = await artService.updateArt(artId, artData, userId)
+      res.send(art)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async deleteArt(req, res, next) {
+    try {
+      const userId = req.userInfo.id
+      const artId = req.params.artId
+      const art = await artService.deleteArt(artId, userId)
       res.send(art)
     } catch (error) {
       next(error)

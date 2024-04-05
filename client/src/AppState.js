@@ -17,5 +17,11 @@ export const AppState = reactive({
   art: null || [],
 
   story: null,
+  stories: [],
 
+  sentPartyInvites: [],
+  receivedPartyInvites: [],
+
+  sentJoinRequests: [],
+  receivedJoinRequests: []
 })

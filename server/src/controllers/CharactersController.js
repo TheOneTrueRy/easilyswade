@@ -1,6 +1,8 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import BaseController from "../utils/BaseController.js";
 import { charactersService } from "../services/CharactersService.js";
+import { artService } from "../services/ArtService.js";
+import { storiesService } from "../services/StoriesService.js";
 
 export class CharactersController extends BaseController {
   constructor() {
@@ -8,6 +10,8 @@ export class CharactersController extends BaseController {
     this.router
       .get('', this.getAllCharacters)
       .get('/:characterId', this.getCharacterById)
+      .get('/:characterId/art', this.getCharacterArt)
+      .get('/:characterId/stories', this.getCharacterStories)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createCharacter)
       .put('/:characterId', this.updateCharacter)
@@ -28,6 +32,26 @@ export class CharactersController extends BaseController {
       const characterId = req.params.characterId
       const character = await charactersService.getCharacterById(characterId)
       res.send(character)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getCharacterArt(req, res, next) {
+    try {
+      const characterId = req.params.characterId
+      const characterArt = await artService.getArtByCharacter(characterId)
+      res.send(characterArt)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getCharacterStories(req, res, next) {
+    try {
+      const characterId = req.params.characterId
+      const characterStories = await storiesService.getStoriesByCharacter(characterId)
+      res.send(characterStories)
     } catch (error) {
       next(error)
     }
