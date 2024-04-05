@@ -1,5 +1,5 @@
 import { dbContext } from "../db/DbContext.js";
-import { Forbidden } from "../utils/Errors.js";
+import { BadRequest, Forbidden } from "../utils/Errors.js";
 
 class JoinRequestsService {
   async getAllJoinRequests() {
@@ -8,6 +8,14 @@ class JoinRequestsService {
       .populate('party')
       .populate('character')
     return joinRequests
+  }
+
+  async getJoinRequestById(joinRequestId) {
+    let joinRequest = await dbContext.JoinRequest.findById(joinRequestId)
+    if (!joinRequest) {
+      throw new BadRequest("Bad Join Request ID")
+    }
+    return joinRequest
   }
 
   async sendJoinRequest(joinRequestData) {
@@ -25,11 +33,11 @@ class JoinRequestsService {
   }
 
   async deleteJoinRequest(joinRequestId, requestorId) {
-    let joinRequest = await dbContext.JoinRequest.findById(joinRequestId)
-      .populate('party')
+    let joinRequest = await this.getJoinRequestById(joinRequestId)
     if (requestorId != joinRequest.creatorId || joinRequest.receiverId) {
       throw new Forbidden("Hey! That's not your Join Request to delete!")
     }
+    //@ts-ignore
     await joinRequest.remove()
     return "Party Join Request successfully deleted!"
   }
