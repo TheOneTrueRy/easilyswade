@@ -1,6 +1,8 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import BaseController from "../utils/BaseController.js";
 import { partiesService } from "../services/PartiesService.js";
+import { artService } from "../services/ArtService.js";
+import { storiesService } from "../services/StoriesService.js";
 
 export class PartiesController extends BaseController {
   constructor() {
@@ -8,6 +10,8 @@ export class PartiesController extends BaseController {
     this.router
       .get('', this.getAllParties)
       .get('/:partyId', this.getPartyById)
+      .get('/:partyId/art', this.getPartyArt)
+      .get('/:partyId/stories', this.getPartyStories)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createParty)
       .put('/:partyId', this.updateParty)
@@ -29,6 +33,26 @@ export class PartiesController extends BaseController {
       res.send(party);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async getPartyArt(req, res, next) {
+    try {
+      const partyId = req.params.partyId
+      const partyArt = await artService.getArtByParty(partyId)
+      res.send(partyArt)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getPartyStories(req, res, next) {
+    try {
+      const partyId = req.params.partyId
+      const partyStories = await storiesService.getStoriesByParty(partyId)
+      res.send(partyStories)
+    } catch (error) {
+      next(error)
     }
   }
 

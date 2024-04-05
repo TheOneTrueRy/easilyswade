@@ -10,9 +10,9 @@ export class ProfilesController extends BaseController {
     this.router
       .get('', this.getProfiles)
       .get('/:profileId', this.getProfile)
-      .get('/:profileId/characters')
-      .get('/:profileId/art')
-      .get('/:profileId/stories')
+      .get('/:profileId/characters', this.getCharactersByProfile)
+      .get('/:profileId/art', this.getArtByProfile)
+      .get('/:profileId/stories', this.getStoriesByProfile)
   }
 
   async getProfiles(req, res, next) {

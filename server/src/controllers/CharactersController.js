@@ -15,7 +15,8 @@ export class CharactersController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createCharacter)
       .put('/:characterId', this.updateCharacter)
-      .delete('/:characterId')
+      .delete('/:characterId/deactivate', this.deactivateCharacter)
+      .delete('/:characterId/delete', this.deleteCharacter)
   }
 
   async getAllCharacters(req, res, next) {
@@ -75,6 +76,28 @@ export class CharactersController extends BaseController {
       const characterData = req.body
       const characterId = req.params.characterId
       const character = await charactersService.updateCharacter(characterId, characterData, user.id)
+      res.send(character)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async deactivateCharacter(req, res, next) {
+    try {
+      const userId = req.userInfo.id
+      const characterId = req.params.characterId
+      const character = await charactersService.deactivateCharacter(characterId, userId)
+      res.send(character)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async deleteCharacter(req, res, next) {
+    try {
+      const userId = req.userInfo.id
+      const characterId = req.params.characterId
+      const character = await charactersService.deleteCharacter(characterId, userId)
       res.send(character)
     } catch (error) {
       next(error)

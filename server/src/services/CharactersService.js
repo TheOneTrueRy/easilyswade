@@ -19,6 +19,11 @@ class CharactersService {
     return character
   }
 
+  async getCharactersByProfile(profileId) {
+    let characters = await dbContext.Character.find({ creatorId: profileId })
+    return characters
+  }
+
   async updateCharacter(characterId, characterData, requestorId) {
     let character = await this.getCharacterById(characterId)
     if (requestorId == character.creatorId) {
@@ -30,9 +35,24 @@ class CharactersService {
     }
   }
 
-  async getCharactersByProfile(profileId) {
-    let characters = await dbContext.Character.find({ creatorId: profileId })
-    return characters
+  async deactivateCharacter(characterId, requestorId) {
+    let character = await this.getCharacterById(characterId)
+    if (requestorId != character.creatorId) {
+      throw new Forbidden("Hey! That's not your character to deactivate!")
+    }
+    await dbContext.Character.findByIdAndUpdate(characterId, { deactivated: true })
+    let deactivatedCharacter = await this.getCharacterById(characterId)
+    return deactivatedCharacter
+  }
+
+  async deleteCharacter(characterId, requestorId) {
+    let character = await this.getCharacterById(characterId)
+    if (requestorId != character.creatorId) {
+      throw new Forbidden("Hey! That's not your character to delete!")
+    }
+    //@ts-ignore
+    await character.remove()
+    return "Character Successfully removed!"
   }
 };
 
