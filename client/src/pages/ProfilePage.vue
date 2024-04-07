@@ -1,7 +1,10 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 text-start">
+  <div class="container-fluid my-2">
+    <div class="row justify-content-end">
+      <div class="col-4 text-center">
+        <img class="profile-picture shadow-sm" :src="profile?.picture" :alt="profile?.picture">
+      </div>
+      <div class="col-4 text-end">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
           Edit Profile
         </button>
@@ -10,6 +13,82 @@
         <span class="fs-1">
           {{ profile.name }}
         </span>
+      </div>
+    </div>
+    <!-- SECTION Player Characters -->
+    <div class="row mt-3">
+      <div class="col-12 text-center">
+        <span class="fs-3">
+
+        </span>
+      </div>
+      <div class="col-10 offset-1">
+        <div class="row">
+          <div v-for="c in playerCharacters" :key="c.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2"
+            id="characterCard">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SECTION Non Player Characters -->
+    <div v-if="profile.id == user.id" class="row mt-3">
+      <div class="col-12 text-center">
+        <span class="fs-3">
+
+        </span>
+      </div>
+      <div class="col-10 offset-1">
+        <div class="row">
+          <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SECTION Parties -->
+    <div class="row mt-3">
+      <div class="col-12 text-center">
+        <span class="fs-3">
+
+        </span>
+      </div>
+      <div class="col-10 offset-1">
+        <div class="row">
+          <div v-for="p in parties" :key="p.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SECTION Art -->
+    <div class="row mt-3">
+      <div class="col-12 text-center">
+        <span class="fs-3">
+
+        </span>
+      </div>
+      <div class="col-10 offset-1">
+        <div class="row">
+          <div v-for="a in artArray" :key="a.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SECTION Stories -->
+    <div class="row mt-3">
+      <div class="col-12 text-center">
+        <span class="fs-3">
+
+        </span>
+      </div>
+      <div class="col-10 offset-1">
+        <div class="row">
+          <div v-for="s in stories" :key="s.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,10 +182,12 @@ export default {
     return {
       editable,
       filter,
+      user: computed(() => AppState.user),
       profile: computed(() => AppState.profile),
       artArray: computed(() => AppState.artArray),
       stories: computed(() => AppState.stories),
-      characters: computed(() => AppState.characters),
+      playerCharacters: computed(() => AppState.characters.filter(c => c.playerCharacter == true)),
+      nonPlayerCharacters: computed(() => AppState.characters.filter(c => c.playerCharacter == false)),
       parties: computed(() => AppState.filteredParties)
     }
   },
@@ -116,4 +197,14 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.profile-picture {
+  height: 15vh;
+  width: 15vh;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  /* border: 1px solid black; */
+  user-select: none;
+}
+</style>

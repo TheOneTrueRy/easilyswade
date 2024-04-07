@@ -9,6 +9,7 @@ export class Story {
     this.party = data.party
     this.title = data.title
     this.description = data.description
+    this.thumbnail = data.thumbnail
     this.tags = data.tags
   }
 }

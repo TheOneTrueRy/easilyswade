@@ -18,7 +18,7 @@
         </li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
-      <div>
+      <div class="me-2">
         <button class="btn text-light" @click="toggleTheme">
           <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>
         </button>

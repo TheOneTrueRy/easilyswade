@@ -2,7 +2,7 @@
   <form class="container-fluid" @submit.prevent="editAccount">
     <div class="row">
       <div class="col-12 d-flex justify-content-between align-items-center mb-4">
-        <span class="fs-4">
+        <span class="fs-3">
           Edit Your Profile
         </span>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close Modal">
@@ -19,7 +19,6 @@
       <div class="col-12 mb-4">
         <label for="description" class="form-label mb-0">Description</label>
         <textarea type="text" id="description" v-model="editable.description" class="form-control" maxlength="3000">
-
         </textarea>
       </div>
       <div class="col-12 text-end">

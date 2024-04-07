@@ -9,6 +9,7 @@ export const StorySchema = new Schema(
     partyId: { type: Schema.Types.ObjectId, ref: 'Party' },
     title: { type: String, required: true, minLength: 2, maxLength: 80 },
     description: { type: String, maxLength: 2000 },
+    thumbnail: { type: String, maxLength: 2000 },
     tags: { type: [String], maxLength: 40 }
   }
 )
