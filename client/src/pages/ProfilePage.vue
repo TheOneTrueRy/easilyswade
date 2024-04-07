@@ -55,9 +55,9 @@ export default {
       }
     }
 
-    async function getPartiesByProfileId() {
+    async function getParties() {
       try {
-        await partiesService.getPartiesByProfileId(profileId);
+        await partiesService.getParties();
       } catch (error) {
         Pop.error(error.message, 'Experienced an error getting the Parties associated with this profile.')
       }
@@ -70,7 +70,7 @@ export default {
         getArtByProfileId();
         getStoriesByProfileId();
         getCharactersByProfileId();
-        getPartiesByProfileId();
+        getParties();
       }
     })
 

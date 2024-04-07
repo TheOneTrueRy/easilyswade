@@ -12,8 +12,7 @@ class PartiesService {
     let party = await dbContext.Party.findById(partyId)
       .populate('creator', 'name picture')
       .populate('dungeonmasters', 'name picture')
-      .populate('characters', 'name picture')
-      .populate('npcs', 'name picture')
+      .populate('characters', 'name picture playerCharacter')
     return party;
   }
 

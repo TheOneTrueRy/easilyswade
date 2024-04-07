@@ -13,6 +13,7 @@ export const AppState = reactive({
 
   party: null,
   parties: [],
+  filteredParties: [],
 
   art: null,
   artArray: [],
