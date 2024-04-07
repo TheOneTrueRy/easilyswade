@@ -1,7 +1,8 @@
 <template>
-  <div class="profile">
+  <div class="container-fluid">
+    <div class="row">
 
-
+    </div>
   </div>
 </template>
 
@@ -22,12 +23,13 @@ export default {
     const route = useRoute();
     const editable = ref({});
     const profileId = route.params.profileId;
+    const filter = ref('all')
 
     async function getProfileById() {
       try {
         await profilesService.getProfileById(profileId);
       } catch (error) {
-        Pop.error(error.message, 'Experienced an error getting that profile by the provided URL ID.')
+        Pop.error('Experienced an error getting that profile by the provided URL ID.', error.message)
       }
     }
 
@@ -35,7 +37,7 @@ export default {
       try {
         await artService.getArtByProfileId(profileId);
       } catch (error) {
-        Pop.error(error.message, 'Experienced an error getting the Art associated with this profile.')
+        Pop.error('Experienced an error getting the Art associated with this profile.', error.message)
       }
     }
 
@@ -43,7 +45,7 @@ export default {
       try {
         await storiesService.getStoriesByProfileId(profileId);
       } catch (error) {
-        Pop.error(error.message, 'Experienced an error getting the Stories associated with this profile.')
+        Pop.error('Experienced an error getting the Stories associated with this profile.', error.message)
       }
     }
 
@@ -51,7 +53,7 @@ export default {
       try {
         await charactersService.getCharactersByProfileId(profileId);
       } catch (error) {
-        Pop.error(error.message, 'Experienced an error getting the Characters associated with this profile.')
+        Pop.error('Experienced an error getting the Characters associated with this profile.', error.message)
       }
     }
 
@@ -59,7 +61,7 @@ export default {
       try {
         await partiesService.getParties();
       } catch (error) {
-        Pop.error(error.message, 'Experienced an error getting the Parties associated with this profile.')
+        Pop.error('Experienced an error getting parties.', error.message)
       }
     }
 
@@ -84,11 +86,12 @@ export default {
 
     return {
       editable,
+      filter,
       profile: computed(() => AppState.profile),
       artArray: computed(() => AppState.artArray),
       stories: computed(() => AppState.stories),
       characters: computed(() => AppState.characters),
-      parties: computed(() => AppState.parties)
+      parties: computed(() => AppState.filteredParties)
     }
   }
 }

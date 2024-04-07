@@ -4,18 +4,14 @@ import { api } from "./AxiosService.js";
 
 class PartiesService {
   async getParties() {
-    const res = await api.get(`parties`)
+    const res = await api.get(`api/parties`)
     AppState.parties = res.data.map(p => new Party(p))
+    AppState.filteredParties = res.data.map(p => new Party(p))
   }
 
   async getPartyById(partyId) {
-    const res = await api.get(`parties/` + partyId)
+    const res = await api.get(`api/parties/` + partyId)
     AppState.party = new Party(res.data)
-  }
-
-  async getPartiesByProfileId(profileId) {
-    const res = await api.get(`${profileId}/parties`)
-    AppState.parties = res.data.map(p => new Party(p))
   }
 
   changeFilter(filter) {
