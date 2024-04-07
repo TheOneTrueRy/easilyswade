@@ -5,7 +5,7 @@ import { api } from "./AxiosService.js";
 class ArtService {
   async getArt() {
     const res = await api.get('art')
-    AppState.art = res.data.map(a => new Art(a))
+    AppState.artArray = res.data.map(a => new Art(a))
   }
 
   async getArtById(artId) {
@@ -15,7 +15,7 @@ class ArtService {
 
   async getArtByProfileId(profileId) {
     const res = await api.get(`${profileId}/art`)
-    AppState.art = res.data.map(a => new Art(a))
+    AppState.artArray = res.data.map(a => new Art(a))
   }
 }
 

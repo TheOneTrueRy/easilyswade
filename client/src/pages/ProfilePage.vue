@@ -7,7 +7,7 @@
 
 
 <script>
-import { computed, ref, watchEffect } from "vue";
+import { computed, onUnmounted, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Pop from '../utils/Pop.js';
 import { profilesService } from "../services/ProfilesService.js";
@@ -63,6 +63,7 @@ export default {
       }
     }
 
+    // eslint-disable-next-line space-before-function-paren
     watchEffect(async () => {
       if (route.params.profileId) {
         getProfileById();
@@ -73,10 +74,18 @@ export default {
       }
     })
 
+    onUnmounted(() => {
+      AppState.profile = null;
+      AppState.artArray = [];
+      AppState.stories = [];
+      AppState.characters = [];
+      AppState.parties = [];
+    })
+
     return {
       editable,
       profile: computed(() => AppState.profile),
-      art: computed(() => AppState.art),
+      artArray: computed(() => AppState.artArray),
       stories: computed(() => AppState.stories),
       characters: computed(() => AppState.characters),
       parties: computed(() => AppState.parties)
