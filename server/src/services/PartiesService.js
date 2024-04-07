@@ -25,8 +25,20 @@ class PartiesService {
       await dbContext.Party.findByIdAndUpdate(party.id, updateData);
       return party;
     } else {
-      throw new Forbidden("That's not your party to edit!")
+      throw new Forbidden("Hey! That's not your party to edit!")
     }
+  }
+
+  async deleteParty(partyId, requestorId) {
+    let party = await this.getPartyById(partyId)
+    if (requestorId != party.creatorId) {
+      throw new Forbidden("Hey! That's not your party to delete1")
+    }
+  }
+
+  async getPartiesByProfileId(profileId) {
+    let parties = await dbContext.Party.find({ creatorId: profileId })
+    return parties;
   }
 };
 

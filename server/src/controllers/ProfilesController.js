@@ -1,5 +1,6 @@
 import { artService } from "../services/ArtService.js"
 import { charactersService } from "../services/CharactersService.js"
+import { partiesService } from "../services/PartiesService.js"
 import { profileService } from '../services/ProfileService.js'
 import { storiesService } from "../services/StoriesService.js"
 import BaseController from '../utils/BaseController'
@@ -13,6 +14,7 @@ export class ProfilesController extends BaseController {
       .get('/:profileId/characters', this.getCharactersByProfile)
       .get('/:profileId/art', this.getArtByProfile)
       .get('/:profileId/stories', this.getStoriesByProfile)
+      .get('/:profileId/parties', this.getPartiesByProfileId)
   }
 
   async getProfiles(req, res, next) {
@@ -55,6 +57,15 @@ export class ProfilesController extends BaseController {
     try {
       const stories = await storiesService.getStoriesByProfile(req.params.profileId)
       res.send(stories)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getPartiesByProfileId(req, res, next) {
+    try {
+      const parties = await partiesService.getPartiesByProfileId(req.params.profileId)
+      res.send(parties)
     } catch (error) {
       next(error)
     }

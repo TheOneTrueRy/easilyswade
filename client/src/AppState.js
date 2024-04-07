@@ -12,7 +12,7 @@ export const AppState = reactive({
   characters: [],
 
   party: null,
-  dungeonMasters: [],
+  parties: [],
 
   art: null || [],
 

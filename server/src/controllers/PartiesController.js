@@ -15,6 +15,7 @@ export class PartiesController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createParty)
       .put('/:partyId', this.updateParty)
+      .delete('/:partyId', this.deleteParty)
   }
 
   async getAllParties(req, res, next) {
@@ -76,6 +77,18 @@ export class PartiesController extends BaseController {
       res.send(party);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async deleteParty(req, res, next) {
+    try {
+      const user = req.userInfo;
+      const requestorId = user.id;
+      const partyId = req.params.partyId;
+      const party = await partiesService.deleteParty(partyId, requestorId);
+      res.send(party);
+    } catch (error) {
+      next(error)
     }
   }
 }
