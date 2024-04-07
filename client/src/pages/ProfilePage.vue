@@ -15,6 +15,7 @@ import { artService } from "../services/ArtService.js";
 import { storiesService } from "../services/StoriesService.js";
 import { charactersService } from "../services/CharactersService.js";
 import { AppState } from "../AppState.js";
+import { partiesService } from "../services/PartiesService.js";
 
 export default {
   setup() {
@@ -54,12 +55,21 @@ export default {
       }
     }
 
+    async function getPartiesByProfileId() {
+      try {
+        await partiesService.getPartiesByProfileId(profileId);
+      } catch (error) {
+        Pop.error(error.message, 'Experienced an error getting the Parties associated with this profile.')
+      }
+    }
+
     watchEffect(async () => {
       if (route.params.profileId) {
         getProfileById();
         getArtByProfileId();
         getStoriesByProfileId();
         getCharactersByProfileId();
+        getPartiesByProfileId();
       }
     })
 
@@ -68,7 +78,8 @@ export default {
       profile: computed(() => AppState.profile),
       art: computed(() => AppState.art),
       stories: computed(() => AppState.stories),
-      characters: computed(() => AppState.characters)
+      characters: computed(() => AppState.characters),
+      parties: computed(() => AppState.parties)
     }
   }
 }

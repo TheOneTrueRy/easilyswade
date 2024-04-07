@@ -14,7 +14,7 @@ export const AppState = reactive({
   party: null,
   parties: [],
 
-  art: null || [],
+  art: {} || [],
 
   story: null,
   stories: [],
