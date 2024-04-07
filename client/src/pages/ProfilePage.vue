@@ -1,9 +1,23 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-
+      <div class="col-12 text-start">
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
+          Edit Profile
+        </button>
+      </div>
+      <div class="col-12 text-center">
+        <span class="fs-1">
+          {{ profile.name }}
+        </span>
+      </div>
     </div>
   </div>
+
+  <!-- SECTION Edit Profile Modal -->
+  <Modal id="editProfile">
+    <EditProfile />
+  </Modal>
 </template>
 
 
@@ -17,6 +31,8 @@ import { storiesService } from "../services/StoriesService.js";
 import { charactersService } from "../services/CharactersService.js";
 import { AppState } from "../AppState.js";
 import { partiesService } from "../services/PartiesService.js";
+import EditProfile from "../components/EditProfile.vue";
+import Modal from "../components/Modal.vue";
 
 export default {
   setup() {
@@ -93,7 +109,9 @@ export default {
       characters: computed(() => AppState.characters),
       parties: computed(() => AppState.filteredParties)
     }
-  }
+  },
+
+  components: { Modal, EditProfile }
 }
 </script>
 
