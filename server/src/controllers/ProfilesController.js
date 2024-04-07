@@ -14,7 +14,6 @@ export class ProfilesController extends BaseController {
       .get('/:profileId/characters', this.getCharactersByProfile)
       .get('/:profileId/art', this.getArtByProfile)
       .get('/:profileId/stories', this.getStoriesByProfile)
-      .get('/:profileId/parties', this.getPartiesByProfileId)
   }
 
   async getProfiles(req, res, next) {
@@ -62,12 +61,4 @@ export class ProfilesController extends BaseController {
     }
   }
 
-  async getPartiesByProfileId(req, res, next) {
-    try {
-      const parties = await partiesService.getPartiesByProfileId(req.params.profileId)
-      res.send(parties)
-    } catch (error) {
-      next(error)
-    }
-  }
 }

@@ -11,6 +11,9 @@ class PartiesService {
   async getPartyById(partyId) {
     let party = await dbContext.Party.findById(partyId)
       .populate('creator', 'name picture')
+      .populate('dungeonmasters', 'name picture')
+      .populate('characters', 'name picture')
+      .populate('npcs', 'name picture')
     return party;
   }
 
@@ -36,10 +39,6 @@ class PartiesService {
     }
   }
 
-  async getPartiesByProfileId(profileId) {
-    let parties = await dbContext.Party.find({ creatorId: profileId })
-    return parties;
-  }
 };
 
 export const partiesService = new PartiesService();
