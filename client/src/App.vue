@@ -6,7 +6,7 @@
     <router-view />
   </main>
   <footer class="bg-dark text-light mt-3">
-    <span class="px-2 pt-3 text-center">
+    <span class="px-2 py-2 text-center">
       EasilySWADE is a free to use, fan-made resource created by and for DMs and players
       alike. This site is not
       officially affiliated with Pinnacle Entertainment Group (PEG) and does not own the copyrights to any associated
@@ -35,10 +35,12 @@ export default {
   --main-height: calc(100vh - 32px - 64px);
 }
 
-
 footer {
   display: grid;
   place-content: center;
-  height: 32px;
+}
+
+footer span {
+  font-size: 14px;
 }
 </style>
