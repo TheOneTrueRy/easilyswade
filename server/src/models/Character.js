@@ -3,7 +3,6 @@ import { defaultSchemaOptions } from "../db/Constants.js";
 
 import { HindranceSchema } from "./Hindrance.js";
 import { EdgeSchema } from "./Edge.js";
-import { ArtSchema } from "./Art.js";
 import { WeaponSchema } from "./Weapon.js";
 import { PowerSchema } from "./Power.js";
 import { SkillSchema } from "./Skill.js";
@@ -17,6 +16,7 @@ export const CharacterSchema = new Schema(
     height: { type: String, maxLength: 50 },
     weight: { type: Number },
     bennies: { type: Number },
+    conviction: { type: Boolean },
     pace: { type: Number, required: true },
     parry: { type: Number, required: true },
     toughness: { type: Number, required: true },

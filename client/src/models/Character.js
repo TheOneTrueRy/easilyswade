@@ -9,6 +9,7 @@ export class Character {
     this.height = data.height
     this.weight = data.weight
     this.bennies = data.bennies
+    this.conviction = data.conviction
     this.pace = data.pace
     this.parry = data.parry
     this.toughness = data.toughness
