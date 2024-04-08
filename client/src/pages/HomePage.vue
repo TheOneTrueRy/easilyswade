@@ -2,12 +2,12 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 d-flex align-items-center justify-content-center py-4">
-        <span id="EasilySWADE" class="">
+        <span id="EasilySWADE" class="fade-in">
           EasilySWADE
         </span>
       </div>
       <form @submit.prevent="searchProfiles"
-        class="col-8 offset-2 d-flex justify-content-center align-items-center py-3">
+        class="col-8 offset-2 d-flex justify-content-center align-items-center py-3 fade-in">
         <div class="w-100">
           <label for="query" class="form-label">Search for: Profiles</label>
           <input v-model="editable.query" type="text" name="query" id="query" placeholder="Profile Name..."
@@ -55,8 +55,11 @@ export default {
   }
 }
 
-#EasilySWADE {
+.fade-in {
   animation: fade-in 3s;
+}
+
+#EasilySWADE {
   font-size: 4rem;
   font-weight: bold;
 }
