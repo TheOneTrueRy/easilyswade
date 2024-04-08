@@ -22,7 +22,7 @@
         </textarea>
       </div>
       <div class="col-12 text-end">
-        <button type="submit" class="btn btn-secondary">
+        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">
           Save Changes
         </button>
       </div>

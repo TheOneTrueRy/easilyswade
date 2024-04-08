@@ -1,3 +1,4 @@
+import { authGuard } from "@bcwdev/auth0provider-client"
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 function loadPage(page) {
@@ -29,7 +30,13 @@ const routes = [
     path: '/characters/:characterId/sheet',
     name: 'Character',
     component: loadPage('CharacterSheetPage')
-  }
+  },
+  {
+    path: '/create-character',
+    name: 'CreateCharacter',
+    component: loadPage('CreateCharacterPage'),
+    beforeEnter: authGuard
+  },
 ]
 
 export const router = createRouter({

@@ -16,6 +16,29 @@
             About
           </router-link>
         </li>
+        <li v-if="user.id">
+          <div class="dropdown">
+            <button type="button" class="btn text-success selectable" data-bs-toggle="dropdown" aria-expanded="false">
+              CREATE <i class="mdi mdi-menu-down"></i>
+            </button>
+            <ul class="dropdown-menu py-0">
+              <router-link :to="{ name: 'CreateCharacter' }">
+                <li class="selectable py-1 ps-1 rounded-top">
+                  Character
+                </li>
+              </router-link>
+              <li class="selectable py-1 ps-1">
+                Party
+              </li>
+              <li class="selectable py-1 ps-1">
+                Art
+              </li>
+              <li class="selectable py-1 ps-1 rounded-bottom">
+                Story
+              </li>
+            </ul>
+          </div>
+        </li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
       <div class="me-2">
@@ -29,9 +52,10 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
+import { AppState } from "../AppState.js";
 export default {
   setup() {
 
@@ -43,6 +67,7 @@ export default {
 
     return {
       theme,
+      user: computed(() => AppState.user),
       toggleTheme() {
         theme.value = theme.value == 'light' ? 'dark' : 'light'
         document.documentElement.setAttribute('data-bs-theme', theme.value)
