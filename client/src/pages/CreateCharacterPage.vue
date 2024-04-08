@@ -65,6 +65,7 @@ export default {
           const picture = e.target.fileInput.files[0]
           const characterData = editable.value
           await charactersService.createCharacter(picture, characterData)
+          editable.value = {}
           router.push({ name: 'Character', params: { characterId: AppState.character.id } })
         } catch (error) {
           Pop.error('Experienced an error attempting to create the character.', error.message)

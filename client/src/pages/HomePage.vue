@@ -1,43 +1,63 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 d-flex align-items-center justify-content-center py-4">
+        <span id="EasilySWADE" class="">
+          EasilySWADE
+        </span>
+      </div>
+      <form @submit.prevent="searchProfiles"
+        class="col-8 offset-2 d-flex justify-content-center align-items-center py-3">
+        <div class="w-100">
+          <label for="query" class="form-label">Search for: Profiles</label>
+          <input v-model="editable.query" type="text" name="query" id="query" placeholder="Profile Name..."
+            class="form-control">
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
+import Pop from "../utils/Pop.js";
+import { profilesService } from "../services/ProfilesService.js";
+import { router } from "../router.js";
+
 export default {
   setup() {
+    const editable = ref({})
     return {
-      
+      editable,
+      async searchProfiles() {
+        try {
+          const searchQuery = editable.value
+          await profilesService.searchProfiles(searchQuery)
+          editable.value = {}
+          router.push({ name: 'Search' })
+        } catch (error) {
+          Pop.error('Experienced an error when attempting to search profiles.', error.message)
+        }
+      }
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
-
-  .home-card {
-    width: clamp(500px, 50vw, 100%);
-
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
+@keyframes fade-in {
+  from {
+    opacity: 0%;
   }
+
+  to {
+    opacity: 100%;
+  }
+}
+
+#EasilySWADE {
+  animation: fade-in 3s;
+  font-size: 4rem;
+  font-weight: bold;
 }
 </style>

@@ -37,6 +37,11 @@ const routes = [
     component: loadPage('CreateCharacterPage'),
     beforeEnter: authGuard
   },
+  {
+    path: '/search',
+    name: 'Search',
+    component: loadPage('SearchPage')
+  }
 ]
 
 export const router = createRouter({

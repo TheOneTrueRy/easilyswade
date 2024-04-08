@@ -132,7 +132,6 @@ import CharacterCard from "../components/CharacterCard.vue";
 export default {
   setup() {
     const route = useRoute();
-    const editable = ref({});
     const profileId = route.params.profileId;
     const filter = ref('all')
 
@@ -196,7 +195,6 @@ export default {
     })
 
     return {
-      editable,
       filter,
       user: computed(() => AppState.user),
       profile: computed(() => AppState.profile),

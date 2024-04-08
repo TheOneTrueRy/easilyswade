@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
-    <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
+    <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }" title="Head to the Home page.">
       <div class="d-flex flex-column align-items-center">
         <span class="fs-1">EasilySWADE <i class="mdi mdi-home"></i></span>
       </div>
@@ -22,7 +22,7 @@
               CREATE <i class="mdi mdi-menu-down"></i>
             </button>
             <ul class="dropdown-menu py-0">
-              <router-link :to="{ name: 'CreateCharacter' }">
+              <router-link :to="{ name: 'CreateCharacter' }" title="Create a Character.">
                 <li class="selectable py-1 ps-1 rounded-top">
                   Character
                 </li>

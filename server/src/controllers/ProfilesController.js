@@ -1,6 +1,5 @@
 import { artService } from "../services/ArtService.js"
 import { charactersService } from "../services/CharactersService.js"
-import { partiesService } from "../services/PartiesService.js"
 import { profileService } from '../services/ProfileService.js'
 import { storiesService } from "../services/StoriesService.js"
 import BaseController from '../utils/BaseController'
