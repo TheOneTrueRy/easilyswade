@@ -215,8 +215,8 @@ export default {
 
 <style lang="scss" scoped>
 .profile-picture {
-  height: 15vh;
-  width: 15vh;
+  height: 20vh;
+  width: 20vh;
   object-fit: cover;
   object-position: center;
   border-radius: 6px;
