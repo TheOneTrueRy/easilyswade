@@ -5,8 +5,12 @@
   <main>
     <router-view />
   </main>
-  <footer class="bg-dark text-light">
-
+  <footer class="bg-dark text-light mt-3">
+    <span class="px-2 pt-3 text-center">
+      EasilySWADE is a free to use, fan-made resource created by and for DMs and players
+      alike. This site is not
+      officially affiliated with Pinnacle Entertainment Group (PEG) and does not own the copyrights to any associated
+      Savage Worlds content.</span>
   </footer>
 </template>
 

@@ -2,7 +2,7 @@
   <div class="container-fluid my-2">
     <div class="row justify-content-end">
       <div class="col-4 text-center">
-        <img class="profile-picture shadow-sm" :src="profile?.picture" :alt="profile?.picture">
+        <img class="profile-picture shadow" :src="profile?.picture" :alt="profile?.picture">
       </div>
       <div class="col-4 text-end">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
@@ -10,7 +10,7 @@
         </button>
       </div>
       <div class="col-12 text-center">
-        <span class="fs-1">
+        <span class="fs-1 fw-bold">
           {{ profile.name }}
         </span>
       </div>
@@ -101,18 +101,7 @@
 
           </div>
           <span v-if="stories.length == 0" class="fs-4 text-center">
-            {{ profile.name }} has no stories posted... yet. Test Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test TestTest Test
-            Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test
-            Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test
+            {{ profile.name }} has no stories posted... yet.
           </span>
         </div>
       </div>
@@ -219,7 +208,7 @@ export default {
     }
   },
 
-  components: { Modal, EditProfile }
+  components: { Modal, EditProfile, CharacterCard }
 }
 </script>
 
@@ -230,8 +219,7 @@ export default {
   width: 15vh;
   object-fit: cover;
   object-position: center;
-  border-radius: 50%;
-  /* border: 1px solid black; */
+  border-radius: 6px;
   user-select: none;
 }
 
