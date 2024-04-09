@@ -18,7 +18,7 @@ class ProfilesService {
 
   async searchProfiles(query) {
     AppState.profiles = [];
-    const res = await api.get('api/profiles', query)
+    const res = await api.get('api/profiles', { params: { name: query.query } })
     AppState.profiles = res.data.map(p => new Profile(p))
   }
 

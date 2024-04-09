@@ -31,8 +31,8 @@ export default {
       editable,
       async searchProfiles() {
         try {
-          const searchQuery = editable.value
-          await profilesService.searchProfiles(searchQuery)
+          const query = editable.value
+          await profilesService.searchProfiles(query)
           editable.value = {}
           router.push({ name: 'Search' })
         } catch (error) {

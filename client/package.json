@@ -16,6 +16,7 @@
     "@vitejs/plugin-vue": "^4.5.0",
     "axios": "1.6.2",
     "bootstrap": "5.3.2",
+    "gsap": "^3.12.5",
     "socket.io-client": "4.7.2",
     "sweetalert2": "11.10.1",
     "vue": "3.3.9",

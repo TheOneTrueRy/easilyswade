@@ -17,14 +17,14 @@ class ProfileService {
     * limits to first 20 without offset
     * @param {string} name
    */
-  async findProfiles(name = '', offset = 0) {
+  async findProfiles(name = '') {
     const filter = new RegExp(name, 'ig')
     return await dbContext.Account
       .aggregate([{
         $match: { name: filter }
       }])
       .collation({ locale: 'en_US', strength: 1 })
-      .skip(Number(offset))
+      // .skip(Number(offset))
       // .limit(20)
       .exec()
   }
