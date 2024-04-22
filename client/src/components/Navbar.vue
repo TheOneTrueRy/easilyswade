@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3 shadow">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }" title="Head to the Home page.">
       <div class="d-flex flex-column align-items-center">
         <span class="fs-1">EasilySWADE <i class="mdi mdi-home"></i></span>
@@ -11,11 +11,6 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto">
-        <li>
-          <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
-            About
-          </router-link>
-        </li>
         <li v-if="user.id">
           <div class="dropdown">
             <button type="button" class="btn text-success selectable" data-bs-toggle="dropdown" aria-expanded="false">

@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid my-2">
-    <div class="row ps-4">
+  <div class="container-fluid mb-2">
+    <div class="row pt-2 px-4 bg-gradient">
       <div class="col-9 g-0">
         <div class="d-flex flex-column flex-sm-row">
           <img class="profile-picture shadow" :src="profile?.picture" :alt="profile?.picture">
@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="col-3 text-end ps-0 pe-3">
+      <div class="col-3 text-end g-0">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
           Edit <i class="mdi-pencil mdi d-none d-sm-inline"></i>
         </button>
@@ -23,7 +23,7 @@
     <!-- SECTION Player Characters -->
     <div class="row mt-5 px-4">
       <div class="col-12 g-0 pb-2">
-        <span class="fs-4 bg-dark p-1 rounded text-light">
+        <span class="fs-4">
           {{ profile.name }}'s Player Characters
         </span>
       </div>
@@ -34,7 +34,7 @@
               <CharacterCard :character="c" />
             </div>
           </div>
-          <i v-if="playerCharacters.length == 0" class="fs-4 ps-1">
+          <i v-if="playerCharacters.length == 0" class="fs-5 ps-1 opacity-75">
             {{ profile.name }} has no Player Characters... yet.
           </i>
         </div>
@@ -43,7 +43,7 @@
     <!-- SECTION Parties -->
     <div class="row mt-5 px-4">
       <div class="col-12 g-0 pb-2">
-        <span class="fs-4 bg-dark p-1 rounded text-light">
+        <span class="fs-4">
           {{ profile.name }}'s Parties
         </span>
       </div>
@@ -53,7 +53,7 @@
             <div v-for="p in parties" :key="p.id" class="w-auto px-3 py-2">
 
             </div>
-            <i v-if="parties.length == 0" class="fs-4 ps-1">
+            <i v-if="parties.length == 0" class="fs-5 ps-1 opacity-75">
               {{ profile.name }} has no parties they're participating in... yet.
             </i>
           </div>
@@ -63,7 +63,7 @@
     <!-- SECTION Art -->
     <div class="row mt-5 px-4">
       <div class="col-12 g-0 pb-2">
-        <span class="fs-4 bg-dark p-1 rounded text-light">
+        <span class="fs-4">
           {{ profile.name }}'s Art
         </span>
       </div>
@@ -73,7 +73,7 @@
             <div v-for="a in artArray" :key="a.id" class="w-auto px-3 py-2">
 
             </div>
-            <i v-if="artArray.length == 0" class="fs-4 ps-1">
+            <i v-if="artArray.length == 0" class="fs-5 ps-1 opacity-75">
               {{ profile.name }} has no art posted... yet.
             </i>
           </div>
@@ -83,7 +83,7 @@
     <!-- SECTION Stories -->
     <div class="row mt-5 px-4">
       <div class="col-12 g-0 pb-2">
-        <span class="fs-4 bg-dark p-1 rounded text-light">
+        <span class="fs-4">
           {{ profile.name }}'s Stories
         </span>
       </div>
@@ -93,7 +93,7 @@
             <div v-for="s in stories" :key="s.id" class="w-auto px-3 py-2">
 
             </div>
-            <i v-if="stories.length == 0" class="fs-4 ps-1">
+            <i v-if="stories.length == 0" class="fs-5 ps-1 opacity-75">
               {{ profile.name }} has no stories posted... yet.
             </i>
           </div>
@@ -103,7 +103,7 @@
     <!-- SECTION Non Player Characters -->
     <div v-if="profile.id == user.id" class="row mt-5 px-4">
       <div class="col-12 g-0 pb-2">
-        <span class="fs-4 bg-dark p-1 rounded text-light">
+        <span class="fs-4">
           Your Non Player Characters
         </span>
       </div>
@@ -113,7 +113,7 @@
             <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="w-auto px-3 py-2">
               <CharacterCard :character="npc" />
             </div>
-            <i v-if="nonPlayerCharacters.length == 0" class="fs-4 ps-1">
+            <i v-if="nonPlayerCharacters.length == 0" class="fs-5 ps-1 opacity-75">
               You have no NPCs made... yet.
             </i>
           </div>
@@ -130,7 +130,7 @@
 
 
 <script>
-import { computed, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Pop from '../utils/Pop.js';
 import { profilesService } from "../services/ProfilesService.js";
@@ -198,6 +198,10 @@ export default {
         getCharactersByProfileId();
         getParties();
       }
+    })
+
+    onMounted(() => {
+      document.title = `EasilySWADE - ${AppState.profile.name}'s Profile`
     })
 
     onUnmounted(() => {

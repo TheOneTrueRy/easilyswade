@@ -16,7 +16,7 @@
 
 
 <script>
-import { computed, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { AppState } from "../AppState.js";
 import { useRoute } from "vue-router";
 import { charactersService } from "../services/CharactersService.js";
@@ -27,6 +27,7 @@ export default {
     const editable = ref({});
     const route = useRoute();
 
+    // eslint-disable-next-line space-before-function-paren
     watchEffect(async () => {
       if (route.params.characterId) {
         await charactersService.getCharacterById(route.params.characterId)
@@ -34,6 +35,10 @@ export default {
       if (AppState.character.id) {
         editable.value = { ...AppState.character }
       }
+    })
+
+    onMounted(() => {
+      document.title = `EasilySWADE - ${AppState.character.name}`
     })
 
     onUnmounted(() => {

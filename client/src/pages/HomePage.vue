@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Pop from "../utils/Pop.js";
 import { profilesService } from "../services/ProfilesService.js";
 import { router } from "../router.js";
@@ -27,6 +27,11 @@ import { router } from "../router.js";
 export default {
   setup() {
     const editable = ref({})
+
+    onMounted(() => {
+      document.title = 'EasilySWADE - Home'
+    })
+
     return {
       editable,
       async searchProfiles() {

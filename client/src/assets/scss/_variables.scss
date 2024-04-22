@@ -13,6 +13,7 @@ $light-theme: (
   "warning": #f7c32e,
   "danger": #752020,
   "text": #f8f9fd,
+  "dark": #0f0f0f,
   "page": #f4f4f4
 );
 
@@ -24,9 +25,9 @@ $dark-theme: (
   "warning": #ffda6a,
   "danger": #752020,
   "text": #b1aafa,
-  "page": #0a081b,
-  "dark": #030110,
-  "body-bg": #020314
+  "page": #0f0f0f,
+  "dark": #181818,
+  "body-bg": #181818
 );
 
 $default-colors: (
