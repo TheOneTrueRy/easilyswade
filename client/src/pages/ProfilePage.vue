@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="col-2 text-end ps-0">
+      <div class="col-2 text-end ps-0 pe-3">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
           Edit <i class="mdi-pencil mdi d-none d-sm-inline"></i>
         </button>
@@ -23,27 +23,27 @@
     <!-- SECTION Player Characters -->
     <div class="row mt-5">
       <div class="col-10 offset-1 g-0 pb-2">
-        <span class="fs-4">
+        <span class="fs-4 bg-dark p-1 rounded text-light">
           {{ profile.name }}'s Player Characters
         </span>
       </div>
       <div class="col-10 offset-1">
         <div class="row py-1 row-of-cards rtl">
-          <div class="row ltr g-0">
+          <div class="row ltr g-0 justify-content-center justify-content-sm-start">
             <div v-for="c in playerCharacters" :key="c.id" class="px-2 py-2 w-auto" id="characterCard">
               <CharacterCard :character="c" />
             </div>
           </div>
-          <span v-if="playerCharacters.length == 0" class="fs-4 text-center">
+          <i v-if="playerCharacters.length == 0" class="fs-4 ps-1">
             {{ profile.name }} has no Player Characters... yet.
-          </span>
+          </i>
         </div>
       </div>
     </div>
     <!-- SECTION Parties -->
     <div class="row mt-5">
       <div class="col-10 offset-1 g-0 pb-2">
-        <span class="fs-4">
+        <span class="fs-4 bg-dark p-1 rounded text-light">
           {{ profile.name }}'s Parties
         </span>
       </div>
@@ -53,9 +53,9 @@
             <div v-for="p in parties" :key="p.id" class="w-auto px-3 py-2">
 
             </div>
-            <span v-if="parties.length == 0" class="fs-4 text-center">
+            <i v-if="parties.length == 0" class="fs-4 ps-1">
               {{ profile.name }} has no parties they're participating in... yet.
-            </span>
+            </i>
           </div>
         </div>
       </div>
@@ -63,54 +63,60 @@
     <!-- SECTION Art -->
     <div class="row mt-5">
       <div class="col-10 offset-1 g-0 pb-2">
-        <span class="fs-4">
+        <span class="fs-4 bg-dark p-1 rounded text-light">
           {{ profile.name }}'s Art
         </span>
       </div>
       <div class="col-10 offset-1">
-        <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="a in artArray" :key="a.id" class="w-auto px-3 py-2">
+        <div class="row py-1 row-of-cards rtl">
+          <div class="row ltr g-0">
+            <div v-for="a in artArray" :key="a.id" class="w-auto px-3 py-2">
 
+            </div>
+            <i v-if="artArray.length == 0" class="fs-4 ps-1">
+              {{ profile.name }} has no art posted... yet.
+            </i>
           </div>
-          <span v-if="artArray.length == 0" class="fs-4 text-center">
-            {{ profile.name }} has no art posted... yet.
-          </span>
         </div>
       </div>
     </div>
     <!-- SECTION Stories -->
     <div class="row mt-5">
       <div class="col-10 offset-1 g-0 pb-2">
-        <span class="fs-4">
+        <span class="fs-4 bg-dark p-1 rounded text-light">
           {{ profile.name }}'s Stories
         </span>
       </div>
       <div class="col-10 offset-1">
-        <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="s in stories" :key="s.id" class="w-auto px-3 py-2">
+        <div class="row py-1 row-of-cards rtl">
+          <div class="row ltr g-0">
+            <div v-for="s in stories" :key="s.id" class="w-auto px-3 py-2">
 
+            </div>
+            <i v-if="stories.length == 0" class="fs-4 ps-1">
+              {{ profile.name }} has no stories posted... yet.
+            </i>
           </div>
-          <span v-if="stories.length == 0" class="fs-4 text-center">
-            {{ profile.name }} has no stories posted... yet.
-          </span>
         </div>
       </div>
     </div>
     <!-- SECTION Non Player Characters -->
     <div v-if="profile.id == user.id" class="row mt-5">
       <div class="col-10 offset-1 g-0 pb-2">
-        <span class="fs-4">
+        <span class="fs-4 bg-dark p-1 rounded text-light">
           Your Non Player Characters
         </span>
       </div>
       <div class="col-10 offset-1">
-        <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="w-auto px-3 py-2">
-            <CharacterCard :character="npc" />
+        <div class="row py-1 row-of-cards rtl">
+          <div class="row ltr g-0">
+            <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="w-auto px-3 py-2">
+              <CharacterCard :character="npc" />
+            </div>
+            <i v-if="nonPlayerCharacters.length == 0" class="fs-4 ps-1">
+              You have no NPCs made... yet.
+            </i>
           </div>
-          <span v-if="nonPlayerCharacters.length == 0" class="fs-4 text-center">
-            You have no NPCs made... yet.
-          </span>
         </div>
       </div>
     </div>
@@ -249,6 +255,7 @@ export default {
 .row-of-cards::-webkit-scrollbar-thumb {
   background-color: rgb(0, 0, 0);
   border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(75, 74, 74, 0.452);
 }
 
 .rtl {
