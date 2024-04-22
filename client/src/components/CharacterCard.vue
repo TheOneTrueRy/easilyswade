@@ -1,7 +1,7 @@
 <template>
-  <router-link :to="{ name: 'Character', params: { characterId: character?.id } }">
+  <router-link :to="{ name: 'Character', params: { characterId: character?.id } }" class="w-auto">
     <div class="character-card selectable" :style="{ backgroundImage: `url(${character.picture})` }">
-      <div class="w-100 bg-blur bottom-corners-rounded text-center">
+      <div class="w-100 bg-blur bottom-corners-rounded text-center ellipsis px-2">
         <span class="fs-5 text-light">
           {{ character.name }}
         </span>
@@ -31,6 +31,7 @@ export default {
 <style lang="scss" scoped>
 .character-card {
   height: 20vh;
+  width: 26vh;
   border-radius: 8px;
   display: flex;
   align-items: end;
@@ -45,5 +46,18 @@ export default {
 .bottom-corners-rounded {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
+
+@media screen and (max-width: 576px) {
+  .character-card {
+    width: 40vh;
+    max-width: 100%;
+  }
 }
 </style>

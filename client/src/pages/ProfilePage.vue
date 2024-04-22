@@ -1,18 +1,23 @@
 <template>
   <div class="container-fluid my-2">
-    <div class="row justify-content-end">
-      <div class="col-4 text-center">
-        <img class="profile-picture shadow" :src="profile?.picture" :alt="profile?.picture">
+    <div class="row">
+      <div class="col-9 offset-1 g-0">
+        <div class="d-flex">
+          <img class="profile-picture shadow" :src="profile?.picture" :alt="profile?.picture">
+          <div class="d-flex flex-column px-2">
+            <span class="fw-bold fs-3">
+              {{ profile.name }}
+            </span>
+            <span class="mt-1">
+              {{ profile.description }}
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="col-4 text-end">
+      <div class="col-2 text-end ps-0">
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
-          Edit <i class="mdi-pencil mdi"></i>
+          Edit <i class="mdi-pencil mdi d-none d-sm-inline"></i>
         </button>
-      </div>
-      <div class="col-12 text-center">
-        <span class="fs-1 fw-bold">
-          {{ profile.name }}
-        </span>
       </div>
     </div>
     <!-- SECTION Player Characters -->
@@ -23,31 +28,14 @@
         </span>
       </div>
       <div class="col-10 offset-1">
-        <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="c in playerCharacters" :key="c.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2"
-            id="characterCard">
-            <CharacterCard :character="c" />
+        <div class="row py-1 row-of-cards rtl">
+          <div class="row ltr g-0">
+            <div v-for="c in playerCharacters" :key="c.id" class="px-2 py-2 w-auto" id="characterCard">
+              <CharacterCard :character="c" />
+            </div>
           </div>
           <span v-if="playerCharacters.length == 0" class="fs-4 text-center">
             {{ profile.name }} has no Player Characters... yet.
-          </span>
-        </div>
-      </div>
-    </div>
-    <!-- SECTION Non Player Characters -->
-    <div v-if="profile.id == user.id" class="row mt-5">
-      <div class="col-10 offset-1 g-0 pb-2">
-        <span class="fs-4">
-          Your Non Player Characters
-        </span>
-      </div>
-      <div class="col-10 offset-1">
-        <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
-            <CharacterCard :character="npc" />
-          </div>
-          <span v-if="nonPlayerCharacters.length == 0" class="fs-4 text-center">
-            You have no NPCs made... yet.
           </span>
         </div>
       </div>
@@ -60,13 +48,15 @@
         </span>
       </div>
       <div class="col-10 offset-1">
-        <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="p in parties" :key="p.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+        <div class="row py-1 row-of-cards rtl">
+          <div class="row ltr g-0">
+            <div v-for="p in parties" :key="p.id" class="w-auto px-3 py-2">
 
+            </div>
+            <span v-if="parties.length == 0" class="fs-4 text-center">
+              {{ profile.name }} has no parties they're participating in... yet.
+            </span>
           </div>
-          <span v-if="parties.length == 0" class="fs-4 text-center">
-            {{ profile.name }} has no parties they're participating in... yet.
-          </span>
         </div>
       </div>
     </div>
@@ -79,7 +69,7 @@
       </div>
       <div class="col-10 offset-1">
         <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="a in artArray" :key="a.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+          <div v-for="a in artArray" :key="a.id" class="w-auto px-3 py-2">
 
           </div>
           <span v-if="artArray.length == 0" class="fs-4 text-center">
@@ -97,11 +87,29 @@
       </div>
       <div class="col-10 offset-1">
         <div class="row bg-dark rounded text-light py-1 row-of-cards">
-          <div v-for="s in stories" :key="s.id" class="col-12 col-md-6 col-lg-4 col-xl-3 px-3 py-2">
+          <div v-for="s in stories" :key="s.id" class="w-auto px-3 py-2">
 
           </div>
           <span v-if="stories.length == 0" class="fs-4 text-center">
             {{ profile.name }} has no stories posted... yet.
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- SECTION Non Player Characters -->
+    <div v-if="profile.id == user.id" class="row mt-5">
+      <div class="col-10 offset-1 g-0 pb-2">
+        <span class="fs-4">
+          Your Non Player Characters
+        </span>
+      </div>
+      <div class="col-10 offset-1">
+        <div class="row bg-dark rounded text-light py-1 row-of-cards">
+          <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="w-auto px-3 py-2">
+            <CharacterCard :character="npc" />
+          </div>
+          <span v-if="nonPlayerCharacters.length == 0" class="fs-4 text-center">
+            You have no NPCs made... yet.
           </span>
         </div>
       </div>
@@ -215,6 +223,7 @@ export default {
 .profile-picture {
   height: 20vh;
   width: 20vh;
+  max-width: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 6px;
@@ -223,11 +232,30 @@ export default {
 
 .row-of-cards {
   max-height: 30vh;
-  overflow-y: scroll;
   overflow-x: hidden;
 }
 
 .row-of-cards::-webkit-scrollbar {
-  display: none;
+  background-color: rgb(80, 80, 80);
+  border-radius: 8px;
+  width: 10px;
+}
+
+.row-of-cards::-webkit-scrollbar-track {
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.452);
+}
+
+.row-of-cards::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);
+  border-radius: 8px;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
 }
 </style>
