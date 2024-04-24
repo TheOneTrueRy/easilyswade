@@ -6,16 +6,17 @@
     </button>
     <div v-else>
       <div class="dropdown my-2 my-lg-0">
-        <div type="button" class="bg-dark border-0 selectable no-select" data-bs-toggle="dropdown"
+        <div type="button" class="bg-dark border-0 selectable no-select rounded" data-bs-toggle="dropdown"
           aria-expanded="false">
           <div v-if="account.picture">
-            <img :src="account.picture" alt="account photo" height="50" class="rounded" />
+            <img :src="account.picture" alt="account photo" height="50" class="rounded" title="Open Profile Controls" />
           </div>
         </div>
         <div class="dropdown-menu dropdown-menu-sm-end dropdown-menu-start p-0" aria-labelledby="authDropdown">
           <div class="list-group">
             <router-link :to="{ name: 'Profile', params: { profileId: account?.id || user?.id } }">
-              <div class="list-group-item dropdown-item list-group-item-action">
+              <div class="list-group-item dropdown-item list-group-item-action rounded-top"
+                title="Visit your Profile Page">
                 My Profile
               </div>
             </router-link>

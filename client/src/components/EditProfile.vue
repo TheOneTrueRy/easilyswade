@@ -18,7 +18,7 @@
       </div>
       <div class="col-12 mb-4">
         <label for="description" class="form-label mb-0">Description</label>
-        <textarea type="text" id="description" v-model="editable.description" class="form-control" maxlength="3000">
+        <textarea type="text" id="description" v-model="editable.description" class="form-control" maxlength="1750">
         </textarea>
       </div>
       <div class="col-12 text-end">

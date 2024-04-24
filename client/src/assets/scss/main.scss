@@ -26,3 +26,71 @@ a {
   color: inherit;
 }
 
+.vg-light{
+  background: #818181;
+  background: linear-gradient(180deg, #818181 0%, #f4f4f4 80%);
+}
+
+.hg-light{
+  background: #818181;
+  background: linear-gradient(90deg, #818181 0%, #f4f4f4 40%);
+}
+
+.vg-dark{
+  background: #2c2c2c;
+  background: linear-gradient(180deg, #2c2c2c 0%, #0f0f0f 80%);
+}
+
+.hg-dark{
+  background: #2c2c2c;
+  background: linear-gradient(90deg, #2c2c2c 0%, #0f0f0f 40%);
+}
+
+// `sm` applies to x-small devices (portrait phones, less than 576px)
+@media screen and (max-width: 575.98px) { 
+  .hg-dark{
+    background: linear-gradient(90deg, #2c2c2c 0%, #0f0f0f 95%);
+  }
+
+  .hg-light{
+    background: linear-gradient(90deg, #818181 0%, #f4f4f4 95%);
+  }
+}
+
+// `md` applies to small devices (landscape phones, less than 768px)
+@media screen and (min-width: 575.98px) and (max-width: 767.98px) { 
+  .hg-dark{
+    background: linear-gradient(90deg, #2c2c2c 0%, #0f0f0f 60%);
+  }
+
+  .hg-light{
+    background: linear-gradient(90deg, #818181 0%, #f4f4f4 60%);
+  }
+}
+
+// `lg` applies to medium devices (tablets, less than 992px)
+@media screen and (min-width: 767.98px) and (max-width: 991.98px) { 
+  .hg-dark{
+    background: linear-gradient(90deg, #2c2c2c 0%, #0f0f0f 60%);
+  }
+
+  .hg-light{
+    background: linear-gradient(90deg, #818181 0%, #f4f4f4 60%);
+  }
+}
+
+// `xl` applies to large devices (desktops, less than 1200px)
+@media screen and (min-width: 991.98px) and (max-width: 1199.98px) { 
+  .hg-dark{
+    background: linear-gradient(90deg, #2c2c2c 0%, #0f0f0f 50%);
+  }
+
+  .hg-light{
+    background: linear-gradient(90deg, #818181 0%, #f4f4f4 50%);
+  }
+}
+
+// `xxl` applies to x-large devices (large desktops, less than 1400px)
+@media screen and (min-width: 1199.98px) and (max-width: 1399.98px) { 
+
+}

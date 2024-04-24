@@ -41,6 +41,7 @@ export default {
 
 .bg-blur {
   backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.400);
 }
 
 .bottom-corners-rounded {

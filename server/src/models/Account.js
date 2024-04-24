@@ -16,7 +16,7 @@ export const AccountSchema = new Schema(
     email: { type: String, lowercase: true, unique: true },
     name: { type: String, required: true, maxLength: 200 },
     picture: { type: String },
-    description: { type: String, maxLength: 3000 }
+    description: { type: String, maxLength: 1750 }
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )

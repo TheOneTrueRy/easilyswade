@@ -25,5 +25,7 @@ export const AppState = reactive({
   receivedPartyInvites: [],
 
   sentJoinRequests: [],
-  receivedJoinRequests: []
+  receivedJoinRequests: [],
+
+  theme: null
 })

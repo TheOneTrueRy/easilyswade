@@ -1,40 +1,46 @@
 <template>
   <div class="container-fluid mb-2">
-    <div class="row pt-2 px-4 bg-gradient">
-      <div class="col-9 g-0">
+    <div class="row pt-2 px-4" :class="[theme == 'light' ? 'vg-light' : 'vg-dark']">
+      <div class="col-12 g-0">
         <div class="d-flex flex-column flex-sm-row">
           <img class="profile-picture shadow" :src="profile?.picture" :alt="profile?.picture">
-          <div class="d-flex flex-column px-sm-2">
-            <span class="fw-bold fs-3">
+          <div class="d-flex flex-column ps-sm-2">
+            <span class="fw-bold fs-2" :class="[theme == 'light' ? 'text-dark' : 'text-light']">
               {{ profile.name }}
             </span>
-            <span class="mt-1">
+            <span class="description-overflow pe-2 stylized-scrollbar">
               {{ profile.description }}
             </span>
           </div>
+          <button v-if="profile.id == user.id" class="btn mt-2 d-sm-none"
+            :class="[theme == 'light' ? 'my-btn-dark' : 'btn-light']" data-bs-toggle="modal"
+            data-bs-target="#editProfile" title="Edit your Profile's information.">
+            Edit <i class="mdi-pencil mdi"></i>
+          </button>
         </div>
       </div>
-      <div class="col-3 text-end g-0">
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfile">
+      <div v-if="profile.id == user.id" class="col-3 g-0 d-none d-sm-block mt-2">
+        <button class="btn" :class="[theme == 'light' ? 'my-btn-dark' : 'btn-light']" data-bs-toggle="modal"
+          data-bs-target="#editProfile" title="Edit your Profile's information.">
           Edit <i class="mdi-pencil mdi d-none d-sm-inline"></i>
         </button>
       </div>
     </div>
     <!-- SECTION Player Characters -->
-    <div class="row mt-5 px-4">
-      <div class="col-12 g-0 pb-2">
+    <div class="row mt-4 px-4">
+      <div class="col-12 g-0 pb-1 ps-2 rounded text-light" :class="[theme == 'light' ? 'hg-light' : 'hg-dark']">
         <span class="fs-4">
           {{ profile.name }}'s Player Characters
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards rtl">
+        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
           <div class="row ltr g-0 justify-content-center justify-content-sm-start">
             <div v-for="c in playerCharacters" :key="c.id" class="px-2 py-2 w-auto" id="characterCard">
               <CharacterCard :character="c" />
             </div>
           </div>
-          <i v-if="playerCharacters.length == 0" class="fs-5 ps-1 opacity-75">
+          <i v-if="playerCharacters.length == 0" class="fs-5 ps-1">
             {{ profile.name }} has no Player Characters... yet.
           </i>
         </div>
@@ -42,18 +48,18 @@
     </div>
     <!-- SECTION Parties -->
     <div class="row mt-5 px-4">
-      <div class="col-12 g-0 pb-2">
+      <div class="col-12 g-0 pb-1 ps-2 rounded text-light" :class="[theme == 'light' ? 'hg-light' : 'hg-dark']">
         <span class="fs-4">
           {{ profile.name }}'s Parties
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards rtl">
+        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="p in parties" :key="p.id" class="w-auto px-3 py-2">
 
             </div>
-            <i v-if="parties.length == 0" class="fs-5 ps-1 opacity-75">
+            <i v-if="parties.length == 0" class="fs-5 ps-1">
               {{ profile.name }} has no parties they're participating in... yet.
             </i>
           </div>
@@ -62,18 +68,18 @@
     </div>
     <!-- SECTION Art -->
     <div class="row mt-5 px-4">
-      <div class="col-12 g-0 pb-2">
+      <div class="col-12 g-0 pb-1 ps-2 rounded text-light" :class="[theme == 'light' ? 'hg-light' : 'hg-dark']">
         <span class="fs-4">
           {{ profile.name }}'s Art
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards rtl">
+        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="a in artArray" :key="a.id" class="w-auto px-3 py-2">
 
             </div>
-            <i v-if="artArray.length == 0" class="fs-5 ps-1 opacity-75">
+            <i v-if="artArray.length == 0" class="fs-5 ps-1">
               {{ profile.name }} has no art posted... yet.
             </i>
           </div>
@@ -82,18 +88,18 @@
     </div>
     <!-- SECTION Stories -->
     <div class="row mt-5 px-4">
-      <div class="col-12 g-0 pb-2">
+      <div class="col-12 g-0 pb-1 ps-2 rounded text-light" :class="[theme == 'light' ? 'hg-light' : 'hg-dark']">
         <span class="fs-4">
           {{ profile.name }}'s Stories
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards rtl">
+        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="s in stories" :key="s.id" class="w-auto px-3 py-2">
 
             </div>
-            <i v-if="stories.length == 0" class="fs-5 ps-1 opacity-75">
+            <i v-if="stories.length == 0" class="fs-5 ps-1">
               {{ profile.name }} has no stories posted... yet.
             </i>
           </div>
@@ -102,18 +108,18 @@
     </div>
     <!-- SECTION Non Player Characters -->
     <div v-if="profile.id == user.id" class="row mt-5 px-4">
-      <div class="col-12 g-0 pb-2">
+      <div class="col-12 g-0 pb-1 ps-2 rounded text-light" :class="[theme == 'light' ? 'hg-light' : 'hg-dark']">
         <span class="fs-4">
           Your Non Player Characters
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards rtl">
+        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="w-auto px-3 py-2">
               <CharacterCard :character="npc" />
             </div>
-            <i v-if="nonPlayerCharacters.length == 0" class="fs-5 ps-1 opacity-75">
+            <i v-if="nonPlayerCharacters.length == 0" class="fs-5 ps-1">
               You have no NPCs made... yet.
             </i>
           </div>
@@ -214,6 +220,7 @@ export default {
 
     return {
       filter,
+      theme: computed(() => AppState.theme),
       user: computed(() => AppState.user),
       profile: computed(() => AppState.profile),
       artArray: computed(() => AppState.artArray),
@@ -245,18 +252,18 @@ export default {
   overflow-x: hidden;
 }
 
-.row-of-cards::-webkit-scrollbar {
-  background-color: rgb(80, 80, 80);
+.stylized-scrollbar::-webkit-scrollbar {
+  background-color: #505050;
   border-radius: 8px;
   width: 10px;
 }
 
-.row-of-cards::-webkit-scrollbar-track {
+.stylized-scrollbar::-webkit-scrollbar-track {
   border-radius: 8px;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.452);
 }
 
-.row-of-cards::-webkit-scrollbar-thumb {
+.stylized-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgb(0, 0, 0);
   border-radius: 8px;
   box-shadow: inset 0 0 6px rgba(75, 74, 74, 0.452);
@@ -268,5 +275,15 @@ export default {
 
 .ltr {
   direction: ltr;
+}
+
+.description-overflow {
+  overflow-x: hidden;
+  max-height: 145px;
+}
+
+.my-btn-dark {
+  background-color: #181818;
+  color: white;
 }
 </style>
