@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid my-2">
     <div class="row">
-      <form v-if="character.creatorId == user.id" class="col-12 col-lg-8" @submit.prevent="saveSheet">
+      <form v-if="character.creatorId == user.id" class="col-12 col-xl-8" @submit.prevent="saveSheet">
         <div class="row">
           <div class="col-6 col-sm-4">
             <div class="row px-2">
@@ -12,33 +12,40 @@
               </div>
               <!-- SECTION AGILITY -->
               <div class="col-12 align-items-center justify-content-center g-0 d-flex">
-                <div class="text-center border attribute-number selectable">
-                  <span>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(4)">
+                  <span :class="[editable.agility == 4 ? 'fw-bold' : 'opacity-50']">
                     4
                   </span>
                 </div>
-                <div class="text-center border attribute-number selectable">
-                  <span>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(6)">
+                  <span :class="[editable.agility == 6 ? 'fw-bold' : 'opacity-50']">
                     6
                   </span>
                 </div>
-                <div class="text-center border attribute-number selectable">
-                  <span>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(8)">
+                  <span :class="[editable.agility == 8 ? 'fw-bold' : 'opacity-50']">
                     8
                   </span>
                 </div>
-                <div class="text-center border attribute-number selectable">
-                  <span>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(10)">
+                  <span :class="[editable.agility == 10 ? 'fw-bold' : 'opacity-50']">
                     10
                   </span>
                 </div>
-                <div class="text-center border attribute-number selectable">
-                  <span>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(12)">
+                  <span :class="[editable.agility == 12 ? 'opacity-100' : 'opacity-50']">
                     12
                   </span>
                 </div>
-                <div class="ms-2 text-center border attribute-number rounded">
-                  <input required v-model="editable.agility" type="number" class="fw-bold form-control w-100 h-100">
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="editable.agility" type="number"
+                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2">
                   <span class="fs-5 fw-bold">
@@ -47,41 +54,191 @@
                 </div>
               </div>
               <!-- SECTION SMARTS -->
-              <div class="col-1 g-0 text-center">
-
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSmarts(4)">
+                  <span :class="[editable.smarts == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSmarts(6)">
+                  <span :class="[editable.smarts == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSmarts(8)">
+                  <span :class="[editable.smarts == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSmarts(10)">
+                  <span :class="[editable.smarts == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSmarts(12)">
+                  <span :class="[editable.smarts == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="editable.smarts" type="number"
+                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-2">
+                  <span class="fs-5 fw-bold">
+                    SMARTS
+                  </span>
+                </div>
               </div>
-              <div class="col-1 g-0 text-center">
-
+              <!-- SECTION SPIRIT -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSpirit(4)">
+                  <span :class="[editable.spirit == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSpirit(6)">
+                  <span :class="[editable.spirit == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSpirit(8)">
+                  <span :class="[editable.spirit == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSpirit(10)">
+                  <span :class="[editable.spirit == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSpirit(12)">
+                  <span :class="[editable.spirit == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="editable.spirit" type="number"
+                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-2">
+                  <span class="fs-5 fw-bold">
+                    SPIRIT
+                  </span>
+                </div>
               </div>
-              <div class="col-1 g-0 text-center">
-
+              <!-- SECTION STRENGTH -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeStrength(4)">
+                  <span :class="[editable.strength == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeStrength(6)">
+                  <span :class="[editable.strength == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeStrength(8)">
+                  <span :class="[editable.strength == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeStrength(10)">
+                  <span :class="[editable.strength == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeStrength(12)">
+                  <span :class="[editable.strength == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="editable.strength" type="number"
+                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-2">
+                  <span class="fs-5 fw-bold">
+                    STRENGTH
+                  </span>
+                </div>
               </div>
-              <div class="col-1 g-0 text-center">
-
-              </div>
-              <div class="col-1 g-0 text-center">
-
-              </div>
-              <div class="col-1 g-0 text-center">
-
-              </div>
-              <div class="col-6">
-
+              <!-- SECTION VIGOR -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeVigor(4)">
+                  <span :class="[editable.vigor == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeVigor(6)">
+                  <span :class="[editable.vigor == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeVigor(8)">
+                  <span :class="[editable.vigor == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeVigor(10)">
+                  <span :class="[editable.vigor == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeVigor(12)">
+                  <span :class="[editable.vigor == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="editable.vigor" type="number"
+                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-2">
+                  <span class="fs-5 fw-bold">
+                    VIGOR
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-6 col-sm-4">
+          <div class="col-6 col-sm-5">
 
           </div>
-          <div class="col-4 d-none d-sm-flex justify-content-center">
+          <div class="col-3 d-none d-sm-flex justify-content-center ps-0">
             <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">
           </div>
         </div>
       </form>
-      <div v-else class="col-12 col-lg-8 g-0">
+      <div v-else class="col-12 col-xl-8 g-0">
 
       </div>
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-xl-4">
 
       </div>
     </div>
@@ -123,6 +280,7 @@ export default {
       editable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
+      theme: computed(() => AppState.theme),
       async saveSheet(e) {
         try {
           const picture = e.target.fileInput.files[0]
@@ -131,7 +289,43 @@ export default {
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet.', error.message)
         }
-      }
+      },
+      changeAgility(num) {
+        try {
+          editable.value.agility = num;
+        } catch (error) {
+          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+        }
+      },
+      changeSmarts(num) {
+        try {
+          editable.value.smarts = num;
+        } catch (error) {
+          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+        }
+      },
+      changeSpirit(num) {
+        try {
+          editable.value.spirit = num;
+        } catch (error) {
+          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+        }
+      },
+      changeStrength(num) {
+        try {
+          editable.value.strength = num;
+        } catch (error) {
+          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+        }
+      },
+      changeVigor(num) {
+        try {
+          editable.value.vigor = num;
+        } catch (error) {
+          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+        }
+      },
+
     }
   }
 }
@@ -140,7 +334,7 @@ export default {
 
 <style lang="scss" scoped>
 .character-picture {
-  max-height: 25vh;
+  max-height: 30vh;
   max-width: 100%;
   border-radius: 6px;
   object-fit: cover;
@@ -149,7 +343,19 @@ export default {
 }
 
 .attribute-number {
-  height: 25px;
-  width: 10%;
+  height: 27px;
+  width: 27px;
+}
+
+.attribute-input {
+  border: none;
+  background-color: inherit;
+  cursor: default;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
