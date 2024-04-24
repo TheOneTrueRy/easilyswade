@@ -3,7 +3,7 @@
     <div class="row">
       <form v-if="character.creatorId == user.id" class="col-12 col-xl-8" @submit.prevent="saveSheet">
         <div class="row">
-          <div class="col-6 col-sm-4">
+          <div class="col-6 order-3 order-md-1 col-md-4">
             <div class="row px-2">
               <div class="col-12 text-center">
                 <span class="fs-3 fw-bold text-danger">
@@ -38,14 +38,14 @@
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
                   :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(12)">
-                  <span :class="[editable.agility == 12 ? 'opacity-100' : 'opacity-50']">
+                  <span :class="[editable.agility == 12 ? 'fw-bold' : 'opacity-50']">
                     12
                   </span>
                 </div>
                 <div class="ms-2 text-center border-bottom attribute-number"
                   :class="[theme == 'light' ? 'border-dark' : 'border-light']">
                   <input required v-model="editable.agility" type="number"
-                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2">
                   <span class="fs-5 fw-bold">
@@ -88,7 +88,7 @@
                 <div class="ms-2 text-center border-bottom attribute-number"
                   :class="[theme == 'light' ? 'border-dark' : 'border-light']">
                   <input required v-model="editable.smarts" type="number"
-                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2">
                   <span class="fs-5 fw-bold">
@@ -131,7 +131,7 @@
                 <div class="ms-2 text-center border-bottom attribute-number"
                   :class="[theme == 'light' ? 'border-dark' : 'border-light']">
                   <input required v-model="editable.spirit" type="number"
-                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2">
                   <span class="fs-5 fw-bold">
@@ -174,7 +174,7 @@
                 <div class="ms-2 text-center border-bottom attribute-number"
                   :class="[theme == 'light' ? 'border-dark' : 'border-light']">
                   <input required v-model="editable.strength" type="number"
-                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2">
                   <span class="fs-5 fw-bold">
@@ -217,7 +217,7 @@
                 <div class="ms-2 text-center border-bottom attribute-number"
                   :class="[theme == 'light' ? 'border-dark' : 'border-light']">
                   <input required v-model="editable.vigor" type="number"
-                    class="fw-bold attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2">
                   <span class="fs-5 fw-bold">
@@ -227,10 +227,10 @@
               </div>
             </div>
           </div>
-          <div class="col-6 col-sm-5">
+          <div class="col-6 order-2 col-md-5">
 
           </div>
-          <div class="col-3 d-none d-sm-flex justify-content-center ps-0">
+          <div class="col-6 order-1 order-md-3 col-md-3 justify-content-center">
             <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">
           </div>
         </div>
@@ -334,7 +334,7 @@ export default {
 
 <style lang="scss" scoped>
 .character-picture {
-  max-height: 30vh;
+  max-height: 25vh;
   max-width: 100%;
   border-radius: 6px;
   object-fit: cover;
