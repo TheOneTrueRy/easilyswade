@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3 shadow">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-1 px-sm-3 shadow">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }" title="Head to the Home page.">
       <div class="d-flex flex-column align-items-center">
         <span class="fs-1">EasilySWADE <i class="mdi mdi-home"></i></span>
       </div>
     </router-link>
     <div class="d-sm-none">
-      <button class="btn text-light me-3" @click="toggleTheme">
+      <button class="btn text-light me-1 me-sm-3" @click="toggleTheme">
         <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>
       </button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -18,17 +18,18 @@
       <ul class="navbar-nav me-auto">
         <li v-if="user.id">
           <div class="dropdown d-flex justify-content-between">
-            <button type="button" class="btn text-success selectable fs-5" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              CREATE <i class="mdi mdi-menu-down"></i>
-            </button>
-            <ul class="dropdown-menu py-0">
-              <router-link :to="{ name: 'CreateCharacter' }" title="Create a Character.">
-                <li class="selectable py-2 ps-2 rounded border">
-                  Character
-                </li>
-              </router-link>
-              <!-- <li class="selectable py-2 ps-2 border">
+            <div>
+              <button type="button" class="btn text-success selectable fs-5" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                CREATE <i class="mdi mdi-menu-down"></i>
+              </button>
+              <ul class="dropdown-menu py-0" z-index>
+                <router-link :to="{ name: 'CreateCharacter' }" title="Create a Character.">
+                  <li class="selectable py-2 ps-2 rounded border">
+                    Character
+                  </li>
+                </router-link>
+                <!-- <li class="selectable py-2 ps-2 border">
                 Party
               </li>
               <li class="selectable py-2 ps-2 border">
@@ -37,12 +38,12 @@
               <li class="selectable py-2 ps-2 rounded-bottom border">
                 Story
               </li> -->
-            </ul>
+              </ul>
+            </div>
             <Login class="d-sm-none p-0" />
           </div>
         </li>
       </ul>
-      <!-- LOGIN COMPONENT HERE -->
       <div class="me-3 d-none d-sm-block">
         <button class="btn text-light" @click="toggleTheme">
           <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>

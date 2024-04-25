@@ -34,7 +34,7 @@
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
+        <div class="row pb-1 row-of-cards mt-2 stylized-scrollbar rtl">
           <div class="row ltr g-0 justify-content-center justify-content-sm-start">
             <div v-for="c in playerCharacters" :key="c.id" class="px-2 py-2 w-auto" id="characterCard">
               <CharacterCard :character="c" />
@@ -54,7 +54,7 @@
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
+        <div class="row pb-1 row-of-cards mt-2 stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="p in parties" :key="p.id" class="w-auto px-3 py-2">
 
@@ -74,7 +74,7 @@
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
+        <div class="row pb-1 row-of-cards mt-2 stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="a in artArray" :key="a.id" class="w-auto px-3 py-2">
 
@@ -94,7 +94,7 @@
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
+        <div class="row pb-1 row-of-cards mt-2 stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="s in stories" :key="s.id" class="w-auto px-3 py-2">
 
@@ -114,7 +114,7 @@
         </span>
       </div>
       <div class="col-12">
-        <div class="row py-1 row-of-cards stylized-scrollbar rtl">
+        <div class="row pb-1 row-of-cards mt-2 stylized-scrollbar rtl">
           <div class="row ltr g-0">
             <div v-for="npc in nonPlayerCharacters" :key="npc.id" class="w-auto px-3 py-2">
               <CharacterCard :character="npc" />
