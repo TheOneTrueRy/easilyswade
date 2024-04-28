@@ -226,6 +226,56 @@
                 </div>
               </div>
             </div>
+            <div class="row px-2 mt-3">
+              <div class="col-12 text-center">
+                <span class="fs-3 fw-bold text-danger">
+                  SKILLS
+                </span>
+              </div>
+              <div v-for="s in editable.skills" :key="s.name"
+                class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkill(s.name)">
+                  <span :class="[editable.agility == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(6)">
+                  <span :class="[editable.agility == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(8)">
+                  <span :class="[editable.agility == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(10)">
+                  <span :class="[editable.agility == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number selectable no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeAgility(12)">
+                  <span :class="[editable.agility == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="editable.agility" type="number"
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-2">
+                  <span class="fs-5 fw-bold">
+                    AGILITY
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-6 order-2 col-md-5">
 

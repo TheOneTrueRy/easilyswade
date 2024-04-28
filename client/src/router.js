@@ -22,11 +22,6 @@ const routes = [
     component: loadPage('CharacterPage')
   },
   {
-    path: '/characters/:characterId/sheet',
-    name: 'CharacterSheet',
-    component: loadPage('CharacterSheetPage')
-  },
-  {
     path: '/create-character',
     name: 'CreateCharacter',
     component: loadPage('CreateCharacterPage'),
