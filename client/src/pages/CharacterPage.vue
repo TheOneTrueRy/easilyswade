@@ -232,34 +232,34 @@
                   SKILLS
                 </span>
               </div>
-              <div v-for="s in editable.skills" :key="s.id"
-                class="col-12 align-items-center justify-content-center g-0 d-flex">
+              <div v-for="s in editable.skills" :key="s.id || s.name"
+                class="col-12 align-items-center justify-content-center g-0 d-flex skill-line">
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id, 4)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 4)">
                   <span :class="[s.die == 4 ? 'fw-bold' : 'opacity-50']">
                     4
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id, 6)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 6)">
                   <span :class="[s.die == 6 ? 'fw-bold' : 'opacity-50']">
                     6
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id, 8)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 8)">
                   <span :class="[s.die == 8 ? 'fw-bold' : 'opacity-50']">
                     8
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id, 10)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 10)">
                   <span :class="[s.die == 10 ? 'fw-bold' : 'opacity-50']">
                     10
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id, 12)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 12)">
                   <span :class="[s.die == 12 ? 'fw-bold' : 'opacity-50']">
                     12
                   </span>
@@ -269,11 +269,22 @@
                   <input required v-model="s.die" type="number"
                     class="fw-bold attribute-input text-danger w-100 h-100 p-0 text-center" readonly>
                 </div>
-                <div class="col-4 ps-2">
-                  <span class="fs-small">
-                    {{ s.name }}
-                  </span>
+                <div class="col-4 ps-2 d-flex justify-content-between ">
+                  <div class="ellipsis">
+                    <span class="fs-small">
+                      {{ s.name }}
+                    </span>
+                  </div>
+                  <button
+                    v-if="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth'"
+                    type="button" class="btn btn-danger py-0 px-1 delete-skill d-none"
+                    @click="deleteSkill(s.id || s.name)"><i class="mdi mdi-trash-can"></i></button>
                 </div>
+              </div>
+              <div class="col-12 rounded selectable text-center mt-1 border"
+                :class="theme == 'light' ? 'border-dark' : ''" title="Add a new Skill!" data-bs-toggle="modal"
+                data-bs-target="#addSkillModal">
+                <i class="mdi mdi-plus"></i>
               </div>
             </div>
           </div>
@@ -293,6 +304,42 @@
       </div>
     </div>
   </div>
+
+  <!-- SECTION Add Skill Modal -->
+  <Modal id="addSkillModal">
+    <form @submit="addSkill" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Add a new skill!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-4">
+          <label for="die">Die Level</label>
+          <select required v-model="skillEditable.die" name="die" id="die" class="form-control">
+            <option selected value="4">4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+          </select>
+        </div>
+        <div class="col-8">
+          <label for="name">Skill Name</label>
+          <input required v-model="skillEditable.name" name="name" id="name" type="text" maxlength="50"
+            class="form-control">
+        </div>
+        <div class="col-12 text-end mt-2">
+          <button type="submit" class="btn btn-light" data-bs-dismiss="modal">
+            Add Skill
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -302,10 +349,12 @@ import { AppState } from "../AppState.js";
 import { useRoute } from "vue-router";
 import { charactersService } from "../services/CharactersService.js";
 import Pop from "../utils/Pop.js";
+import Modal from "../components/Modal.vue";
 
 export default {
   setup() {
     const editable = ref({});
+    const skillEditable = ref({ die: 4 });
     const route = useRoute();
 
     // eslint-disable-next-line space-before-function-paren
@@ -328,6 +377,7 @@ export default {
 
     return {
       editable,
+      skillEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
@@ -377,14 +427,16 @@ export default {
       },
       changeSkillDie(skillId, die) {
         try {
-          let skill = editable.value.skills.find(s => s.id == skillId)
+          let skill = editable.value.skills.find(s => s.id == skillId || s.name == skillId)
           skill.die = die
         } catch (error) {
           Pop.error('Experienced an error attempting to change the die level of that skill.', error.message)
         }
       }
     }
-  }
+  },
+
+  components: { Modal }
 }
 </script>
 
@@ -418,6 +470,15 @@ input::-webkit-inner-spin-button {
 
 .fs-small {
   font-size: small;
-  text-wrap: nowrap;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skill-line:hover .delete-skill {
+  display: block !important;
 }
 </style>
