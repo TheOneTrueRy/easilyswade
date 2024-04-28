@@ -232,7 +232,7 @@
                   SKILLS
                 </span>
               </div>
-              <div v-for="s in editable.skills" :key="s.name"
+              <div v-for="(s, index) in editable.skills" :key="s.name"
                 class="col-12 align-items-center justify-content-center g-0 d-flex skill-line">
                 <div class="text-center border attribute-number selectable no-highlight"
                   :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 4)">
@@ -269,8 +269,9 @@
                   <input required v-model="s.die" type="number"
                     class="fw-bold attribute-input text-danger w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
-                <div class="col-4 ps-2 d-flex justify-content-between ">
-                  <div class="ellipsis">
+                <div class="col-4 ps-2 d-flex justify-content-between">
+                  <div
+                    :class="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth' ? 'ellipsis' : ' nowrap'">
                     <span class="fs-small">
                       {{ s.name }}
                     </span>
@@ -278,13 +279,13 @@
                   <button
                     v-if="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth'"
                     type="button" class="btn btn-danger py-0 px-1 delete-skill d-none"
-                    @click="deleteSkill(s.id || s.name)"><i class="mdi mdi-trash-can"></i></button>
+                    @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can"></i></button>
                 </div>
               </div>
               <div class="col-12 rounded selectable text-center mt-1 border"
                 :class="theme == 'light' ? 'border-dark' : ''" title="Add a new Skill!" data-bs-toggle="modal"
                 data-bs-target="#addSkillModal">
-                <i class="mdi mdi-plus"></i>
+                <i class="mdi mdi-plus-thick"></i>
               </div>
             </div>
           </div>
@@ -293,6 +294,13 @@
           </div>
           <div class="col-6 order-1 order-md-3 col-md-3 d-flex justify-content-center">
             <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">
+          </div>
+        </div>
+        <div class="row sticky-bottom pb-2">
+          <div class="col-12 d-flex justify-content-end">
+            <button type="submit" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+              Save Changes
+            </button>
           </div>
         </div>
       </form>
@@ -329,11 +337,12 @@
         </div>
         <div class="col-8">
           <label for="name">Skill Name</label>
-          <input required v-model="skillEditable.name" name="name" id="name" type="text" maxlength="50"
+          <input required v-model="skillEditable.name" name="name" id="name" type="text" maxlength="20"
             class="form-control">
         </div>
         <div class="col-12 text-end mt-2">
-          <button type="submit" class="btn btn-light" data-bs-dismiss="modal">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Add Skill
           </button>
         </div>
@@ -435,10 +444,25 @@ export default {
       },
       addSkill() {
         try {
-          const skillData = skillEditable
-          editable.value.skills.push({ name: skillData.value.name, die: skillData.value.die })
+          const skillData = skillEditable.value
+          if (editable.value.skills.some(s => s.name == skillData.name)) {
+            skillEditable.value = { die: 4 }
+            throw new Error('There is already a skill with that name on this sheet!')
+          }
+          editable.value.skills.push({ name: skillData.name, die: skillData.die })
+          skillEditable.value = { die: 4 }
         } catch (error) {
-          Pop.error('Experienced an error attempting to add that skill.', error.message)
+          Pop.error(error.message)
+        }
+      },
+      async deleteSkill(skillName, skillIndex) {
+        try {
+          debugger
+          if (await Pop.confirm(`Are you sure you wish to delete the ${skillName} skill?`)) {
+            editable.value.skills.splice(skillIndex, 1)
+          }
+        } catch (error) {
+          Pop.error('Experienced an error attempting to delete that skill.', error.message)
         }
       }
     }
@@ -482,11 +506,39 @@ input::-webkit-inner-spin-button {
 
 .ellipsis {
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.nowrap {
+  white-space: nowrap
 }
 
 .skill-line:hover .delete-skill {
   display: block !important;
+}
+
+.skill-line:hover .ellipsis {
+  overflow: hidden;
+}
+
+form {
+  overflow: auto;
+}
+
+form::-webkit-scrollbar {
+  background-color: #505050;
+  border-radius: 8px;
+  width: 10px;
+}
+
+form::-webkit-scrollbar-track {
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.452);
+}
+
+form::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(75, 74, 74, 0.452);
 }
 </style>

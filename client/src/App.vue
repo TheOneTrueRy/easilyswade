@@ -5,7 +5,7 @@
   <main>
     <router-view />
   </main>
-  <footer class="bg-dark text-light mt-3">
+  <footer class="bg-dark text-light">
     <span class="px-2 py-2 text-center">
       EasilySWADE is a free to use, fan-made resource created by and for DMs and players
       alike. This site is not
