@@ -232,34 +232,34 @@
                   SKILLS
                 </span>
               </div>
-              <div v-for="s in editable.skills" :key="s.id || s.name"
+              <div v-for="s in editable.skills" :key="s.name"
                 class="col-12 align-items-center justify-content-center g-0 d-flex skill-line">
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 4)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 4)">
                   <span :class="[s.die == 4 ? 'fw-bold' : 'opacity-50']">
                     4
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 6)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 6)">
                   <span :class="[s.die == 6 ? 'fw-bold' : 'opacity-50']">
                     6
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 8)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 8)">
                   <span :class="[s.die == 8 ? 'fw-bold' : 'opacity-50']">
                     8
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 10)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 10)">
                   <span :class="[s.die == 10 ? 'fw-bold' : 'opacity-50']">
                     10
                   </span>
                 </div>
                 <div class="text-center border attribute-number selectable no-highlight"
-                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.id || s.name, 12)">
+                  :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 12)">
                   <span :class="[s.die == 12 ? 'fw-bold' : 'opacity-50']">
                     12
                   </span>
@@ -267,7 +267,7 @@
                 <div class="ms-2 text-center border-bottom attribute-number"
                   :class="[theme == 'light' ? 'border-dark' : 'border-light']">
                   <input required v-model="s.die" type="number"
-                    class="fw-bold attribute-input text-danger w-100 h-100 p-0 text-center" readonly>
+                    class="fw-bold attribute-input text-danger w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
                 <div class="col-4 ps-2 d-flex justify-content-between ">
                   <div class="ellipsis">
@@ -291,7 +291,7 @@
           <div class="col-6 order-2 col-md-5">
 
           </div>
-          <div class="col-6 order-1 order-md-3 col-md-3 justify-content-center">
+          <div class="col-6 order-1 order-md-3 col-md-3 d-flex justify-content-center">
             <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">
           </div>
         </div>
@@ -307,7 +307,7 @@
 
   <!-- SECTION Add Skill Modal -->
   <Modal id="addSkillModal">
-    <form @submit="addSkill" class="container-fluid">
+    <form @submit.prevent="addSkill" class="container-fluid">
       <div class="row">
         <div class="col-12 mb-2 d-flex justify-content-between">
           <span class="fs-4">
@@ -425,12 +425,20 @@ export default {
           Pop.error('Experienced an error attempting to set that attribute value.', error.message)
         }
       },
-      changeSkillDie(skillId, die) {
+      changeSkillDie(skillName, die) {
         try {
-          let skill = editable.value.skills.find(s => s.id == skillId || s.name == skillId)
+          let skill = editable.value.skills.find(s => s.name == skillName)
           skill.die = die
         } catch (error) {
           Pop.error('Experienced an error attempting to change the die level of that skill.', error.message)
+        }
+      },
+      addSkill() {
+        try {
+          const skillData = skillEditable
+          editable.value.skills.push({ name: skillData.value.name, die: skillData.value.die })
+        } catch (error) {
+          Pop.error('Experienced an error attempting to add that skill.', error.message)
         }
       }
     }

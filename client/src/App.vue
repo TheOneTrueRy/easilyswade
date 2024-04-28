@@ -41,6 +41,6 @@ footer {
 }
 
 footer span {
-  font-size: 14px;
+  font-size: x-small;
 }
 </style>
