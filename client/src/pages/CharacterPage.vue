@@ -290,7 +290,50 @@
             </div>
           </div>
           <div class="col-6 order-2 col-md-5">
-
+            <div class="row mt-5">
+              <div class="col-12 d-flex align-items-end pe-md-0 no-ps-sm no-ps-md">
+                <label for="name" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">Name:</label>
+                <input type="text" required v-model="editable.name" name="name" id="name" maxlength="60"
+                  class="form-control p-0 ps-1 border-0 border-bottom rounded-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+              </div>
+              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md">
+                <label for="race" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">Race:</label>
+                <input type="text" required v-model="editable.race" name="race" id="race" maxlength="60"
+                  class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+              </div>
+              <div class="col-3 col-md-2 d-flex align-items-end g-md-0 no-ps-sm no-ps-md">
+                <input type="text" required v-model="editable.height" name="height" id="height"
+                  class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <label for="height" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">HT</label>
+              </div>
+              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md">
+                <label for="bennies" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies:</label>
+                <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="60"
+                  class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+              </div>
+              <div class="col-3 col-md-2 d-flex align-items-end g-md-0 no-ps-sm no-ps-md">
+                <input type="text" required v-model="editable.weight" name="weight" id="weight"
+                  class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <label for="height" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">WT</label>
+              </div>
+              <div class="col-12 d-flex align-items-end pe-md-0 no-ps-sm no-ps-md">
+                <label for="conviction" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">Conviction:</label>
+                <input type="text" v-model="editable.conviction" name="conviction" id="conviction"
+                  class="form-control p-0 border-0 border-bottom rounded-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'" maxlength="60">
+              </div>
+            </div>
           </div>
           <div class="col-6 order-1 order-md-3 col-md-3 d-flex justify-content-center">
             <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">

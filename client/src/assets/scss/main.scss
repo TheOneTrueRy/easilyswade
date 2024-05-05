@@ -61,6 +61,10 @@ a {
       opacity: 0 !important;
     }
   }
+
+  .no-ps-sm{
+    padding-left: 0;
+  }
 }
 
 // `md` applies to small devices (landscape phones, less than 768px)
@@ -71,6 +75,10 @@ a {
 
   .hg-light{
     background: linear-gradient(90deg, #818181 0%, #f4f4f4 60%);
+  }
+
+  .no-ps-md{
+    padding-left: 0;
   }
 }
 
