@@ -91,6 +91,10 @@ a {
   .hg-light{
     background: linear-gradient(90deg, #818181 0%, #f4f4f4 60%);
   }
+
+  .no-ps-lg{
+    padding-left: 0;
+  }
 }
 
 // `xl` applies to large devices (desktops, less than 1200px)

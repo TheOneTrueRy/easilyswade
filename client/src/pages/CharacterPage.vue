@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid my-2">
     <div class="row">
-      <form v-if="character.creatorId == user.id" class="col-12 col-xl-8" @submit.prevent="saveSheet">
+      <form v-if="character.creatorId == user.id" class="col-12 col-xl-11" @submit.prevent="saveSheet">
         <div class="row">
-          <div class="col-6 order-3 order-md-1 col-md-4">
+          <div class="col-6 order-3 order-lg-1 col-lg-4">
             <div class="row px-2">
               <div class="col-12 text-center">
                 <span class="fs-3 fw-bold text-danger">
@@ -269,9 +269,10 @@
                   <input required v-model="s.die" type="number"
                     class="fw-bold attribute-input text-danger w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
-                <div class="col-4 ps-2 d-flex justify-content-between">
-                  <div
-                    :class="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth' ? 'ellipsis' : ' nowrap'">
+                <div class="col-4 ps-1 d-flex justify-content-between h-100 border-bottom border-1 ms-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <div class="d-flex align-items-end"
+                    :class="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth' ? 'ellipsis' : 'nowrap'">
                     <span class="fs-small">
                       {{ s.name }}
                     </span>
@@ -289,53 +290,68 @@
               </div>
             </div>
           </div>
-          <div class="col-6 order-2 col-md-5">
+          <div class="col-6 order-2 col-lg-5">
             <div class="row mt-5">
-              <div class="col-12 d-flex align-items-end pe-md-0 no-ps-sm no-ps-md">
+              <div class="col-12 d-flex align-items-end pe-lg-0 no-ps-sm no-ps-md no-ps-lg">
                 <label for="name" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Name:</label>
                 <input type="text" required v-model="editable.name" name="name" id="name" maxlength="60"
                   class="form-control p-0 ps-1 border-0 border-bottom rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md">
+              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md no-ps-lg">
                 <label for="race" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Race:</label>
                 <input type="text" required v-model="editable.race" name="race" id="race" maxlength="60"
                   class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-3 col-md-2 d-flex align-items-end g-md-0 no-ps-sm no-ps-md">
+              <div class="col-3 col-md-2 d-flex align-items-end g-lg-0 no-ps-sm no-ps-md no-ps-lg">
                 <input type="text" required v-model="editable.height" name="height" id="height"
                   class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">HT</label>
               </div>
-              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md">
+              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md no-ps-lg">
                 <label for="bennies" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies:</label>
                 <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="60"
                   class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-3 col-md-2 d-flex align-items-end g-md-0 no-ps-sm no-ps-md">
+              <div class="col-3 col-md-2 d-flex align-items-end g-lg-0 no-ps-sm no-ps-md no-ps-lg">
                 <input type="text" required v-model="editable.weight" name="weight" id="weight"
                   class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">WT</label>
               </div>
-              <div class="col-12 d-flex align-items-end pe-md-0 no-ps-sm no-ps-md">
+              <div class="col-12 d-flex align-items-end pe-lg-0 no-ps-sm no-ps-md no-ps-lg">
                 <label for="conviction" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Conviction:</label>
                 <input type="text" v-model="editable.conviction" name="conviction" id="conviction"
-                  class="form-control p-0 border-0 border-bottom rounded-0"
+                  class="form-control p-0 border-0 border-bottom rounded-0" Z
                   :class="theme == 'light' ? 'border-dark' : 'border-light'" maxlength="60">
               </div>
             </div>
+            <div class="row mt-3">
+              <div class="col-4 text-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
+                <input type="number" required name="pace" id="pace" class="form-control text-center fw-bold fs-5 p-0">
+                <label for="pace" class="fw-bold fs-5">Pace</label>
+              </div>
+              <div class="col-4 text-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
+                <input type="number" required name="parry" id="parry" class="form-control text-center fw-bold fs-5 p-0">
+                <label for="parry" class="fw-bold fs-5">Parry</label>
+              </div>
+              <div class="col-4 text-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
+                <input type="number" required name="toughness" id="toughness"
+                  class="form-control text-center fw-bold fs-5 p-0">
+                <label for="toughness" class="fw-bold fs-5">Toughness</label>
+              </div>
+            </div>
           </div>
-          <div class="col-6 order-1 order-md-3 col-md-3 d-flex justify-content-center">
+          <div class="col-6 order-1 order-lg-3 col-lg-3 d-flex justify-content-center">
             <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">
           </div>
         </div>
@@ -347,10 +363,10 @@
           </div>
         </div>
       </form>
-      <div v-else class="col-12 col-xl-8 g-0">
+      <div v-else class="col-12 col-xl-11 g-0">
 
       </div>
-      <div class="col-12 col-xl-4">
+      <div class="col-12 col-xl-1">
 
       </div>
     </div>
@@ -517,8 +533,12 @@ export default {
 
 
 <style lang="scss" scoped>
+* {
+  font-family: 'Times New Roman', Times, serif;
+}
+
 .character-picture {
-  max-height: 25vh;
+  max-height: 30vh;
   max-width: 100%;
   border-radius: 6px;
   object-fit: cover;
@@ -583,5 +603,9 @@ form::-webkit-scrollbar-thumb {
   background-color: rgb(0, 0, 0);
   border-radius: 8px;
   box-shadow: inset 0 0 6px rgba(75, 74, 74, 0.452);
+}
+
+input:focus {
+  outline: none !important;
 }
 </style>
