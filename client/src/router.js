@@ -17,8 +17,13 @@ const routes = [
     component: loadPage('ProfilePage')
   },
   {
+    path: '/characters/:characterId/sheet',
+    name: 'CharacterSheet',
+    component: loadPage('CharacterSheetPage')
+  },
+  {
     path: '/characters/:characterId',
-    name: 'Character',
+    name: 'CharacterPage',
     component: loadPage('CharacterPage')
   },
   {

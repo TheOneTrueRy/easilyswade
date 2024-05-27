@@ -1,18 +1,30 @@
 <template>
-  <router-link :to="{ name: 'Character', params: { characterId: character?.id } }" class="w-auto">
-    <div class="character-card selectable" :style="{ backgroundImage: `url(${character.picture})` }">
-      <div class="w-100 bg-blur bottom-corners-rounded text-center ellipsis px-2">
-        <span class="fs-5 text-light">
-          {{ character.name }}
-        </span>
+  <div class="character-card" :style="{ backgroundImage: `url(${character.picture})` }">
+    <div class="w-100 bg-blur bottom-corners-rounded text-center ellipsis px-2">
+      <span class="fs-5 text-light">
+        {{ character.name }}
+      </span>
+      <div class="div d-flex justify-content-between pb-1">
+        <router-link :to="{ name: 'CharacterPage', params: { characterId: character?.id } }"
+          :title="`Visit ${character?.name}'s Character Page!`">
+          <button class="btn selectable px-2 py-0 character-btn"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">Page</button>
+        </router-link>
+        <router-link :to="{ name: 'CharacterSheet', params: { characterId: character?.id } }"
+          :title="`Visit ${character?.name}'s Character Sheet!`">
+          <button class="btn selectable px-2 py-0 character-btn"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">Sheet</button>
+        </router-link>
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 
 <script>
+import { computed } from "vue";
 import { Character } from "../models/Character.js";
+import { AppState } from "../AppState.js";
 
 export default {
   props: {
@@ -22,7 +34,9 @@ export default {
     }
   },
   setup() {
-    return {}
+    return {
+      theme: computed(() => AppState.theme)
+    }
   }
 }
 </script>
@@ -53,6 +67,16 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   text-wrap: nowrap;
+}
+
+.character-btn {
+  display: none;
+}
+
+.character-card:hover {
+  .character-btn {
+    display: block;
+  }
 }
 
 @media screen and (max-width: 576px) {
