@@ -398,8 +398,35 @@
             </div>
           </div>
         </div>
-        <div class="row">
-
+        <div class="row mt-4">
+          <div class="col-5 d-flex align-items-center justify-content-end">
+            <label for="wounds" class="fs-3 fw-bold text-danger">WOUNDS</label>
+            <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-5 py-1">
+              <option selected value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="INC">INC</option>
+            </select>
+          </div>
+          <div class="col-2 d-flex align-items-center justify-content-center">
+            <div
+              class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
+              @click="editable.dead = !editable.dead"
+              :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
+              <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull"></i>
+              <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
+            </div>
+          </div>
+          <div class="col-5 d-flex align-items-center justify-content-start">
+            <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-5 py-1">
+              <option selected value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="INC">INC</option>
+            </select>
+            <label for="fatigue" class="fs-3 fw-bold text-danger">FATIGUE</label>
+          </div>
         </div>
       </div>
       <div class="col-3">
@@ -888,5 +915,36 @@ textarea::-webkit-scrollbar-thumb {
   background-color: rgb(0, 0, 0);
   border-radius: 8px;
   box-shadow: inset 0 0 6px rgba(75, 74, 74, 0.452);
+}
+
+.death-btn {
+  height: 75px;
+  width: 75px;
+  transition: 0.4s;
+}
+
+.skull {
+  transition: 2s;
+}
+
+.holy-undo {
+  transition: 2s;
+}
+
+.death-btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+
+  .skull {
+    color: #971515;
+  }
+
+  .holy-undo {
+    color: #FCF6BA
+  }
+}
+
+.death-btn:active {
+  transform: scale(0.95)
 }
 </style>
