@@ -30,7 +30,7 @@ class CharactersService {
   }
 
   async updateCharacter(characterData) {
-    const res = await api.put('api/characters/' + characterData.id)
+    const res = await api.put('api/characters/' + characterData.id, characterData)
     AppState.character = new Character(res.data)
   }
 

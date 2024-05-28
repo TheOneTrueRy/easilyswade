@@ -337,17 +337,17 @@
             </div>
             <div class="row mt-4">
               <div class="col-4 d-flex flex-column align-items-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
-                <input type="number" required name="pace" id="pace"
+                <input type="number" required v-model="editable.pace" name="pace" id="pace"
                   class="form-control text-center fw-bold fs-5 p-0 w-50">
                 <label for="pace" class="fw-bold fs-5">Pace</label>
               </div>
               <div class="col-4 d-flex flex-column align-items-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
-                <input type="number" required name="parry" id="parry"
+                <input type="number" required v-model="editable.parry" name="parry" id="parry"
                   class="form-control text-center fw-bold fs-5 p-0 w-50">
                 <label for="parry" class="fw-bold fs-5">Parry</label>
               </div>
               <div class="col-4 d-flex flex-column align-items-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
-                <input type="number" required name="toughness" id="toughness"
+                <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
                   class="form-control text-center fw-bold fs-5 p-0 w-50">
                 <label for="toughness" class="fw-bold fs-5">Toughness</label>
               </div>
@@ -409,7 +409,7 @@
     </div>
     <div class="row sticky-bottom pb-2">
       <div class="col-12 d-flex justify-content-end">
-        <button type="submit" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+        <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
           Save Changes
         </button>
       </div>
@@ -530,6 +530,7 @@ export default {
         try {
           const sheetData = editable.value
           await charactersService.updateCharacter(sheetData)
+          Pop.success('Successfully saved the character sheet!')
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet.', error.message)
         }
@@ -750,5 +751,19 @@ form::-webkit-scrollbar-thumb {
 
 input:focus {
   outline: none !important;
+}
+
+.form-control:focus {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.submit-btn {
+  transition: 1s;
+}
+
+.submit-btn:active {
+  transform: scale(0.9);
 }
 </style>
