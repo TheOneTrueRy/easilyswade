@@ -418,9 +418,49 @@
             </div>
           </div>
         </div>
+        <div v-if="editable.creatorId == user.id" class="row mt-4">
+          <div class="col-12 text-center">
+            <span class="fs-3 fw-bold text-danger">
+              SECRET
+            </span>
+          </div>
+          <div class="col-12">
+            <textarea v-model="editable.secret" name="secret" id="secret" class="form-control px-2" rows="8"
+              maxlength="5000">Only you and the GMs of your character's party can see this...</textarea>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <span class="fs-3 fw-bold text-danger">
+              HINDRANCES
+            </span>
+          </div>
+          <div v-for="(h, index) in editable.hindrances" :key="h" class="col-12">
+            <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'"
+              @click="h.expanded = !h.expanded">
+              <div class="selectable flex-grow ps-1">
+                <span class="fs-small">
+                  {{ h.name }} <span v-if="h.expanded == true" class="fs-small">- {{ h.description }}</span>
+                </span>
+              </div>
+              <div v-if="h.expanded == false" class="input-group-append selectable">
+                <button type="button" class="btn py-0" @click="// @ts-ignore
+    deleteHindrance(h, index)" :title="`Delete the '${h.name}' gear item.`">
+                  <i class="mdi mdi-delete"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-1">
+            <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
+              title="Add a new Hindrance!" data-bs-toggle="modal" data-bs-target="#addHindranceModal">
+              <i class="mdi mdi-plus-thick"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row sticky-bottom pb-2">
+    <div class="row sticky-bottom mt-2 pb-2">
       <div class="col-12 d-flex justify-content-end">
         <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
           Save Changes
@@ -498,6 +538,38 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Add Hindrance Modal -->
+  <Modal id="addHindranceModal">
+    <form @submit.prevent="addHindrance" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Add a new hindrance!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Hindrance Name</label>
+          <input type="text" required v-model="hindranceEditable.name" name="name" id="name" minlength="2"
+            maxlength="60" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Hindrance Description</label>
+          <textarea v-model="hindranceEditable.description" name="description" id="description" rows="10"
+            maxlength="2000" class="form-control"></textarea>
+        </div>
+        <div class="col-12 text-end mt-2">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Add Hindrance
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -513,6 +585,7 @@ export default {
   setup() {
     const editable = ref({});
     const skillEditable = ref({ die: 4 });
+    const hindranceEditable = ref({});
     const route = useRoute();
 
     // eslint-disable-next-line space-before-function-paren
@@ -536,6 +609,7 @@ export default {
     return {
       editable,
       skillEditable,
+      hindranceEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
@@ -659,6 +733,15 @@ export default {
         } catch (error) {
           Pop.error(error.message)
         }
+      },
+      addHindrance() {
+        try {
+          const hindranceData = hindranceEditable.value
+          // @ts-ignore
+          editable.value.hindrances.push({ hindranceData })
+        } catch (error) {
+          Pop.error(error.message)
+        }
       }
     }
   },
@@ -762,10 +845,6 @@ form::-webkit-scrollbar-thumb {
   }
 }
 
-input:focus {
-  outline: none !important;
-}
-
 .form-control:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
@@ -778,5 +857,26 @@ input:focus {
 
 .submit-btn:active {
   transform: scale(0.9);
+}
+
+textarea {
+  resize: none;
+}
+
+textarea::-webkit-scrollbar {
+  background-color: #505050;
+  border-radius: 8px;
+  width: 10px;
+}
+
+textarea::-webkit-scrollbar-track {
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.452);
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(75, 74, 74, 0.452);
 }
 </style>
