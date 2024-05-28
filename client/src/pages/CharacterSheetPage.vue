@@ -306,9 +306,9 @@
                   class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-3 d-flex align-items-end g-lg-0 ps-0">
+              <div class="col-3 d-flex align-items-end g-0 ps-0">
                 <input type="text" required v-model="editable.height" name="height" id="height"
-                  class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                  class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">HT</label>
@@ -320,9 +320,9 @@
                   class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-3 d-flex align-items-end g-lg-0 ps-0">
+              <div class="col-3 d-flex align-items-end g-0 ps-0">
                 <input type="text" required v-model="editable.weight" name="weight" id="weight"
-                  class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                  class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">WT</label>
@@ -349,17 +349,17 @@
               </div>
             </div>
             <div class="row mt-4">
-              <div class="col-4 d-flex flex-column align-items-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
+              <div class="col-4 d-flex flex-column align-items-center px-0">
                 <input type="number" required v-model="editable.pace" name="pace" id="pace"
                   class="form-control text-center fw-bold fs-5 p-0 w-50">
                 <label for="pace" class="fw-bold fs-5">Pace</label>
               </div>
-              <div class="col-4 d-flex flex-column align-items-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
+              <div class="col-4 d-flex flex-column align-items-center px-0">
                 <input type="number" required v-model="editable.parry" name="parry" id="parry"
                   class="form-control text-center fw-bold fs-5 p-0 w-50">
                 <label for="parry" class="fw-bold fs-5">Parry</label>
               </div>
-              <div class="col-4 d-flex flex-column align-items-center no-ps-sm no-ps-md pe-lg-0 no-ps-lg">
+              <div class="col-4 d-flex flex-column align-items-center px-0">
                 <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
                   class="form-control text-center fw-bold fs-5 p-0 w-50">
                 <label for="toughness" class="fw-bold fs-5">Toughness</label>
