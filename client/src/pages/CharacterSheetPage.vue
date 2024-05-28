@@ -371,13 +371,13 @@
                   GEAR
                 </span>
               </div>
-              <div v-for="(g, index) in editable.gear" :key="g" class="col-12 border-bottom border-1 pe-0"
+              <div v-for="(g, index) in editable.gear" :key="g" class="col-12 border-bottom border-1 pe-0 ps-1"
                 :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <div class="input-group">
                   <span class="fs-small d-flex align-items-center flex-grow">
                     {{ g }}
                   </span>
-                  <div class="input-group-append">
+                  <div class="input-group-append selectable">
                     <button type="button" class="btn py-0" @click="deleteGear(g, index)"
                       :title="`Delete the '${g}' gear item.`">
                       <i class="mdi mdi-delete"></i>
@@ -387,8 +387,8 @@
               </div>
               <div class="col-12 border-bottom border-1 g-0" :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <div class="input-group">
-                  <input type="text" class="form-control py-0 bg-none border-0 fs-small" name="gear" id="gear">
-                  <div class="input-group-append">
+                  <input type="text" class="form-control py-0 bg-none border-0 fs-small ps-1" name="gear" id="gear">
+                  <div class="input-group-append selectable">
                     <button class="btn py-0" type="button" @click="addGear()" title="Add this item to the Gear list.">
                       <i class="mdi mdi-plus-thick"></i>
                     </button>
@@ -398,11 +398,15 @@
             </div>
           </div>
         </div>
+        <div class="row">
+
+        </div>
       </div>
       <div class="col-3">
         <div class="row">
           <div class="col-12">
-            <div class="character-picture shadow d-flex align-items-end justify-content-end selectable p-1"
+            <div v-if="character.picture"
+              class="character-picture shadow d-flex align-items-end justify-content-end selectable p-1"
               :style="{ backgroundImage: `url(${character.picture})` }" data-bs-target="#characterPictureModal"
               data-bs-toggle="modal">
               <button type="button" v-if="theme == 'light'" class="btn btn-dark"
@@ -414,6 +418,11 @@
                 :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
                 data-bs-target="#editCharacterPictureModal">
                 <i class="mdi mdi-pencil fs-5"></i>
+              </button>
+            </div>
+            <div v-else class="d-flex align-items-center justify-content-center p-2 mt-2">
+              <button type="button" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+                Upload a Picture! <i class="mdi mdi-panorama-variant-outline"></i>
               </button>
             </div>
           </div>
@@ -468,7 +477,7 @@
       </div>
     </div>
   </form>
-  <div v-else class="container-fluid my-2">
+  <div v-else class="container-fluid my-3">
 
   </div>
 
@@ -739,6 +748,7 @@ export default {
           const hindranceData = hindranceEditable.value
           // @ts-ignore
           editable.value.hindrances.push({ hindranceData })
+          hindranceEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
         }
