@@ -292,42 +292,42 @@
           </div>
           <div class="col-6 ps-0 px-4">
             <div class="row mt-4">
-              <div class="col-12 d-flex align-items-end pe-lg-0 no-ps-sm no-ps-md no-ps-lg">
+              <div class="col-12 d-flex align-items-end px-0">
                 <label for="name" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Name:</label>
                 <input type="text" required v-model="editable.name" name="name" id="name" maxlength="60"
                   class="form-control p-0 ps-1 border-0 border-bottom rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md no-ps-lg">
+              <div class="col-9 d-flex align-items-end px-0">
                 <label for="race" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Race:</label>
                 <input type="text" required v-model="editable.race" name="race" id="race" maxlength="60"
                   class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-3 col-md-2 d-flex align-items-end g-lg-0 no-ps-sm no-ps-md no-ps-lg">
+              <div class="col-3 d-flex align-items-end g-lg-0 ps-0">
                 <input type="text" required v-model="editable.height" name="height" id="height"
                   class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">HT</label>
               </div>
-              <div class="col-9 col-md-10 d-flex align-items-end pe-0 no-ps-sm no-ps-md no-ps-lg">
+              <div class="col-9 d-flex align-items-end px-0">
                 <label for="bennies" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies:</label>
                 <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="60"
                   class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
-              <div class="col-3 col-md-2 d-flex align-items-end g-lg-0 no-ps-sm no-ps-md no-ps-lg">
+              <div class="col-3 d-flex align-items-end g-lg-0 ps-0">
                 <input type="text" required v-model="editable.weight" name="weight" id="weight"
                   class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">WT</label>
               </div>
-              <div class="col-12 d-flex align-items-end pe-lg-0 no-ps-sm no-ps-md no-ps-lg">
+              <div class="col-12 d-flex align-items-end px-0">
                 <label for="conviction" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Conviction:</label>
                 <input type="text" v-model="editable.conviction" name="conviction" id="conviction"
@@ -365,7 +365,8 @@
                     {{ g }}
                   </span>
                   <div class="input-group-append">
-                    <button class="btn py-0" @click="deleteGear(g, index)" :title="`Delete the '${g}' gear item.`">
+                    <button type="button" class="btn py-0" @click="deleteGear(g, index)"
+                      :title="`Delete the '${g}' gear item.`">
                       <i class="mdi mdi-delete"></i>
                     </button>
                   </div>
@@ -385,9 +386,25 @@
           </div>
         </div>
       </div>
-
       <div class="col-3">
-        <img :src="character.picture" :alt="`${character.name}'s Picture'`" class="character-picture shadow">
+        <div class="row">
+          <div class="col-12">
+            <div class="character-picture shadow d-flex align-items-end justify-content-end selectable p-1"
+              :style="{ backgroundImage: `url(${character.picture})` }" data-bs-target="#characterPictureModal"
+              data-bs-toggle="modal">
+              <button type="button" v-if="theme == 'light'" class="btn btn-dark"
+                :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
+                data-bs-target="#editCharacterPictureModal">
+                <i class="mdi mdi-pencil fs-5"></i>
+              </button>
+              <button type="button" v-if="theme !== 'light'" class="btn btn-light"
+                :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
+                data-bs-target="#editCharacterPictureModal">
+                <i class="mdi mdi-pencil fs-5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row sticky-bottom pb-2">
@@ -438,6 +455,36 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Enlarge Character Picture Modal -->
+  <Modal id="characterPictureModal">
+    <img :src="character?.picture" :alt="`${character.name}'s Picture Enlarged.`">
+  </Modal>
+
+  <!-- SECTION Edit Character Picture Modal -->
+  <Modal id="editCharacterPictureModal">
+    <form @submit.prevent="changeCharacterPicture" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Change Your Character's Picture!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-12">
+          <input type="file" id="picture" name="fileInput" class="form-control" required>
+        </div>
+        <div class="col-12 text-end mt-2">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Confirm New Picture
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -479,11 +526,10 @@ export default {
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
-      async saveSheet(e) {
+      async saveSheet() {
         try {
-          const picture = e.target.fileInput.files[0]
           const sheetData = editable.value
-          await charactersService.updateCharacter(picture, sheetData)
+          await charactersService.updateCharacter(sheetData)
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet.', error.message)
         }
@@ -571,6 +617,7 @@ export default {
           }
           // @ts-ignore
           editable.value.gear.push(item)
+          // @ts-ignore
           document.getElementById('gear').value = ''
         } catch (error) {
           Pop.error(error.message)
@@ -584,6 +631,19 @@ export default {
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete this piece of gear.', error.message)
+        }
+      },
+      async changeCharacterPicture(e) {
+        try {
+          const picture = e.target.fileInput.files[0]
+          if (!picture) {
+            throw new Error('This form has no image uploaded into it!')
+          }
+          let newPictureURL = await charactersService.updateCharacterPicture(picture,);
+          // @ts-ignore
+          editable.value.picture = newPictureURL
+        } catch (error) {
+          Pop.error(error.message)
         }
       }
     }
@@ -600,11 +660,11 @@ export default {
 }
 
 .character-picture {
-  max-height: 30vh;
+  height: 35vh;
   max-width: 100%;
   border-radius: 6px;
-  object-fit: cover;
-  object-position: center;
+  background-size: cover;
+  background-position: center;
   user-select: none;
 }
 
@@ -676,6 +736,16 @@ form::-webkit-scrollbar-thumb {
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: auto;
+}
+
+.edit-picture-btn {
+  display: none;
+}
+
+.character-picture:hover {
+  .edit-picture-btn {
+    display: block
+  }
 }
 
 input:focus {

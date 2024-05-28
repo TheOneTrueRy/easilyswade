@@ -29,14 +29,15 @@ class CharactersService {
     AppState.character = new Character(res.data)
   }
 
-  async updateCharacter(picture, characterData) {
-    const folder = AppState.user.id
-    if (picture) {
-      const url = supabaseService.upload(picture, `${folder}/characterpictures/${characterData.name}/${new Date().toISOString()}`)
-      characterData.picture = url
-    }
+  async updateCharacter(characterData) {
     const res = await api.put('api/characters/' + characterData.id)
     AppState.character = new Character(res.data)
+  }
+
+  async updateCharacterPicture(picture) {
+    const folder = AppState.user.id
+    const url = await supabaseService.upload(picture, `${folder}/characterpictures/${AppState.character.id}/${new Date().toISOString()}`)
+    return url
   }
 }
 
