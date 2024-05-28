@@ -226,7 +226,7 @@
                 </div>
               </div>
             </div>
-            <div class="row px-2 mt-3">
+            <div class="row px-2 mt-4">
               <div class="col-12 text-center">
                 <span class="fs-3 fw-bold text-danger">
                   SKILLS
@@ -327,12 +327,25 @@
                 <label for="height" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">WT</label>
               </div>
-              <div class="col-12 d-flex align-items-end px-0">
+              <div class="col-6 d-flex align-items-end px-0">
                 <label for="conviction" class="border-bottom border-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">Conviction:</label>
                 <input type="text" v-model="editable.conviction" name="conviction" id="conviction"
-                  class="form-control p-0 border-0 border-bottom rounded-0" Z
+                  class="form-control p-0 ps-1 border-0 border-bottom rounded-0 border-end" Z
                   :class="theme == 'light' ? 'border-dark' : 'border-light'" maxlength="60">
+              </div>
+              <div class="col-6 d-flex align-items-end px-0">
+                <select v-model="editable.rank" name="rank" id="rank"
+                  class="form-control p-0 ps-1 border-0 border-bottom rounded-0 border-start" Z
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <option selected value="Novice">Novice</option>
+                  <option value="Seasoned">Seasoned</option>
+                  <option value="Veteran">Veteran</option>
+                  <option value="Heroic">Heroic</option>
+                  <option value="Legendary">Legendary</option>
+                </select>
+                <label for="rank" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">Rank</label>
               </div>
             </div>
             <div class="row mt-4">
