@@ -12,6 +12,7 @@ export const PowerSchema = new Schema(
     duration: { type: String, required: true, maxLength: 30 },
     trappings: { type: String, maxLength: 400 },
     description: { type: String, maxLength: 1500 },
+    expanded: { type: Boolean, default: false },
     modifiers: { type: [{ name: { type: String, required: true, maxLength: 60 }, description: { type: String, maxLength: 400 } }] }
   }, defaultSchemaOptions
 )

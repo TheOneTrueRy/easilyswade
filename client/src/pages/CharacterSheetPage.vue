@@ -428,6 +428,36 @@
             <label for="fatigue" class="fs-3 fw-bold text-danger">FATIGUE</label>
           </div>
         </div>
+        <div class="row mt-4 ps-3">
+          <div class="row">
+            <div class="col-3">
+              <span class="fs-4 fw-bold text-danger">
+                POWER
+              </span>
+            </div>
+            <div class="col-2">
+              <span class="fs-4 fw-bold text-danger">
+                PP
+              </span>
+            </div>
+            <div class="col-2">
+              <span class="fs-4 fw-bold text-danger">
+                RANGE
+              </span>
+            </div>
+            <div class="col-2">
+              <span class="fs-4 fw-bold text-danger">
+                DUR.
+              </span>
+            </div>
+            <div class="col-3">
+              <span class="fs-4 fw-bold text-danger">
+                EFFECT
+              </span>
+            </div>
+          </div>
+          <div v-for="p in editable.powers" :key="p.id" class="row"></div>
+        </div>
       </div>
       <div class="col-3">
         <div class="row">
