@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [vue()],
   build: {
-    outDir: '../EasilySWADE/client',
+    outDir: '../server/client',
     sourcemap: false
   },
   server: {
