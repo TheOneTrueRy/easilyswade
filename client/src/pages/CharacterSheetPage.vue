@@ -1,8 +1,14 @@
 <template>
-  <div class="py-3" :class="editable.dead ? 'bloody' : ''">
-    <form v-if="character.creatorId == user.id" class="container-fluid" @submit.prevent="saveSheet"
-      :class="editable.dead ? 'grayscale' : ''">
-      <div class="row">
+  <div v-if="character.creatorId == user.id" class="py-3" :class="editable.dead ? 'bloody' : ''">
+    <form class="container-fluid" @submit.prevent="saveSheet" :class="editable.dead ? 'grayscale' : ''">
+      <div class="row save-btn">
+        <div class="col-12 d-flex justify-content-start">
+          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Save Changes
+          </button>
+        </div>
+      </div>
+      <div class="row mt-1">
         <div class="col-9">
           <div class="row">
             <div class="col-6">
@@ -535,16 +541,14 @@
             <div v-for="(h, index) in editable.hindrances" :key="h" class="col-12">
               <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'"
                 @click="h.expanded = !h.expanded">
-                <div class="selectable flex-grow ps-1">
+                <div class="selectable w-90 ps-1" :class="h.expanded ? '' : 'overflow-hidden ellipsis'">
                   <span class="fs-small">
-                    {{ h.name }} <span v-if="h.expanded == true" class="fs-small">- {{ h.description }}</span>
+                    {{ h.name }} <span class="fs-small">- {{ h.description }}</span>
                   </span>
                 </div>
-                <div v-if="h.expanded == false" class="input-group-append selectable">
-                  <button type="button" class="btn py-0" @click="// @ts-ignore
+                <div v-if="h.expanded == false" class="input-group-append selectable w-10 text-center" @click="// @ts-ignore
     deleteHindrance(h, index)" :title="`Delete the '${h.name}' gear item.`">
-                    <i class="mdi mdi-delete"></i>
-                  </button>
+                  <i class="mdi mdi-delete"></i>
                 </div>
               </div>
             </div>
@@ -555,18 +559,39 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row sticky-bottom mt-2 pb-2">
-        <div class="col-12 d-flex justify-content-end">
-          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
-            Save Changes
-          </button>
+          <div class="row mt-4">
+            <div class="col-12 text-center">
+              <span class="fs-3 fw-bold text-danger">
+                EDGES & ADVANCES
+              </span>
+            </div>
+            <div v-for="(e, index) in editable.edges" :key="e" class="col-12">
+              <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'"
+                @click="e.expanded = !e.expanded"
+                :title="e.expanded ? 'Minimize the description of this edge!' : 'Expand the description of this edge!'">
+                <div class="selectable w-90 ps-1" :class="e.expanded ? '' : 'overflow-hidden ellipsis'">
+                  <span class="fs-small">
+                    {{ e.name }} <span class="fs-small">- {{ e.description }}</span>
+                  </span>
+                </div>
+                <div v-if="e.expanded == false" class="input-group-append selectable w-10 text-center" @click="// @ts-ignore
+    deleteEdge(e, index)" :title="`Delete the '${e.name}' gear item.`">
+                  <i class="mdi mdi-delete"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 mt-1">
+              <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
+                title="Add a new Edge!" data-bs-toggle="modal" data-bs-target="#addEdgeModal">
+                <i class="mdi mdi-plus-thick"></i>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>
   </div>
-  <div class="container-fluid my-3">
+  <div v-else class="container-fluid p-3">
 
   </div>
 
@@ -668,6 +693,48 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Add Edge Modal -->
+  <Modal id="addEdgeModal">
+    <form @submit.prevent="addEdge" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Add a new edge!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Edge Name</label>
+          <input type="text" required v-model="edgeEditable.name" name="name" id="name" minlength="2" maxlength="60"
+            class="form-control">
+        </div>
+        <div class="col-6">
+          <label for="rank">Edge Rank</label>
+          <select v-model="edgeEditable.rank" name="rank" id="rank">
+            <option selected value="Novice">Novice</option>
+            <option value="Seasoned">Seasoned</option>
+            <option value="Veteran">Veteran</option>
+            <option value="Heroic">Heroic</option>
+            <option value="Legendary">Legendary</option>
+          </select>
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Edge Description</label>
+          <textarea v-model="edgeEditable.description" name="description" id="description" rows="10" maxlength="2000"
+            class="form-control"></textarea>
+        </div>
+        <div class="col-12 text-end mt-2">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Add Hindrance
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -684,6 +751,7 @@ export default {
     const editable = ref({});
     const skillEditable = ref({ die: 4 });
     const hindranceEditable = ref({});
+    const edgeEditable = ref({});
     const route = useRoute();
 
     // eslint-disable-next-line space-before-function-paren
@@ -708,6 +776,7 @@ export default {
       editable,
       skillEditable,
       hindranceEditable,
+      edgeEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
@@ -1031,5 +1100,17 @@ select:valid {
 
 textarea:valid {
   outline: none;
+}
+
+.w-90 {
+  width: 90%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.save-btn {
+  position: absolute;
 }
 </style>
