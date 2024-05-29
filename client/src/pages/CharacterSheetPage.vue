@@ -423,7 +423,7 @@
                 class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
                 @click="// @ts-ignore
     editable.dead = !editable.dead" :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
-                <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull"></i>
+                <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull text-light"></i>
                 <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
               </div>
             </div>
@@ -492,6 +492,14 @@
                 <span class="fs-small">
                   {{ p.description }}
                 </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 mt-1">
+                <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
+                  title="Add a new Power!" data-bs-toggle="modal" data-bs-target="#addPowerModal">
+                  <i class="mdi mdi-plus-thick"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -734,7 +742,88 @@
         <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
             :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
-            Add Hindrance
+            Add Edge
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- SECTION Add Power Modal -->
+  <Modal id="addPowerModal">
+    <form @submit.prevent="addPower" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Add a new power!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Power Name</label>
+          <input v-model="powerEditable.name" type="text" name="name" id="name" required class="form-control">
+        </div>
+        <div class="col-6">
+          <label for="rank">Power Rank</label>
+          <select v-model="powerEditable.rank" name="rank" id="rank" required class="form-control">
+            <option selected value="Novice">Novice</option>
+            <option value="Seasoned">Seasoned</option>
+            <option value="Veteran">Veteran</option>
+            <option value="Heroic">Heroic</option>
+            <option value="Legendary">Legendary</option>
+          </select>
+        </div>
+        <div class="col-4 mt-2">
+          <label for="powerPoints">Power Points Req.</label>
+          <input v-model="powerEditable.powerPoints" type="number" name="powerPoints" id="powerPoints" required
+            class="form-control">
+        </div>
+        <div class="col-4 mt-2">
+          <label for="range">Power Range</label>
+          <input v-model="powerEditable.range" type="text" name="range" id="range" required class="form-control">
+        </div>
+        <div class="col-4 mt-2">
+          <label for="duration">Power Duration</label>
+          <input v-model="powerEditable.duration" type="text" name="duration" id="duration" required
+            class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="trappings">Power Trappings</label>
+          <input v-model="powerEditable.trappings" type="text" name="trappings" id="trappings" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Power Description</label>
+          <textarea v-model="powerEditable.description" name="description" id="description" rows="10"
+            class="form-control" maxlength="1500"></textarea>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Add Power
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- SECTION Add Weapon Modal -->
+  <Modal id="addWeaponModal">
+    <form @submit.prevent="addWeapon" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Add a new weapon!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Add Weapon
           </button>
         </div>
       </div>
@@ -757,6 +846,8 @@ export default {
     const skillEditable = ref({ die: 4 });
     const hindranceEditable = ref({});
     const edgeEditable = ref({});
+    const powerEditable = ref({});
+    const weaponEditable = ref({});
     const route = useRoute();
 
     // eslint-disable-next-line space-before-function-paren
@@ -782,6 +873,8 @@ export default {
       skillEditable,
       hindranceEditable,
       edgeEditable,
+      powerEditable,
+      weaponEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
@@ -944,6 +1037,16 @@ export default {
           }
         } catch (error) {
           Pop.error('Experienced an error attempted to delete this edge! Oh no!', error.message)
+        }
+      },
+      addPower() {
+        try {
+          const powerData = powerEditable.value
+          // @ts-ignore
+          editable.value.powers.push({ powerData })
+          powerEditable.value = {}
+        } catch (error) {
+          Pop.error(error.message)
         }
       }
     }
