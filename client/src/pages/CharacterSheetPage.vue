@@ -503,6 +503,92 @@
               </div>
             </div>
           </div>
+          <div class="row mt-4 ps-3">
+            <div class="row">
+              <div class="col-3 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  WEAPON
+                </span>
+              </div>
+              <div class="col-2 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  RANGE
+                </span>
+              </div>
+              <div class="col-1 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  DMG
+                </span>
+              </div>
+              <div class="col-1 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  AP
+                </span>
+              </div>
+              <div class="col-1 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  ROF
+                </span>
+              </div>
+              <div class="col-1 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  WT
+                </span>
+              </div>
+              <div class="col-3 ps-0">
+                <span class="fs-4 fw-bold text-danger">
+                  NOTES
+                </span>
+              </div>
+            </div>
+            <div v-for="w in editable.weapons" :key="w.id" class="row"
+              :class="theme == 'light' ? 'border-dark' : 'border-light'">
+              <div class="col-3 border-bottom ps-0">
+                <span class="fs-small">
+                  {{ w.name }}
+                </span>
+              </div>
+              <div class="col-2 border-bottom ps-0">
+                <span class="fs-small">
+                  {{ w.range }}
+                </span>
+              </div>
+              <div class="col-1 border-bottom ps-0">
+                <span class="fs-small">
+                  {{ w.damage }}
+                </span>
+              </div>
+              <div class="col-1 border-bottom ps-0">
+                <span class="fs-small">
+                  {{ w.ap }}
+                </span>
+              </div>
+              <div class="col-1 border-bottom ps-0">
+                <span class="fs-small">
+                  {{ w.rof }}
+                </span>
+              </div>
+              <div class="col-1 border-bottom ps-0">
+                <span class="fs-small">
+                  {{ w.weight }}
+                </span>
+              </div>
+              <div class="col-3 selectable border-bottom ps-0" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
+                @click="w.expanded = !w.expanded">
+                <span class="fs-small">
+                  {{ w.notes }}
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 mt-1">
+                <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
+                  title="Add a new weapon!" data-bs-toggle="modal" data-bs-target="#addWeaponModal">
+                  <i class="mdi mdi-plus-thick"></i>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-3">
           <div class="row">
@@ -820,6 +906,34 @@
             <i class="mdi mdi-close fs-4"></i>
           </button>
         </div>
+        <div class="col-12">
+          <label for="name">Name</label>
+          <input v-model="weaponEditable.name" type="text" for="name" class="form-control" required>
+        </div>
+        <div class="col-6 mt-2">
+          <label for="range">Range</label>
+          <input v-model="weaponEditable.range" type="text" for="range" class="form-control" required>
+        </div>
+        <div class="col-6 mt-2">
+          <label for="damage">Damage</label>
+          <input v-model="weaponEditable.damage" type="text" for="damage" class="form-control" required>
+        </div>
+        <div class="col-4 mt-2">
+          <label for="ap">AP</label>
+          <input v-model="weaponEditable.ap" type="number" for="ap" class="form-control" required>
+        </div>
+        <div class="col-4 mt-2">
+          <label for="rof">ROF</label>
+          <input v-model="weaponEditable.rof" type="number" for="rof" class="form-control" required>
+        </div>
+        <div class="col-4 mt-2">
+          <label for="weight">WT</label>
+          <input v-model="weaponEditable.weight" type="number" for="weight" class="form-control" required>
+        </div>
+        <div class="col-12 mt-2">
+          <label for="notes">Notes</label>
+          <textarea v-model="weaponEditable.notes" name="notes" id="notes" rows="10" class="form-control"></textarea>
+        </div>
         <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
             :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
@@ -1045,6 +1159,15 @@ export default {
           // @ts-ignore
           editable.value.powers.push({ powerData })
           powerEditable.value = {}
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      addWeapon(){
+        try {
+          const weaponData = weaponEditable.value
+          editable.value.weapons.push({weaponData})
+          weaponEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
         }
