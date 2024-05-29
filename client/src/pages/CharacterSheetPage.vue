@@ -388,7 +388,7 @@
                     <div class="input-group-append selectable">
                       <button type="button" class="btn py-0" @click="deleteGear(g, index)"
                         :title="`Delete the '${g}' gear item.`">
-                        <i class="mdi mdi-delete"></i>
+                        <i class="mdi mdi-delete text-danger"></i>
                       </button>
                     </div>
                   </div>
@@ -421,8 +421,8 @@
             <div class="col-2 d-flex align-items-center justify-content-center">
               <div
                 class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
-                @click="editable.dead = !editable.dead"
-                :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
+                @click="// @ts-ignore
+    editable.dead = !editable.dead" :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
                 <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull"></i>
                 <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
               </div>
@@ -539,16 +539,17 @@
               </span>
             </div>
             <div v-for="(h, index) in editable.hindrances" :key="h" class="col-12">
-              <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'"
-                @click="h.expanded = !h.expanded">
-                <div class="selectable w-90 ps-1" :class="h.expanded ? '' : 'overflow-hidden ellipsis'">
+              <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <div @click="h.expanded = !h.expanded" class="selectable w-90 ps-1"
+                  :class="h.expanded ? '' : 'overflow-hidden ellipsis'"
+                  :title="h.expanded ? 'Minimize the description of this hindrance!' : 'Expand the description of this hindrance!'">
                   <span class="fs-small">
                     {{ h.name }} <span class="fs-small">- {{ h.description }}</span>
                   </span>
                 </div>
-                <div v-if="h.expanded == false" class="input-group-append selectable w-10 text-center" @click="// @ts-ignore
-    deleteHindrance(h, index)" :title="`Delete the '${h.name}' gear item.`">
-                  <i class="mdi mdi-delete"></i>
+                <div class="input-group-append selectable w-10 d-flex align-items-center justify-content-center"
+                  @click="deleteHindrance(h.name, index)" :title="`Delete the '${h.name}' gear item.`">
+                  <i class="mdi mdi-delete text-danger"></i>
                 </div>
               </div>
             </div>
@@ -566,17 +567,17 @@
               </span>
             </div>
             <div v-for="(e, index) in editable.edges" :key="e" class="col-12">
-              <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'"
-                @click="e.expanded = !e.expanded"
-                :title="e.expanded ? 'Minimize the description of this edge!' : 'Expand the description of this edge!'">
-                <div class="selectable w-90 ps-1" :class="e.expanded ? '' : 'overflow-hidden ellipsis'">
+              <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <div @click="e.expanded = !e.expanded" class="selectable w-90 ps-1"
+                  :class="e.expanded ? '' : 'overflow-hidden ellipsis'"
+                  :title="e.expanded ? 'Minimize the description of this edge!' : 'Expand the description of this edge!'">
                   <span class="fs-small">
                     {{ e.name }} <span class="fs-small">- {{ e.description }}</span>
                   </span>
                 </div>
-                <div v-if="e.expanded == false" class="input-group-append selectable w-10 text-center" @click="// @ts-ignore
-    deleteEdge(e, index)" :title="`Delete the '${e.name}' gear item.`">
-                  <i class="mdi mdi-delete"></i>
+                <div class="input-group-append selectable w-10 d-flex align-items-center justify-content-center"
+                  @click="deleteEdge(e.name, index)" :title="`Delete the '${e.name}' gear item.`">
+                  <i class="mdi mdi-delete text-danger"></i>
                 </div>
               </div>
             </div>
@@ -622,7 +623,7 @@
           <input required v-model="skillEditable.name" name="name" id="name" type="text" maxlength="20"
             class="form-control">
         </div>
-        <div class="col-12 text-end mt-2">
+        <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
             :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Add Skill
@@ -652,7 +653,7 @@
         <div class="col-12">
           <input type="file" id="picture" name="fileInput" class="form-control" required>
         </div>
-        <div class="col-12 text-end mt-2">
+        <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
             :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Confirm New Picture
@@ -684,7 +685,7 @@
           <textarea v-model="hindranceEditable.description" name="description" id="description" rows="10"
             maxlength="2000" class="form-control"></textarea>
         </div>
-        <div class="col-12 text-end mt-2">
+        <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
             :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Add Hindrance
@@ -708,12 +709,12 @@
         </div>
         <div class="col-6">
           <label for="name">Edge Name</label>
-          <input type="text" required v-model="edgeEditable.name" name="name" id="name" minlength="2" maxlength="60"
+          <input type="text" required v-model="edgeEditable.name" name="name" id="name" minlength="2" maxlength="80"
             class="form-control">
         </div>
         <div class="col-6">
           <label for="rank">Edge Rank</label>
-          <select v-model="edgeEditable.rank" name="rank" id="rank">
+          <select required v-model="edgeEditable.rank" name="rank" id="rank" class="form-control">
             <option selected value="Novice">Novice</option>
             <option value="Seasoned">Seasoned</option>
             <option value="Veteran">Veteran</option>
@@ -723,10 +724,14 @@
         </div>
         <div class="col-12 mt-2">
           <label for="description">Edge Description</label>
-          <textarea v-model="edgeEditable.description" name="description" id="description" rows="10" maxlength="2000"
+          <textarea v-model="edgeEditable.description" name="description" id="description" rows="10" maxlength="3000"
             class="form-control"></textarea>
         </div>
-        <div class="col-12 text-end mt-2">
+        <div class="col-12 mt-2">
+          <label for="additionalRequirements">Additional Requirements</label>
+          <input v-model="edgeEditable.additionalRequirements" type="text" class="form-control">
+        </div>
+        <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
             :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Add Hindrance
@@ -786,7 +791,7 @@ export default {
           await charactersService.updateCharacter(sheetData)
           Pop.success('Successfully saved the character sheet!')
         } catch (error) {
-          Pop.error('Experienced an error attempting to save your Character Sheet.', error.message)
+          Pop.error('Experienced an error attempting to save your Character Sheet! Oh no!', error.message)
         }
       },
       changeAgility(num) {
@@ -794,7 +799,7 @@ export default {
           // @ts-ignore
           editable.value.agility = num;
         } catch (error) {
-          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+          Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
       },
       changeSmarts(num) {
@@ -802,7 +807,7 @@ export default {
           // @ts-ignore
           editable.value.smarts = num;
         } catch (error) {
-          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+          Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
       },
       changeSpirit(num) {
@@ -810,7 +815,7 @@ export default {
           // @ts-ignore
           editable.value.spirit = num;
         } catch (error) {
-          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+          Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
       },
       changeStrength(num) {
@@ -818,7 +823,7 @@ export default {
           // @ts-ignore
           editable.value.strength = num;
         } catch (error) {
-          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+          Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
       },
       changeVigor(num) {
@@ -826,7 +831,7 @@ export default {
           // @ts-ignore
           editable.value.vigor = num;
         } catch (error) {
-          Pop.error('Experienced an error attempting to set that attribute value.', error.message)
+          Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
       },
       changeSkillDie(skillName, die) {
@@ -835,7 +840,7 @@ export default {
           let skill = editable.value.skills.find(s => s.name == skillName)
           skill.die = die
         } catch (error) {
-          Pop.error('Experienced an error attempting to change the die level of that skill.', error.message)
+          Pop.error('Experienced an error attempting to change the die level of that skill! Oh no!', error.message)
         }
       },
       addSkill() {
@@ -860,7 +865,7 @@ export default {
             editable.value.skills.splice(skillIndex, 1)
           }
         } catch (error) {
-          Pop.error('Experienced an error attempting to delete that skill.', error.message)
+          Pop.error('Experienced an error attempting to delete that skill! Oh no!', error.message)
         }
       },
       addGear() {
@@ -885,7 +890,7 @@ export default {
             editable.value.gear.splice(gearIndex, 1)
           }
         } catch (error) {
-          Pop.error('Experienced an error attempting to delete this piece of gear.', error.message)
+          Pop.error('Experienced an error attempting to delete this piece of gear! Oh no!', error.message)
         }
       },
       async changeCharacterPicture(e) {
@@ -909,6 +914,36 @@ export default {
           hindranceEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
+        }
+      },
+      async deleteHindrance(hindranceName, hindranceIndex) {
+        try {
+          if (await Pop.confirm(`Are you sure you wish to delete the ${hindranceName} hindrance?`)) {
+            // @ts-ignore
+            editable.value.hindrances.splice(hindranceIndex, 1)
+          }
+        } catch (error) {
+          Pop.error('Experienced an error attempting to delete this hindrance! Oh no!', error.message)
+        }
+      },
+      addEdge() {
+        try {
+          const edgeData = edgeEditable.value
+          // @ts-ignore
+          editable.value.edges.push({ edgeData })
+          edgeEditable.value = {}
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      async deleteEdge(edgeName, edgeIndex) {
+        try {
+          if (await Pop.confirm(`Are you sure you wish to delete the ${edgeName} edge?`)) {
+            // @ts-ignore
+            editable.value.edges.splice(edgeIndex, 1)
+          }
+        } catch (error) {
+          Pop.error('Experienced an error attempted to delete this edge! Oh no!', error.message)
         }
       }
     }
