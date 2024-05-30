@@ -300,60 +300,57 @@
             </div>
             <div class="col-6 ps-0 px-4">
               <div class="row mt-4">
-                <div class="col-12 d-flex align-items-end px-0">
-                  <label for="name" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Name:</label>
-                  <input type="text" required v-model="editable.name" name="name" id="name" maxlength="60"
-                    class="form-control p-0 ps-1 border-0 border-bottom rounded-0"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <div class="col-12 d-flex align-items-end px-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="name" class="border-bottom border-1">Name:</label>
+                  <input type="text" required v-model="editable.name" name="name" id="name" maxlength="120"
+                    class="form-control p-0 ps-1 border-0 border-bottom rounded-0">
                 </div>
-                <div class="col-9 d-flex align-items-end px-0">
-                  <label for="race" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Race:</label>
-                  <input type="text" required v-model="editable.race" name="race" id="race" maxlength="60"
-                    class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <div class="col-9 d-flex align-items-end px-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="race" class="border-bottom border-1">Race:</label>
+                  <input type="text" required v-model="editable.race" name="race" id="race" maxlength="100"
+                    class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0">
                 </div>
-                <div class="col-3 d-flex align-items-end g-0 ps-0">
-                  <input type="text" required v-model="editable.height" name="height" id="height"
-                    class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <label for="height" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">HT</label>
+                <div class="col-3 d-flex align-items-end g-0 ps-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <input type="text" required v-model="editable.height" name="height" id="height" maxlength="20"
+                    class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
+                  <label for="height" class="border-bottom border-1">HT</label>
                 </div>
-                <div class="col-9 d-flex align-items-end px-0">
-                  <label for="bennies" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies:</label>
-                  <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="60"
-                    class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                </div>
-                <div class="col-3 d-flex align-items-end g-0 ps-0">
-                  <input type="text" required v-model="editable.weight" name="weight" id="weight"
-                    class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <label for="height" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">WT</label>
-                </div>
-                <div class="col-6 d-flex align-items-end px-0">
-                  <label for="conviction" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Conviction:</label>
-                  <input type="text" v-model="editable.conviction" name="conviction" id="conviction"
-                    class="form-control p-0 ps-1 border-0 border-bottom rounded-0 border-end" Z
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'" maxlength="60">
-                </div>
-                <div class="col-6 d-flex align-items-end px-0">
+                <div class="col-9 d-flex align-items-end px-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="rank" class="border-bottom border-1">Rank:</label>
                   <select v-model="editable.rank" name="rank" id="rank"
-                    class="form-control p-0 ps-1 border-0 border-bottom rounded-0 border-start" Z
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                    class="form-control p-0 ps-1 border-0 border-bottom rounded-0 border-end">
                     <option selected value="Novice">Novice</option>
                     <option value="Seasoned">Seasoned</option>
                     <option value="Veteran">Veteran</option>
                     <option value="Heroic">Heroic</option>
                     <option value="Legendary">Legendary</option>
                   </select>
-                  <label for="rank" class="border-bottom border-1"
-                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Rank</label>
+                </div>
+                <div class="col-3 d-flex align-items-end g-0 ps-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <input type="text" required v-model="editable.weight" name="weight" id="weight"
+                    class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
+                  <label for="height" class="border-bottom border-1">WT</label>
+                </div>
+                <div class="col-9 d-flex align-items-end px-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="conviction" class="border-bottom border-1">Conviction:</label>
+                  <select v-model="editable.conviction" name="conviction" id="conviction"
+                    class="form-control py-0 px-1 border-0 border-bottom border-end rounded-0">
+                    <option :value="true">True</option>
+                    <option :value="false">False</option>
+                  </select>
+                </div>
+                <div class="col-3 d-flex align-items-end px-0">
+                  <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="10"
+                    class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="bennies" class="border-bottom border-1"
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies</label>
                 </div>
               </div>
               <div class="row mt-4">
@@ -437,9 +434,9 @@
               <label for="fatigue" class="fs-3 fw-bold text-danger">FATIGUE</label>
             </div>
           </div>
-          <div class="row mt-4 ps-3">
+          <div class="row mt-5 ps-3">
             <div class="row">
-              <div class="col-3 ps-0">
+              <div class="col-3">
                 <span class="fs-4 fw-bold text-danger">
                   POWER
                 </span>
@@ -467,7 +464,7 @@
             </div>
             <div v-for="p in editable.powers" :key="p.id" class="row"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
-              <div class="col-3 border-bottom ps-0">
+              <div class="col-3 border-bottom">
                 <span class="fs-small">
                   {{ p.name }}
                 </span>
@@ -503,9 +500,9 @@
               </div>
             </div>
           </div>
-          <div class="row mt-4 ps-3">
+          <div class="row mt-5 ps-3">
             <div class="row">
-              <div class="col-3 ps-0">
+              <div class="col-3">
                 <span class="fs-4 fw-bold text-danger">
                   WEAPON
                 </span>
@@ -543,7 +540,7 @@
             </div>
             <div v-for="w in editable.weapons" :key="w.id" class="row"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
-              <div class="col-3 border-bottom ps-0">
+              <div class="col-3 border-bottom">
                 <span class="fs-small">
                   {{ w.name }}
                 </span>
@@ -603,17 +600,6 @@
           <div class="row mt-4">
             <div class="col-12 text-center">
               <span class="fs-3 fw-bold text-danger">
-                SECRET
-              </span>
-            </div>
-            <div class="col-12">
-              <textarea v-model="editable.secret" name="secret" id="secret" class="form-control px-2" rows="8"
-                maxlength="5000">Only you and the GMs of your character's party can see this...</textarea>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-12 text-center">
-              <span class="fs-3 fw-bold text-danger">
                 HINDRANCES
               </span>
             </div>
@@ -667,6 +653,17 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row mt-5 ps-3">
+        <div class="col-12">
+          <span class="fs-3 fw-bold text-danger">
+            SECRET
+          </span>
+        </div>
+        <div class="col-12">
+          <textarea v-model="editable.secret" name="secret" id="secret" class="form-control px-2" rows="8"
+            maxlength="5000">Only you and the GMs of your character's party can see this...</textarea>
         </div>
       </div>
     </form>
@@ -899,16 +896,17 @@
 
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { AppState } from "../AppState.js";
 import { router } from "../router.js";
 import { charactersService } from "../services/CharactersService.js";
 import Pop from "../utils/Pop.js";
 import Modal from "../components/Modal.vue";
+import { Character } from "../models/Character.js";
 
 export default {
   setup() {
-    const editable = ref({});
+    const editable = ref({ ...new Character({}) });
     const skillEditable = ref({ die: 4 });
     const hindranceEditable = ref({});
     const edgeEditable = ref({});
@@ -933,7 +931,7 @@ export default {
           const characterData = editable.value
           await charactersService.createCharacter(file, characterData)
           Pop.success('Successfully created a character!')
-          router.push({name: 'CharacterSheetPage', params: {characterId: AppState.character.id}})
+          router.push({ name: 'CharacterSheetPage', params: { characterId: AppState.character.id } })
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet! Oh no!', error.message)
         }
@@ -1100,10 +1098,10 @@ export default {
           Pop.error(error.message)
         }
       },
-      addWeapon(){
+      addWeapon() {
         try {
           const weaponData = weaponEditable.value
-          editable.value.weapons.push({weaponData})
+          editable.value.weapons.push({ weaponData })
           weaponEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
@@ -1254,11 +1252,11 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .skull {
-  transition: 2s;
+  transition: 1.8s;
 }
 
 .holy-undo {
-  transition: 2s;
+  transition: 1s;
 }
 
 .death-btn:hover {
@@ -1266,11 +1264,11 @@ textarea::-webkit-scrollbar-thumb {
   cursor: pointer;
 
   .skull {
-    color: #971515;
+    color: #971515 !important;
   }
 
   .holy-undo {
-    color: #FCF6BA
+    text-shadow: 0px 0px 8px white;
   }
 }
 
