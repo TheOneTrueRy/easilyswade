@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: your-dockerhub-username/EasilySWADE:latest
+    image: TheOneTrueRy/EasilySWADE:latest
     restart: unless-stopped
     env_file:
       - EasilySWADE-env
