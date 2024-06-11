@@ -19,13 +19,8 @@ class CharactersService {
     AppState.characters = res.data.map(c => new Character(c))
   }
 
-  async createCharacter(picture, characterData) {
-    const folder = AppState.user.id
-    if (picture) {
-      const url = supabaseService.upload(picture, `${folder}/characterpictures/${characterData.name}/${new Date().toISOString()}`)
-      characterData.picture = url
-    }
-    const res = await api.post('api/characters')
+  async createCharacter(characterData) {
+    const res = await api.post('api/characters', characterData)
     AppState.character = new Character(res.data)
   }
 
@@ -37,6 +32,12 @@ class CharactersService {
   async updateCharacterPicture(picture) {
     const folder = AppState.user.id
     const url = await supabaseService.upload(picture, `${folder}/characterpictures/${AppState.character.id}/${new Date().toISOString()}`)
+    return url
+  }
+
+  async uploadNewCharacterPicture(picture) {
+    const folder = AppState.user.id
+    const url = await supabaseService.upload(picture, `${folder}/unassignedcharacterpictures/${new Date().toISOString()}`)
     return url
   }
 }
