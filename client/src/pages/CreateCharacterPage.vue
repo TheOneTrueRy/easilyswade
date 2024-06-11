@@ -1,13 +1,6 @@
 <template>
   <div class="py-3" :class="editable.dead ? 'bloody' : ''">
-    <form class="container-fluid" @submit.prevent="createCharacter" :class="editable.dead ? 'grayscale' : ''">
-      <div class="row save-btn">
-        <div class="col-12 d-flex justify-content-start">
-          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
-            Save Changes
-          </button>
-        </div>
-      </div>
+    <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="createCharacter" :class="editable.dead ? 'grayscale' : ''">
       <div class="row mt-1">
         <div class="col-9">
           <div class="row">
@@ -291,7 +284,7 @@
                       @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can"></i></button>
                   </div>
                 </div>
-                <div class="col-8 offset-2 rounded selectable text-center mt-1 border"
+                <div class="col-8 offset-2 rounded selectable text-center mt-2 border"
                   :class="theme == 'light' ? 'border-dark' : ''" title="Add a new Skill!" data-bs-toggle="modal"
                   data-bs-target="#addSkillModal">
                   <i class="mdi mdi-plus-thick"></i>
@@ -332,7 +325,7 @@
                 </div>
                 <div class="col-3 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="text" required v-model="editable.weight" name="weight" id="weight"
+                  <input type="number" required v-model="editable.weight" name="weight" id="weight"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">WT</label>
                 </div>
@@ -354,20 +347,20 @@
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-4 d-flex flex-column align-items-center px-0">
+                <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
                   <input type="number" required v-model="editable.pace" name="pace" id="pace"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50">
-                  <label for="pace" class="fw-bold fs-5">Pace</label>
+                  class="form-control text-center fw-bold fs-5 p-0 w-50" title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">
+                <label for="pace" class="fw-bold fs-5" title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.parry" name="parry" id="parry"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50">
-                  <label for="parry" class="fw-bold fs-5">Parry</label>
+                    class="form-control text-center fw-bold fs-5 p-0 w-50" title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">
+                  <label for="parry" class="fw-bold fs-5" title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50">
-                  <label for="toughness" class="fw-bold fs-5">Toughness</label>
+                    class="form-control text-center fw-bold fs-5 p-0 w-50" title="Toughness is 2 plus half your character's Vigor attribute.">
+                  <label for="toughness" class="fw-bold fs-5" title="Toughness is 2 plus half your character's Vigor attribute.">Toughness</label>
                 </div>
               </div>
               <div class="row mt-4">
@@ -405,38 +398,60 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-5 d-flex align-items-center justify-content-end">
-              <label for="wounds" class="fs-3 fw-bold text-danger">WOUNDS</label>
-              <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-5 py-1">
-                <option selected value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="INC">INC</option>
-              </select>
-            </div>
-            <div class="col-2 d-flex align-items-center justify-content-center">
-              <div
-                class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
-                @click="// @ts-ignore
-    editable.dead = !editable.dead" :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
-                <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull text-light"></i>
-                <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
+            <div class="col-6 d-flex align-items-center justify-content-center">
+              <div class="col-5 d-flex align-items-center justify-content-end">
+                <label for="maxPP" class="fs-4 fw-bold text-danger">MAX PP</label>
+                <input type="number" name="maxPP" id="maxPP" required v-model="editable.maxPowerPoints"
+                  class="form-control w-25 ms-4 fs-5 py-1">
+              </div>
+              <div class="col-2 d-flex align-items-center justify-content-center">
+                <div
+                  class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
+                  @click="restorePowerPoints"
+                  :title="`Rest and regain 5 Power Points up to a maximum of ${editable.maxPowerPoints}`">
+                  <i class="mdi mdi-sleep fs-1 holy-undo text-light"></i>
+                </div>
+              </div>
+              <div class="col-5 d-flex align-items-center justify-content-start">
+                <input type="number" name="currentPP" id="currentPP" required v-model="editable.currentPowerPoints"
+                  class="form-control w-25 me-4 fs-5 py-1">
+                <label for="currentPP" class="fs-4 fw-bold text-danger">CUR. PP</label>
               </div>
             </div>
-            <div class="col-5 d-flex align-items-center justify-content-start">
-              <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-5 py-1">
-                <option selected value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="INC">INC</option>
-              </select>
-              <label for="fatigue" class="fs-3 fw-bold text-danger">FATIGUE</label>
+            <div class="col-6 d-flex align-items-center justify-content-center">
+              <div class="col-5 d-flex align-items-center justify-content-end">
+                <label for="wounds" class="fs-4 fw-bold text-danger">WOUNDS</label>
+                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-5 py-1">
+                  <option selected value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="INC">INC</option>
+                </select>
+              </div>
+              <div class="col-2 d-flex align-items-center justify-content-center">
+                <div
+                  class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
+                  @click="// @ts-ignore
+    editable.dead = !editable.dead" :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
+                  <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull text-light"></i>
+                  <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
+                </div>
+              </div>
+              <div class="col-5 d-flex align-items-center justify-content-start">
+                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-5 py-1">
+                  <option selected value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="INC">INC</option>
+                </select>
+                <label for="fatigue" class="fs-4 fw-bold text-danger">FATIGUE</label>
+              </div>
             </div>
           </div>
           <div class="row mt-5 ps-3">
             <div class="row">
-              <div class="col-3">
+              <div class="col-3 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   POWER
                 </span>
@@ -462,37 +477,37 @@
                 </span>
               </div>
             </div>
-            <div v-for="p in editable.powers" :key="p.id" class="row"
+            <div v-for="p in editable.powers" :key="p.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
-              <div class="col-3 border-bottom">
+              <div class="col-3 border-bottom px-1">
                 <span class="fs-small">
                   {{ p.name }}
                 </span>
               </div>
-              <div class="col-2 border-bottom ps-0">
+              <div class="col-2 border-bottom px-1">
                 <span class="fs-small">
                   {{ p.powerPoints }}
                 </span>
               </div>
-              <div class="col-2 border-bottom ps-0">
+              <div class="col-2 border-bottom px-1">
                 <span class="fs-small">
                   {{ p.range }}
                 </span>
               </div>
-              <div class="col-2 border-bottom ps-0">
+              <div class="col-2 border-bottom px-1">
                 <span class="fs-small">
                   {{ p.duration }}
                 </span>
               </div>
-              <div class="col-3 selectable border-bottom ps-0" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
+              <div class="col-3 selectable border-bottom px-1" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
                 @click="p.expanded = !p.expanded">
                 <span class="fs-small">
                   {{ p.description }}
                 </span>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12 mt-1">
+            <div class="row pe-0">
+              <div class="col-12 mt-2 px-0">
                 <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
                   title="Add a new Power!" data-bs-toggle="modal" data-bs-target="#addPowerModal">
                   <i class="mdi mdi-plus-thick"></i>
@@ -502,7 +517,7 @@
           </div>
           <div class="row mt-5 ps-3">
             <div class="row">
-              <div class="col-3">
+              <div class="col-3 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   WEAPON
                 </span>
@@ -538,47 +553,47 @@
                 </span>
               </div>
             </div>
-            <div v-for="w in editable.weapons" :key="w.id" class="row"
+            <div v-for="w in editable.weapons" :key="w.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
-              <div class="col-3 border-bottom">
+              <div class="col-3 border-bottom px-1">
                 <span class="fs-small">
                   {{ w.name }}
                 </span>
               </div>
-              <div class="col-2 border-bottom ps-0">
+              <div class="col-2 border-bottom px-1">
                 <span class="fs-small">
                   {{ w.range }}
                 </span>
               </div>
-              <div class="col-1 border-bottom ps-0">
+              <div class="col-1 border-bottom px-1">
                 <span class="fs-small">
                   {{ w.damage }}
                 </span>
               </div>
-              <div class="col-1 border-bottom ps-0">
+              <div class="col-1 border-bottom px-1">
                 <span class="fs-small">
                   {{ w.ap }}
                 </span>
               </div>
-              <div class="col-1 border-bottom ps-0">
+              <div class="col-1 border-bottom px-1">
                 <span class="fs-small">
                   {{ w.rof }}
                 </span>
               </div>
-              <div class="col-1 border-bottom ps-0">
+              <div class="col-1 border-bottom px-1">
                 <span class="fs-small">
                   {{ w.weight }}
                 </span>
               </div>
-              <div class="col-3 selectable border-bottom ps-0" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
+              <div class="col-3 selectable border-bottom px-1" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
                 @click="w.expanded = !w.expanded">
                 <span class="fs-small">
                   {{ w.notes }}
                 </span>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12 mt-1">
+            <div class="row pe-0">
+              <div class="col-12 mt-2 px-0">
                 <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
                   title="Add a new weapon!" data-bs-toggle="modal" data-bs-target="#addWeaponModal">
                   <i class="mdi mdi-plus-thick"></i>
@@ -586,12 +601,35 @@
               </div>
             </div>
           </div>
+          <div class="row mt-5 ps-3">
+            <div class="col-12 ps-0">
+              <span class="fs-3 fw-bold text-danger">
+                SECRET
+              </span>
+            </div>
+            <div class="col-12 ps-0">
+              <textarea v-model="editable.secret" name="secret" id="secret" class="form-control px-2" rows="8"
+                maxlength="5000"
+                placeholder="Only you and the GMs of your character's party can see this..."></textarea>
+            </div>
+          </div>
         </div>
         <div class="col-3">
           <div class="row">
             <div class="col-12">
               <div class="d-flex align-items-center justify-content-center p-2 mt-2">
-                <button type="button" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+                <div v-if="editable.picture"
+                  class="character-picture d-flex align-items-end justify-content-end selectable p-1"
+                  :style="{ backgroundImage: `url(${editable.picture})` }" data-bs-target="#characterPictureModal"
+                  data-bs-toggle="modal">
+                  <button type="button" class="btn edit-picture-btn"
+                    :class="theme === 'light' ? 'btn-dark' : 'btn-light'" data-bs-toggle="modal"
+                    data-bs-target="#editCharacterPictureModal">
+                    <i class="mdi mdi-pencil fs-5"></i>
+                  </button>
+                </div>
+                <button v-else type="button" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'"
+                  data-bs-toggle="modal" data-bs-target="#uploadCharacterPictureModal">
                   Upload a Picture! <i class="mdi mdi-panorama-variant-outline"></i>
                 </button>
               </div>
@@ -605,7 +643,7 @@
             </div>
             <div v-for="(h, index) in editable.hindrances" :key="h" class="col-12">
               <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                <div @click="h.expanded = !h.expanded" class="selectable w-90 ps-1"
+                <div @click="h.expanded = !h.expanded" class="selectable w-90 px-1"
                   :class="h.expanded ? '' : 'overflow-hidden ellipsis'"
                   :title="h.expanded ? 'Minimize the description of this hindrance!' : 'Expand the description of this hindrance!'">
                   <span class="fs-small">
@@ -618,7 +656,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 mt-1">
+            <div class="col-12 mt-2">
               <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
                 title="Add a new Hindrance!" data-bs-toggle="modal" data-bs-target="#addHindranceModal">
                 <i class="mdi mdi-plus-thick"></i>
@@ -633,7 +671,7 @@
             </div>
             <div v-for="(e, index) in editable.edges" :key="e" class="col-12">
               <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                <div @click="e.expanded = !e.expanded" class="selectable w-90 ps-1"
+                <div @click="e.expanded = !e.expanded" class="selectable w-90 px-1"
                   :class="e.expanded ? '' : 'overflow-hidden ellipsis'"
                   :title="e.expanded ? 'Minimize the description of this edge!' : 'Expand the description of this edge!'">
                   <span class="fs-small">
@@ -646,7 +684,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 mt-1">
+            <div class="col-12 mt-2">
               <div class="rounded selectable text-center border w-100" :class="theme == 'light' ? 'border-dark' : ''"
                 title="Add a new Edge!" data-bs-toggle="modal" data-bs-target="#addEdgeModal">
                 <i class="mdi mdi-plus-thick"></i>
@@ -655,17 +693,13 @@
           </div>
         </div>
       </div>
-      <div class="row mt-5 ps-3">
+      <dxv class="row mt-3 text-end">
         <div class="col-12">
-          <span class="fs-3 fw-bold text-danger">
-            SECRET
-          </span>
+          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Create your character!
+          </button>
         </div>
-        <div class="col-12">
-          <textarea v-model="editable.secret" name="secret" id="secret" class="form-control px-2" rows="8"
-            maxlength="5000">Only you and the GMs of your character's party can see this...</textarea>
-        </div>
-      </div>
+      </dxv>
     </form>
   </div>
 
@@ -892,6 +926,61 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Edit Character Picture Modal -->
+  <Modal id="uploadCharacterPictureModal">
+    <form @submit.prevent="uploadCharacterPicture" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Upload Your Character's Picture!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-12">
+          <input type="file" id="picture" name="fileInput" class="form-control" required>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Confirm Picture
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- SECTION Edit Character Picture Modal -->
+  <Modal id="editCharacterPictureModal">
+    <form @submit.prevent="uploadCharacterPicture" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Change Your Character's Picture!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-12">
+          <input type="file" id="picture" name="fileInput" class="form-control" required>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Confirm New Picture
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- SECTION Enlarge Character Picture Modal -->
+  <Modal id="characterPictureModal">
+    <img :src="editable.picture">
+  </Modal>
 </template>
 
 
@@ -925,11 +1014,10 @@ export default {
       powerEditable,
       weaponEditable,
       theme: computed(() => AppState.theme),
-      async createCharacter(e) {
+      async createCharacter() {
         try {
-          const file = e.target.fileInput.files[0]
           const characterData = editable.value
-          await charactersService.createCharacter(file, characterData)
+          await charactersService.createCharacter(characterData)
           Pop.success('Successfully created a character!')
           router.push({ name: 'CharacterSheetPage', params: { characterId: AppState.character.id } })
         } catch (error) {
@@ -1035,13 +1123,13 @@ export default {
           Pop.error('Experienced an error attempting to delete this piece of gear! Oh no!', error.message)
         }
       },
-      async changeCharacterPicture(e) {
+      async uploadCharacterPicture(e) {
         try {
           const picture = e.target.fileInput.files[0]
           if (!picture) {
             throw new Error('This form has no image uploaded into it!')
           }
-          let newPictureURL = await charactersService.updateCharacterPicture(picture,);
+          let newPictureURL = await charactersService.uploadNewCharacterPicture(picture);
           // @ts-ignore
           editable.value.picture = newPictureURL
         } catch (error) {
@@ -1051,8 +1139,9 @@ export default {
       addHindrance() {
         try {
           const hindranceData = hindranceEditable.value
+          hindranceData.expanded = false
           // @ts-ignore
-          editable.value.hindrances.push({ hindranceData })
+          editable.value.hindrances.push({ ...hindranceData })
           hindranceEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
@@ -1071,8 +1160,9 @@ export default {
       addEdge() {
         try {
           const edgeData = edgeEditable.value
+          edgeData.expanded = false
           // @ts-ignore
-          editable.value.edges.push({ edgeData })
+          editable.value.edges.push({ ...edgeData })
           edgeEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
@@ -1091,8 +1181,9 @@ export default {
       addPower() {
         try {
           const powerData = powerEditable.value
+          powerData.expanded = false
           // @ts-ignore
-          editable.value.powers.push({ powerData })
+          editable.value.powers.push({ ...powerData })
           powerEditable.value = {}
         } catch (error) {
           Pop.error(error.message)
@@ -1101,8 +1192,19 @@ export default {
       addWeapon() {
         try {
           const weaponData = weaponEditable.value
-          editable.value.weapons.push({ weaponData })
+          weaponData.expanded = false
+          editable.value.weapons.push({ ...weaponData })
           weaponEditable.value = {}
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      restorePowerPoints(){
+        try {
+          editable.value.currentPowerPoints += 5
+          if(editable.value.currentPowerPoints > editable.value.maxPowerPoints){
+            editable.value.currentPowerPoints = editable.value.maxPowerPoints
+          }
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1122,9 +1224,10 @@ export default {
 
 .character-picture {
   height: 35vh;
-  max-width: 100%;
+  width: 100%;
   border-radius: 6px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   user-select: none;
 }
