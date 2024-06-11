@@ -1,9 +1,9 @@
 version: '3'
 services:
   app:
-    image: TheOneTrueRy/EasilySWADE:latest
+    image: TheOneTrueRy/easilyswade:latest
     restart: unless-stopped
     env_file:
-      - EasilySWADE-env
+      - easilyswade-env
     ports:
       - "3000:3000"
