@@ -6,11 +6,11 @@ const Schema = mongoose.Schema;
 export const WeaponSchema = new Schema(
   {
     name: { type: String, required: true, maxLength: 60 },
-    range: { type: String, required: true, maxLength: 30 },
+    range: { type: String, maxLength: 30 },
     damage: { type: String, required: true, maxLength: 30 },
-    ap: { type: Number, required: true },
-    rof: { type: Number, required: true },
-    weight: { type: Number, required: true },
+    ap: { type: Number },
+    rof: { type: Number },
+    weight: { type: Number },
     notes: { type: String, maxLength: 600 },
     expanded: { type: Boolean, default: false }
   }, defaultSchemaOptions
