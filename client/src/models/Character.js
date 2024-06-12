@@ -32,6 +32,7 @@ export class Character {
     this.powers = data.powers || []
     this.skills = data.skills || []
     this.deactivated = data.deactivated || false
+    this.dead = data.dead || false
     this.playerCharacter = data.playerCharacter || true
     this.sheetStyle = data.sheetStyle || 'Default'
   }
