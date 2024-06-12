@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 export const PowerSchema = new Schema(
   {
     name: { type: String, required: true, minLength: 2, maxLength: 60 },
-    rank: { type: String, enum: ['Novice', 'Seasoned', 'Veteran', 'Heroic', 'Legendary'], default: 'Novice' },
+    rank: { type: String, enum: ['None', 'Novice', 'Seasoned', 'Veteran', 'Heroic', 'Legendary'], default: 'None' },
     powerPoints: { type: Number, required: true },
     range: { type: String, required: true, maxLength: 30 },
     duration: { type: String, required: true, maxLength: 30 },
