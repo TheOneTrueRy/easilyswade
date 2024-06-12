@@ -1,6 +1,7 @@
 <template>
   <div class="py-3" :class="editable.dead ? 'bloody' : ''">
-    <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="createCharacter" :class="editable.dead ? 'grayscale' : ''">
+    <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="createCharacter"
+      :class="editable.dead ? 'grayscale' : ''">
       <div class="row mt-1">
         <div class="col-9">
           <div class="row">
@@ -349,18 +350,24 @@
               <div class="row mt-4">
                 <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
                   <input type="number" required v-model="editable.pace" name="pace" id="pace"
-                  class="form-control text-center fw-bold fs-5 p-0 w-50" title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">
-                <label for="pace" class="fw-bold fs-5" title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
+                    class="form-control text-center fw-bold fs-5 p-0 w-50"
+                    title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">
+                  <label for="pace" class="fw-bold fs-5"
+                    title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.parry" name="parry" id="parry"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50" title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">
-                  <label for="parry" class="fw-bold fs-5" title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
+                    class="form-control text-center fw-bold fs-5 p-0 w-50"
+                    title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">
+                  <label for="parry" class="fw-bold fs-5"
+                    title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50" title="Toughness is 2 plus half your character's Vigor attribute.">
-                  <label for="toughness" class="fw-bold fs-5" title="Toughness is 2 plus half your character's Vigor attribute.">Toughness</label>
+                    class="form-control text-center fw-bold fs-5 p-0 w-50"
+                    title="Toughness is 2 plus half your character's Vigor attribute.">
+                  <label for="toughness" class="fw-bold fs-5"
+                    title="Toughness is 2 plus half your character's Vigor attribute.">Toughness</label>
                 </div>
               </div>
               <div class="row mt-4">
@@ -791,8 +798,9 @@
         </div>
         <div class="col-6">
           <label for="rank">Edge Rank</label>
-          <select required v-model="edgeEditable.rank" name="rank" id="rank" class="form-control">
-            <option selected value="Novice">Novice</option>
+          <select v-model="edgeEditable.rank" name="rank" id="rank" class="form-control">
+            <option selected value="None">None</option>
+            <option value="Novice">Novice</option>
             <option value="Seasoned">Seasoned</option>
             <option value="Veteran">Veteran</option>
             <option value="Heroic">Heroic</option>
@@ -836,8 +844,9 @@
         </div>
         <div class="col-6">
           <label for="rank">Power Rank</label>
-          <select v-model="powerEditable.rank" name="rank" id="rank" required class="form-control">
-            <option selected value="Novice">Novice</option>
+          <select v-model="powerEditable.rank" name="rank" id="rank" class="form-control">
+            <option selected value="None">None</option>
+            <option value="Novice">Novice</option>
             <option value="Seasoned">Seasoned</option>
             <option value="Veteran">Veteran</option>
             <option value="Heroic">Heroic</option>
@@ -846,17 +855,16 @@
         </div>
         <div class="col-4 mt-2">
           <label for="powerPoints">Power Points Req.</label>
-          <input v-model="powerEditable.powerPoints" type="number" name="powerPoints" id="powerPoints" required
+          <input v-model="powerEditable.powerPoints" type="number" name="powerPoints" id="powerPoints"
             class="form-control">
         </div>
         <div class="col-4 mt-2">
           <label for="range">Power Range</label>
-          <input v-model="powerEditable.range" type="text" name="range" id="range" required class="form-control">
+          <input v-model="powerEditable.range" type="text" name="range" id="range" class="form-control">
         </div>
         <div class="col-4 mt-2">
           <label for="duration">Power Duration</label>
-          <input v-model="powerEditable.duration" type="text" name="duration" id="duration" required
-            class="form-control">
+          <input v-model="powerEditable.duration" type="text" name="duration" id="duration" class="form-control">
         </div>
         <div class="col-12 mt-2">
           <label for="trappings">Power Trappings</label>
@@ -864,7 +872,7 @@
         </div>
         <div class="col-12 mt-2">
           <label for="description">Power Description</label>
-          <textarea v-model="powerEditable.description" name="description" id="description" rows="10"
+          <textarea required v-model="powerEditable.description" name="description" id="description" rows="10"
             class="form-control" maxlength="1500"></textarea>
         </div>
         <div class="col-12 text-end mt-3">
@@ -895,7 +903,7 @@
         </div>
         <div class="col-6 mt-2">
           <label for="range">Range</label>
-          <input v-model="weaponEditable.range" type="text" for="range" class="form-control" required>
+          <input v-model="weaponEditable.range" type="text" for="range" class="form-control">
         </div>
         <div class="col-6 mt-2">
           <label for="damage">Damage</label>
@@ -903,15 +911,15 @@
         </div>
         <div class="col-4 mt-2">
           <label for="ap">AP</label>
-          <input v-model="weaponEditable.ap" type="number" for="ap" class="form-control" required>
+          <input v-model="weaponEditable.ap" type="number" for="ap" class="form-control">
         </div>
         <div class="col-4 mt-2">
           <label for="rof">ROF</label>
-          <input v-model="weaponEditable.rof" type="number" for="rof" class="form-control" required>
+          <input v-model="weaponEditable.rof" type="number" for="rof" class="form-control">
         </div>
         <div class="col-4 mt-2">
           <label for="weight">WT</label>
-          <input v-model="weaponEditable.weight" type="number" for="weight" class="form-control" required>
+          <input v-model="weaponEditable.weight" type="number" for="weight" class="form-control">
         </div>
         <div class="col-12 mt-2">
           <label for="notes">Notes</label>
@@ -1199,10 +1207,10 @@ export default {
           Pop.error(error.message)
         }
       },
-      restorePowerPoints(){
+      restorePowerPoints() {
         try {
           editable.value.currentPowerPoints += 5
-          if(editable.value.currentPowerPoints > editable.value.maxPowerPoints){
+          if (editable.value.currentPowerPoints > editable.value.maxPowerPoints) {
             editable.value.currentPowerPoints = editable.value.maxPowerPoints
           }
         } catch (error) {
@@ -1247,6 +1255,10 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .fs-small {
