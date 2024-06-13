@@ -7,7 +7,7 @@ export class Character {
     this.race = data.race || ''
     this.age = data.age || 0
     this.height = data.height || ''
-    this.weight = data.weight || 0
+    this.weight = data.weight || ''
     this.bennies = data.bennies || 0
     this.conviction = data.conviction || false
     this.pace = data.pace || 0
@@ -21,6 +21,7 @@ export class Character {
     this.fatigue = data.fatigue || 0
     this.wounds = data.wounds || 0
     this.picture = data.picture || ''
+    this.thumbnail = data.thumbnail || ''
     this.secret = data.secret || ''
     this.rank = data.rank || 'Novice'
     this.maxPowerPoints = data.maxPowerPoints || 0
@@ -33,6 +34,7 @@ export class Character {
     this.skills = data.skills || []
     this.deactivated = data.deactivated || false
     this.dead = data.dead || false
+    this.private = data.private || false
     this.playerCharacter = data.playerCharacter || true
     this.sheetStyle = data.sheetStyle || 'Default'
   }

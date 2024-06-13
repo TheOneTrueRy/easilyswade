@@ -308,7 +308,7 @@
                 </div>
                 <div class="col-3 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="text" required v-model="editable.height" name="height" id="height" maxlength="20"
+                  <input type="text" v-model="editable.height" name="height" id="height" maxlength="20"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">HT</label>
                 </div>
@@ -326,9 +326,9 @@
                 </div>
                 <div class="col-3 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="number" required v-model="editable.weight" name="weight" id="weight"
+                  <input type="text" v-model="editable.weight" name="weight" id="weight"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
-                  <label for="height" class="border-bottom border-1">WT</label>
+                  <label for="weight" class="border-bottom border-1">WT</label>
                 </div>
                 <div class="col-9 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -1011,7 +1011,7 @@ export default {
     const weaponEditable = ref({});
 
     onMounted(() => {
-      document.title = `EasilySWADE - Character Creator`
+      document.title = `Character Creator - EasilySWADE`
     })
 
     return {

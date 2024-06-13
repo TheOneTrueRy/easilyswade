@@ -14,7 +14,7 @@ export const CharacterSchema = new Schema(
     race: { type: String, required: true, maxLength: 100 },
     age: { type: Number },
     height: { type: String, maxLength: 20 },
-    weight: { type: Number },
+    weight: { type: String, maxLength: 20 },
     bennies: { type: String, maxLength: 10 },
     conviction: { type: Boolean },
     pace: { type: Number, required: true },
@@ -28,6 +28,7 @@ export const CharacterSchema = new Schema(
     fatigue: { type: Number },
     wounds: { type: Number },
     picture: { type: String, maxLength: 2000 },
+    thumbnail: { type: String, maxLength: 2000 },
     secret: { type: String, maxLength: 5000 },
     rank: { type: String, enum: ['Novice', 'Seasoned', 'Veteran', 'Heroic', 'Legendary'], default: 'Novice' },
     maxPowerPoints: { type: Number },
@@ -40,6 +41,7 @@ export const CharacterSchema = new Schema(
     skills: [SkillSchema],
     deactivated: { type: Boolean, required: true, default: false },
     dead: { type: Boolean, required: true, default: false },
+    private: { type: Boolean, required: true, default: false },
     playerCharacter: { type: Boolean, required: true, default: true },
     sheetStyle: { type: String, required: true, default: 'Default' }
   }, defaultSchemaOptions

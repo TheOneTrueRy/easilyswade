@@ -723,7 +723,18 @@
     </form>
   </div>
   <div v-else class="container-fluid p-3">
-
+    <div class="row justify-content-center">
+      <img src="https://udixydcfgbzwwnvpwubp.supabase.co/storage/v1/object/public/sandbox/God/Panda-Cowboy.png"
+        class="w-25" />
+    </div>
+    <div class="row flex-column">
+      <span class="text-center fs-3">
+        🏗️ Under Construction 🚧
+      </span>
+      <span class="text-center fs-3">
+        Check back in another time! - Ry :)
+      </span>
+    </div>
   </div>
 
   <!-- SECTION Add Skill Modal -->
@@ -1013,7 +1024,7 @@ export default {
     })
 
     onMounted(() => {
-      document.title = `EasilySWADE - ${AppState.character.name}`
+      document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
     })
 
     onUnmounted(() => {
