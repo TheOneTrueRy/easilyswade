@@ -37,8 +37,7 @@ class JoinRequestsService {
     if (requestorId != joinRequest.creatorId || joinRequest.receiverId) {
       throw new Forbidden("Hey! That's not your Join Request to delete!")
     }
-    //@ts-ignore
-    await joinRequest.remove()
+    await joinRequest.deleteOne()
     return "Party Join Request successfully deleted!"
   }
 }

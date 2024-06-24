@@ -14,7 +14,7 @@ class CharactersService {
   }
 
   async getCharacterById(characterId) {
-    let character = await dbContext.Character.findById(characterId)
+    const character = await dbContext.Character.findById(characterId)
       .populate('creator', 'name picture')
     return character
   }
@@ -35,23 +35,22 @@ class CharactersService {
     }
   }
 
-  async deactivateCharacter(characterId, requestorId) {
+  async toggleDeactivateCharacter(characterId, requestorId) {
     let character = await this.getCharacterById(characterId)
     if (requestorId != character.creatorId) {
       throw new Forbidden("Hey! That's not your character to deactivate!")
     }
-    await dbContext.Character.findByIdAndUpdate(characterId, { deactivated: true })
-    let deactivatedCharacter = await this.getCharacterById(characterId)
-    return deactivatedCharacter
+    await dbContext.Character.findByIdAndUpdate(characterId, { deactivated: !character.deactivated })
+    let toggledCharacter = await this.getCharacterById(characterId)
+    return toggledCharacter
   }
 
   async deleteCharacter(characterId, requestorId) {
-    let character = await this.getCharacterById(characterId)
+    const character = await this.getCharacterById(characterId)
     if (requestorId != character.creatorId) {
       throw new Forbidden("Hey! That's not your character to delete!")
     }
-    //@ts-ignore
-    await character.remove()
+    await character.deleteOne()
     return "Character Successfully removed!"
   }
 };

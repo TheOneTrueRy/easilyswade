@@ -1,5 +1,6 @@
 import { AppState } from "../AppState.js";
 import { Character } from "../models/Character.js";
+import { logger } from "../utils/Logger.js";
 import { api } from "./AxiosService.js";
 import { supabaseService } from "./SupabaseService.js";
 
@@ -48,6 +49,18 @@ class CharactersService {
     const folder = AppState.user.id
     const url = await supabaseService.upload(picture, `${folder}/unassignedcharacterpictures/${new Date().toISOString()}`)
     return url
+  }
+
+  async deleteCharacter(characterId) {
+    const res = await api.delete(`api/characters/${characterId}/delete`)
+    const characterIndex = AppState.characters.findIndex(c => c.id == characterId)
+    AppState.characters.splice(characterIndex, 1)
+  }
+
+  async toggleDeactivateCharacter(characterId) {
+    const toggledCharacter = await api.delete(`api/characters/${characterId}/deactivate`)
+    const characterIndex = AppState.characters.findIndex(c => c.id == characterId)
+    AppState.characters.splice(characterIndex, 1, new Character(toggledCharacter.data))
   }
 }
 

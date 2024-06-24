@@ -1,6 +1,7 @@
 <template>
   <div class="character-card align-items-end"
-    :style="character.thumbnail ? { backgroundImage: `url(${character.thumbnail})` } : { backgroundImage: `url(${character.picture})` }">
+    :style="character.thumbnail ? { backgroundImage: `url(${character.thumbnail})` } : { backgroundImage: `url(${character.picture})` }"
+    :class="character.deactivated ? 'grayscale' : ''">
     <div class="w-100 mb-auto">
       <div class="d-flex justify-content-between pt-1 px-1">
         <button type="button" class="btn character-btn selectable"
@@ -8,7 +9,8 @@
           data-bs-toggle="modal" data-bs-target="#editCharacterThumbnailModal" @click="setCharacter(character)">
           <i class="mdi mdi-image-edit"></i>
         </button>
-        <button type="button" class="btn btn-danger character-btn selectable border border-dark">
+        <button type="button" class="btn btn-danger character-btn selectable border border-dark"
+          @click="deleteOrDeactivateCharacter(character)">
           <i class="mdi mdi-trash-can"></i>
         </button>
       </div>
@@ -71,6 +73,8 @@ import { AppState } from "../AppState.js";
 import Pop from "../utils/Pop.js";
 import Modal from "../components/Modal.vue";
 import { charactersService } from "../services/CharactersService.js";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export default {
   props: {
@@ -102,6 +106,69 @@ export default {
           Pop.error(error.message)
         }
       },
+      async deleteOrDeactivateCharacter(character) {
+        try {
+          if (character.deactivated) {
+            Swal.fire({
+              title: `Do you wish to delete or reactivate the character, ${character.name}?`,
+              html: "Deleting will fully erase this character from the site and database, irreversibly.<br>Reactivating will make it so that the character's page and sheet will no longer only be accessible/viewed through direct links. This can be toggled on/off at any time.",
+              showDenyButton: true,
+              showCancelButton: true,
+              confirmButtonText: "DELETE",
+              denyButtonText: `REACTIVATE`,
+              confirmButtonColor: "#971515",
+              denyButtonColor: "#0D5D2D"
+            }).then(async (result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                try {
+                  await charactersService.deleteCharacter(character.id)
+                  Pop.success('Character successfully deleted.')
+                } catch (error) {
+                  Pop.error('Something went wrong when attempting to delete this character. Oh no!')
+                }
+              } else if (result.isDenied) {
+                try {
+                  await charactersService.toggleDeactivateCharacter(character.id)
+                  Pop.success('Character successfully reactivated!')
+                } catch (error) {
+                  Pop.error('Something went wrong when attempting to reactivate this character! Oh no!')
+                }
+              }
+            });
+          } else {
+            Swal.fire({
+              title: `Do you wish to delete or deactivate the character, ${character.name}?`,
+              html: "Deleting will fully erase this character from the site and database, irreversibly.<br>Deactivating will make it so that the character's page and sheet will only be accessible/viewed through direct links. This can be toggled on/off at any time.",
+              showDenyButton: true,
+              showCancelButton: true,
+              confirmButtonText: "DELETE",
+              denyButtonText: `DEACTIVATE`,
+              confirmButtonColor: "#971515",
+              denyButtonColor: "#000000"
+            }).then(async (result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                try {
+                  await charactersService.deleteCharacter(character.id)
+                  Pop.success('Character successfully deleted.')
+                } catch (error) {
+                  Pop.error('Something went wrong when attempting to delete this character. Oh no!')
+                }
+              } else if (result.isDenied) {
+                try {
+                  await charactersService.toggleDeactivateCharacter(character.id)
+                  Pop.success('Character successfully deactivated.')
+                } catch (error) {
+                  Pop.error('Something went wrong when attempting to deactivate this character. Oh no!')
+                }
+              }
+            });
+          }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      }
     }
   },
 
@@ -149,6 +216,10 @@ export default {
 
 .fs-small {
   font-size: small
+}
+
+.grayscale {
+  filter: grayscale(1);
 }
 
 @media screen and (max-width: 576px) {

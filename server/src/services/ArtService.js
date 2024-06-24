@@ -55,8 +55,7 @@ class ArtService {
     if (requestorId != art.creatorId) {
       throw new Forbidden("Hey! That's not your art to delete!")
     }
-    //@ts-ignore
-    await art.remove()
+    await art.deleteOne()
     return "Art post successfully deleted!"
   }
 }
