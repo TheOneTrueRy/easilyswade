@@ -633,18 +633,22 @@
           <div class="row">
             <div class="col-12">
               <div v-if="character.picture"
-                class="character-picture shadow d-flex align-items-end justify-content-end selectable p-1"
-                :style="{ backgroundImage: `url(${character.picture})` }" data-bs-target="#characterPictureModal"
-                data-bs-toggle="modal">
-                <button type="button" v-if="theme == 'light'" class="btn btn-dark"
-                  :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'"
-                  data-bs-toggle="modal" data-bs-target="#editCharacterPictureModal">
-                  <i class="mdi mdi-pencil fs-5"></i>
+                class="character-picture shadow d-flex align-items-end justify-content-between p-1"
+                :style="{ backgroundImage: `url(${character.picture})` }">
+                <button type="button" class="btn picture-btn"
+                  :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'"
+                  data-bs-target="#characterPictureModal" data-bs-toggle="modal">
+                  <i class="mdi mdi-magnify"></i>
                 </button>
-                <button type="button" v-if="theme !== 'light'" class="btn btn-light"
-                  :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'"
-                  data-bs-toggle="modal" data-bs-target="#editCharacterPictureModal">
-                  <i class="mdi mdi-pencil fs-5"></i>
+                <button type="button" v-if="theme == 'light'" class="btn btn-dark border border-light"
+                  :class="character.creatorId == user.id ? 'picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
+                  data-bs-target="#editCharacterPictureModal">
+                  <i class="mdi mdi-image-edit fs-5"></i>
+                </button>
+                <button type="button" v-if="theme !== 'light'" class="btn btn-light border border-dark"
+                  :class="character.creatorId == user.id ? 'picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
+                  data-bs-target="#editCharacterPictureModal">
+                  <i class="mdi mdi-image-edit fs-5"></i>
                 </button>
               </div>
               <div v-else class="d-flex align-items-center justify-content-center p-2 mt-2">
@@ -792,7 +796,7 @@
           </button>
         </div>
         <div class="col-12">
-          <input type="file" id="picture" name="fileInput" class="form-control" required>
+          <input type="file" id="picture" name="fileInput" accept="image/*" class="form-control" required>
         </div>
         <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
@@ -1155,7 +1159,7 @@ export default {
           if (!picture) {
             throw new Error('This form has no image uploaded into it!')
           }
-          let newPictureURL = await charactersService.updateCharacterPicture(picture,);
+          let newPictureURL = await charactersService.updateCharacterPicture(picture);
           // @ts-ignore
           editable.value.picture = newPictureURL
         } catch (error) {
@@ -1334,12 +1338,12 @@ form::-webkit-scrollbar-thumb {
   flex-basis: auto;
 }
 
-.edit-picture-btn {
+.picture-btn {
   display: none;
 }
 
 .character-picture:hover {
-  .edit-picture-btn {
+  .picture-btn {
     display: block
   }
 }

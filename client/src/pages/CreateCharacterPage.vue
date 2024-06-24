@@ -1027,7 +1027,7 @@ export default {
           const characterData = editable.value
           await charactersService.createCharacter(characterData)
           Pop.success('Successfully created a character!')
-          router.push({ name: 'CharacterSheetPage', params: { characterId: AppState.character.id } })
+          router.push({ name: 'CharacterSheet', params: { characterId: AppState.character.id } })
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet! Oh no!', error.message)
         }
