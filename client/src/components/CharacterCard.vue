@@ -91,8 +91,8 @@ export default {
       },
       async changeCharacterThumbnail() {
         try {
-          debugger
           let characterId = AppState.character.id
+          // @ts-ignore
           const thumbnail = event.target.fileInput.files[0]
           if (!thumbnail) {
             throw new Error('This form has no image uploaded into it!')
