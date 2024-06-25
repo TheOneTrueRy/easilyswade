@@ -15,14 +15,14 @@
           <button v-if="profile.id == user.id" class="btn mt-2 d-sm-none"
             :class="[theme == 'light' ? 'my-btn-dark' : 'btn-light']" data-bs-toggle="modal"
             data-bs-target="#editProfile" title="Edit your Profile's information.">
-            Edit <i class="mdi-pencil mdi"></i>
+            Edit <i class="mdi-account-edit mdi"></i>
           </button>
         </div>
       </div>
       <div v-if="profile.id == user.id" class="col-3 g-0 d-none d-sm-block mt-2">
         <button class="btn" :class="[theme == 'light' ? 'my-btn-dark' : 'btn-light']" data-bs-toggle="modal"
           data-bs-target="#editProfile" title="Edit your Profile's information.">
-          Edit <i class="mdi-pencil mdi d-none d-sm-inline"></i>
+          Edit <i class="mdi-account-edit mdi d-none d-sm-inline"></i>
         </button>
       </div>
     </div>
@@ -207,7 +207,7 @@ export default {
     })
 
     onMounted(() => {
-      document.title = `EasilySWADE - ${AppState.profile.name}'s Profile`
+      document.title = `${AppState.profile.name}'s Profile - EasilySWADE`
     })
 
     onUnmounted(() => {

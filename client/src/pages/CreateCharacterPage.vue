@@ -632,12 +632,12 @@
                   <button type="button" class="btn edit-picture-btn"
                     :class="theme === 'light' ? 'btn-dark' : 'btn-light'" data-bs-toggle="modal"
                     data-bs-target="#editCharacterPictureModal">
-                    <i class="mdi mdi-pencil fs-5"></i>
+                    <i class="mdi mdi-image-edit fs-5"></i>
                   </button>
                 </div>
                 <button v-else type="button" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'"
                   data-bs-toggle="modal" data-bs-target="#uploadCharacterPictureModal">
-                  Upload a Picture! <i class="mdi mdi-panorama-variant-outline"></i>
+                  Upload a Picture! <i class="mdi mdi-image"></i>
                 </button>
               </div>
             </div>
