@@ -725,7 +725,7 @@
     </form>
   </div>
   <div v-else class="container-fluid p-3">
-    <div class="row mt-1">
+    <div class="row mt-1 mb-4">
       <div class="col-9">
         <div class="row">
           <div class="col-6">
@@ -1300,10 +1300,10 @@
         <div class="row">
           <div class="col-12">
             <div v-if="character.picture"
-              class="character-picture shadow d-flex align-items-end justify-content-start p-1"
+              class="character-picture border d-flex align-items-end justify-content-start p-1"
               :style="{ backgroundImage: `url(${character.picture})` }">
               <button type="button" class="btn picture-btn"
-                :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'"
+                :class="theme == 'light' ? 'btn-light border border-dark' : 'btn-dark border border-light'"
                 data-bs-target="#characterPictureModal" data-bs-toggle="modal">
                 <i class="mdi mdi-magnify"></i>
               </button>
