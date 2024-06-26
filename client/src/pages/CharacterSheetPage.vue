@@ -1609,7 +1609,7 @@
 
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onUnmounted, ref, watchEffect } from "vue";
 import { AppState } from "../AppState.js";
 import { useRoute } from "vue-router";
 import { charactersService } from "../services/CharactersService.js";
@@ -1633,11 +1633,8 @@ export default {
       }
       if (AppState.character.id) {
         editable.value = { ...AppState.character }
+        document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
       }
-    })
-
-    onMounted(() => {
-      document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
     })
 
     onUnmounted(() => {
