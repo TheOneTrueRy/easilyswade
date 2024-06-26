@@ -1900,7 +1900,6 @@ input[type=number] {
 .ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
-
 }
 
 .nowrap {

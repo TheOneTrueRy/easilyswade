@@ -13,6 +13,7 @@ class CharactersService {
   async getCharacterById(characterId) {
     const res = await api.get(`api/characters/` + characterId)
     AppState.character = new Character(res.data)
+    logger.log(AppState.character)
   }
 
   async getCharactersByProfileId(profileId) {

@@ -2,7 +2,7 @@
   <div class="character-card align-items-end"
     :style="character.thumbnail ? { backgroundImage: `url(${character.thumbnail})` } : { backgroundImage: `url(${character.picture})` }"
     :class="character.deactivated ? 'grayscale' : ''">
-    <div class="w-100 mb-auto">
+    <div v-if="character.creatorId == user.id" class="w-100 mb-auto">
       <div class="d-flex justify-content-between pt-1 px-1">
         <button type="button" class="btn character-btn selectable"
           :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'"
@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    <div class="w-100">
+    <div class="w-100 mt-auto">
       <div class="d-flex justify-content-between pb-1 px-1">
         <router-link :to="{ name: 'CharacterPage', params: { characterId: character?.id } }"
           :title="`Visit ${character?.name}'s Character Page!`">
@@ -86,6 +86,7 @@ export default {
   setup() {
     return {
       theme: computed(() => AppState.theme),
+      user: computed(() => AppState.user),
       setCharacter(character) {
         try {
           AppState.character = character
