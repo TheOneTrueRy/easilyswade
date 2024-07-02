@@ -17,7 +17,7 @@
     </div>
     <div class="w-100 mt-auto">
       <div class="d-flex pb-1 px-1"
-        :class="character.privacy !== 'Deactivated' ? 'justify-content-between' : 'justify-content-start'">
+        :class="character.privacy == 'Public' || character.creatorId == user.id ? 'justify-content-between' : 'justify-content-start'">
         <router-link :to="{ name: 'CharacterPage', params: { characterId: character?.id } }"
           :title="`Visit ${character?.name}'s Character Page!`">
           <button class="btn selectable px-2 py-0 character-btn"
