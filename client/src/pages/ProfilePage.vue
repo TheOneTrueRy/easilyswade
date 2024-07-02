@@ -35,14 +35,14 @@
       </div>
       <div class="col-12">
         <div class="row pb-1 row-of-cards mt-2 stylized-scrollbar rtl">
-          <div class="row ltr g-0 justify-content-center justify-content-sm-start">
+          <div class="row ltr g-0">
             <div v-for="c in playerCharacters" :key="c.id" class="px-2 py-2 w-auto" id="characterCard">
               <CharacterCard :character="c" />
             </div>
+            <i v-if="playerCharacters.length == 0" class="fs-5 ps-1">
+              {{ profile.name }} has no Player Characters... yet.
+            </i>
           </div>
-          <i v-if="playerCharacters.length == 0" class="fs-5 ps-1">
-            {{ profile.name }} has no Player Characters... yet.
-          </i>
         </div>
       </div>
     </div>

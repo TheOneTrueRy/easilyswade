@@ -2,7 +2,9 @@ export class Character {
   constructor(data) {
     this.id = data.id
     this.creatorId = data.creatorId
+    this.partyId = data.partyId
     this.creator = data.creator
+    this.party = data.party
     this.name = data.name || ''
     this.race = data.race || ''
     this.age = data.age || 0
@@ -32,10 +34,10 @@ export class Character {
     this.weapons = data.weapons || []
     this.powers = data.powers || []
     this.skills = data.skills || []
-    this.deactivated = data.deactivated || false
     this.dead = data.dead || false
-    this.private = data.private || false
+    this.privacy = data.privacy || 'Public'
     this.playerCharacter = data.playerCharacter || true
     this.sheetStyle = data.sheetStyle || 'Default'
+    this.lastSaved = data.lastSaved || ''
   }
 }

@@ -10,6 +10,7 @@ import { SkillSchema } from "./Skill.js";
 export const CharacterSchema = new Schema(
   {
     creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' },
+    partyId: { type: Schema.Types.ObjectId, ref: 'Party' },
     name: { type: String, required: true, maxLength: 120 },
     race: { type: String, required: true, maxLength: 100 },
     age: { type: Number },
@@ -39,10 +40,10 @@ export const CharacterSchema = new Schema(
     weapons: [WeaponSchema],
     powers: [PowerSchema],
     skills: [SkillSchema],
-    deactivated: { type: Boolean, required: true, default: false },
     dead: { type: Boolean, required: true, default: false },
-    private: { type: Boolean, required: true, default: false },
+    privacy: { type: String, enum: ['Public', 'Private', 'Deactivated'], default: 'Public' },
     playerCharacter: { type: Boolean, required: true, default: true },
+    lastSaved: { type: Date },
     sheetStyle: { type: String, required: true, default: 'Default' }
   }, defaultSchemaOptions
 )
@@ -51,5 +52,12 @@ CharacterSchema.virtual('creator', {
   localField: 'creatorId',
   foreignField: '_id',
   ref: 'Account',
+  justOne: true
+})
+
+CharacterSchema.virtual('party', {
+  localField: 'partyId',
+  foreignField: '_id',
+  ref: 'Party',
   justOne: true
 })

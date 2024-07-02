@@ -12,7 +12,7 @@
         <div class="col-9">
           <div class="row">
             <div class="col-6">
-              <div class="row px-2">
+              <div class="row pe-2 ms-1">
                 <div class="col-12 text-center">
                   <span class="fs-3 fw-bold text-danger">
                     ATTRIBUTES
@@ -55,7 +55,7 @@
                     <input required v-model="editable.agility" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       AGILITY
                     </span>
@@ -98,7 +98,7 @@
                     <input required v-model="editable.smarts" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       SMARTS
                     </span>
@@ -141,7 +141,7 @@
                     <input required v-model="editable.spirit" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       SPIRIT
                     </span>
@@ -184,7 +184,7 @@
                     <input required v-model="editable.strength" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       STRENGTH
                     </span>
@@ -227,14 +227,14 @@
                     <input required v-model="editable.vigor" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       VIGOR
                     </span>
                   </div>
                 </div>
               </div>
-              <div class="row px-2 mt-4">
+              <div class="row pe-2 ms-1 mt-4 border-top">
                 <div class="col-12 text-center">
                   <span class="fs-3 fw-bold text-danger">
                     SKILLS
@@ -287,8 +287,8 @@
                     </div>
                     <button
                       v-if="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth'"
-                      type="button" class="btn btn-danger py-0 px-1 delete-skill d-none"
-                      @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can"></i></button>
+                      type="button" class="btn btn-danger py-0 px-1 delete-skill mh-26 d-none rounded-0"
+                      @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can mh-26"></i></button>
                   </div>
                 </div>
                 <div class="col-8 offset-2 rounded selectable text-center mt-2 border"
@@ -298,7 +298,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 ps-0 px-4">
+            <div class="col-6 px-4 border-start">
               <div class="row mt-4">
                 <div class="col-12 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -306,19 +306,19 @@
                   <input type="text" required v-model="editable.name" name="name" id="name" maxlength="120"
                     class="form-control p-0 ps-1 border-0 border-bottom rounded-0">
                 </div>
-                <div class="col-9 d-flex align-items-end px-0"
+                <div class="col-8 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="race" class="border-bottom border-1">Race:</label>
                   <input type="text" required v-model="editable.race" name="race" id="race" maxlength="100"
                     class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0">
                 </div>
-                <div class="col-3 d-flex align-items-end g-0 ps-0"
+                <div class="col-4 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <input type="text" required v-model="editable.height" name="height" id="height" maxlength="20"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">HT</label>
                 </div>
-                <div class="col-9 d-flex align-items-end px-0"
+                <div class="col-8 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="rank" class="border-bottom border-1">Rank:</label>
                   <select v-model="editable.rank" name="rank" id="rank"
@@ -330,13 +330,13 @@
                     <option value="Legendary">Legendary</option>
                   </select>
                 </div>
-                <div class="col-3 d-flex align-items-end g-0 ps-0"
+                <div class="col-4 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <input type="number" required v-model="editable.weight" name="weight" id="weight"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">WT</label>
                 </div>
-                <div class="col-9 d-flex align-items-end px-0"
+                <div class="col-8 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="conviction" class="border-bottom border-1">Conviction:</label>
                   <select v-model="editable.conviction" name="conviction" id="conviction"
@@ -345,33 +345,56 @@
                     <option :value="false">False</option>
                   </select>
                 </div>
-                <div class="col-3 d-flex align-items-end px-0">
+                <div class="col-4 d-flex align-items-end px-0">
                   <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="10"
                     class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="bennies" class="border-bottom border-1"
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies</label>
                 </div>
+                <div class="col-8 d-flex align-items-end px-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="playerCharacter" class="border-bottom border-1">Type:</label>
+                  <select v-model="editable.playerCharacter" name="playerCharacter" id="playerCharacter"
+                    class="form-control py-0 px-1 border-0 border-bottom border-end rounded-0">
+                    <option selected :value="true">Player Character</option>
+                    <option :value="false">Non-Player Character</option>
+                  </select>
+                </div>
+                <div class="col-4 d-flex align-items-end px-0">
+                  <select type="text" v-model="editable.privacy" name="privacy" id="privacy" maxlength="10"
+                    class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                    <option selected :value="'Public'">Public</option>
+                    <option :value="'Private'">Private</option>
+                    <option :value="'Deactivated'">Deactivated</option>
+                  </select>
+                  <label for="privacy" class="border-bottom border-1"
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Privacy</label>
+                </div>
               </div>
               <div class="row mt-4">
                 <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
                   <input type="number" required v-model="editable.pace" name="pace" id="pace"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50"
-                    title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">
+                    class="form-control text-center fw-bold fs-4 p-0 w-50"
+                    title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc."
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="pace" class="fw-bold fs-5"
                     title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.parry" name="parry" id="parry"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50"
-                    title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">
+                    class="form-control text-center fw-bold fs-4 p-0 w-50"
+                    title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons."
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="parry" class="fw-bold fs-5"
                     title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50"
-                    title="Toughness is 2 plus half your character's Vigor attribute.">
+                    class="form-control text-center fw-bold fs-4 p-0 w-50"
+                    title="Toughness is 2 plus half your character's Vigor attribute."
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="toughness" class="fw-bold fs-5"
                     title="Toughness is 2 plus half your character's Vigor attribute.">Toughness</label>
                 </div>
@@ -415,7 +438,7 @@
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="maxPP" class="fs-4 fw-bold text-danger">MAX PP</label>
                 <input type="number" name="maxPP" id="maxPP" required v-model="editable.maxPowerPoints"
-                  class="form-control w-25 ms-4 fs-5 py-1">
+                  class="form-control w-25 ms-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
               <div class="col-2 d-flex align-items-center justify-content-center">
                 <div
@@ -427,14 +450,15 @@
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
                 <input type="number" name="currentPP" id="currentPP" required v-model="editable.currentPowerPoints"
-                  class="form-control w-25 me-4 fs-5 py-1">
+                  class="form-control w-25 me-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="currentPP" class="fs-4 fw-bold text-danger">CUR. PP</label>
               </div>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-center">
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="wounds" class="fs-4 fw-bold text-danger">WOUNDS</label>
-                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-5 py-1">
+                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-4 py-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -452,7 +476,8 @@
                 </div>
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
-                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-5 py-1">
+                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-4 py-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -627,11 +652,11 @@
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 border-start">
           <div class="row">
             <div class="col-12">
               <div v-if="character.picture"
-                class="character-picture shadow d-flex align-items-end justify-content-between p-1"
+                class="character-picture border d-flex align-items-end justify-content-between p-1"
                 :style="{ backgroundImage: `url(${character.picture})` }">
                 <button type="button" class="btn picture-btn"
                   :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'"
@@ -729,7 +754,7 @@
       <div class="col-9">
         <div class="row">
           <div class="col-6">
-            <div class="row px-2">
+            <div class="row pe-1 ms-1">
               <div class="col-12 text-center">
                 <span class="fs-3 fw-bold text-danger">
                   ATTRIBUTES
@@ -772,7 +797,7 @@
                   <input required v-model="character.agility" type="number"
                     class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
-                <div class="col-4 ps-2">
+                <div class="col-4 ps-1 ms-1">
                   <span class="fs-5 fw-bold">
                     AGILITY
                   </span>
@@ -815,7 +840,7 @@
                   <input required v-model="character.smarts" type="number"
                     class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
-                <div class="col-4 ps-2">
+                <div class="col-4 ps-1 ms-1">
                   <span class="fs-5 fw-bold">
                     SMARTS
                   </span>
@@ -858,7 +883,7 @@
                   <input required v-model="character.spirit" type="number"
                     class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
-                <div class="col-4 ps-2">
+                <div class="col-4 ps-1 ms-1">
                   <span class="fs-5 fw-bold">
                     SPIRIT
                   </span>
@@ -901,7 +926,7 @@
                   <input required v-model="character.strength" type="number"
                     class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                 </div>
-                <div class="col-4 ps-2">
+                <div class="col-4 ps-1 ms-1">
                   <span class="fs-5 fw-bold">
                     STRENGTH
                   </span>
@@ -951,7 +976,7 @@
                 </div>
               </div>
             </div>
-            <div class="row px-2 mt-4">
+            <div class="row pe-2 ms-1 mt-4 border-top">
               <div class="col-12 text-center">
                 <span class="fs-3 fw-bold text-danger">
                   SKILLS
@@ -1006,7 +1031,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 ps-0 px-4">
+          <div class="col-6 border-start px-4">
             <div class="row mt-4">
               <div class="col-12 d-flex align-items-end px-0"
                 :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -1283,7 +1308,7 @@
             </div>
           </div>
         </div>
-        <!-- <div class="row mt-4">
+        <div v-if="character.party && character.party.dungeonMasterIds.find(id => id == user.id)" class="row mt-4">
           <div class="col-12">
             <span class="fs-3 fw-bold text-danger">
               SECRET
@@ -1294,9 +1319,9 @@
               {{ character.secret }}
             </span>
           </div>
-        </div> -->
+        </div>
       </div>
-      <div class="col-3">
+      <div class="col-3 border-start">
         <div class="row">
           <div class="col-12">
             <div v-if="character.picture"
@@ -2058,5 +2083,9 @@ textarea:valid {
 
 .save-btn {
   position: absolute;
+}
+
+.mh-26 {
+  max-height: 26px !important;
 }
 </style>

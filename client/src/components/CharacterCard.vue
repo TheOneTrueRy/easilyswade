@@ -1,7 +1,7 @@
 <template>
   <div class="character-card align-items-end"
     :style="character.thumbnail ? { backgroundImage: `url(${character.thumbnail})` } : { backgroundImage: `url(${character.picture})` }"
-    :class="character.deactivated ? 'grayscale' : ''">
+    :class="character.privacy == 'Deactivated' ? 'grayscale' : ''">
     <div v-if="character.creatorId == user.id" class="w-100 mb-auto">
       <div class="d-flex justify-content-between pt-1 px-1">
         <button type="button" class="btn character-btn selectable"
@@ -16,13 +16,15 @@
       </div>
     </div>
     <div class="w-100 mt-auto">
-      <div class="d-flex justify-content-between pb-1 px-1">
+      <div class="d-flex pb-1 px-1"
+        :class="character.privacy == 'Public' ? 'justify-content-between' : 'justify-content-start'">
         <router-link :to="{ name: 'CharacterPage', params: { characterId: character?.id } }"
           :title="`Visit ${character?.name}'s Character Page!`">
           <button class="btn selectable px-2 py-0 character-btn"
             :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'">Page</button>
         </router-link>
-        <router-link :to="{ name: 'CharacterSheet', params: { characterId: character?.id } }"
+        <router-link v-if="character.privacy == 'Public' || user.id == character.creatorId"
+          :to="{ name: 'CharacterSheet', params: { characterId: character?.id } }"
           :title="`Visit ${character?.name}'s Character Sheet!`">
           <button class="btn selectable px-2 py-0 character-btn"
             :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'">Sheet</button>

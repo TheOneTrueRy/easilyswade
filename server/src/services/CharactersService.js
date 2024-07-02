@@ -16,6 +16,7 @@ class CharactersService {
   async getCharacterById(characterId) {
     const character = await dbContext.Character.findById(characterId)
       .populate('creator', 'name picture')
+      .populate('party', 'dungeonMasterIds')
     return character
   }
 
@@ -40,7 +41,11 @@ class CharactersService {
     if (requestorId != character.creatorId) {
       throw new Forbidden("Hey! That's not your character to deactivate!")
     }
-    await dbContext.Character.findByIdAndUpdate(characterId, { deactivated: !character.deactivated })
+    if (character.privacy == 'Deactivated') {
+      await dbContext.Character.findByIdAndUpdate(characterId, { privacy: 'Public' })
+    } else {
+      await dbContext.Character.findByIdAndUpdate(characterId, { privacy: 'Deactivated' })
+    }
     let toggledCharacter = await this.getCharacterById(characterId)
     return toggledCharacter
   }
