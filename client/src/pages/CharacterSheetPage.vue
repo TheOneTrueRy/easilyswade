@@ -8,11 +8,18 @@
   <div v-if="character.creatorId == user.id" class="py-3" :class="editable.dead ? 'bloody' : ''">
     <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="saveSheet"
       :class="editable.dead ? 'grayscale' : ''">
+      <div class="row save-btn">
+        <div class="col-12 d-flex justify-content-start">
+          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Save Changes
+          </button>
+        </div>
+      </div>
       <div class="row mt-1">
-        <div class="col-9">
-          <div class="row">
-            <div class="col-6">
-              <div class="row pe-2 ms-1">
+        <div class="col-9 pb-2">
+          <div class="row border-bottom ms-1">
+            <div class="col-6 ps-0">
+              <div class="row px-2">
                 <div class="col-12 text-center">
                   <span class="fs-3 fw-bold text-danger">
                     ATTRIBUTES
@@ -234,7 +241,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row pe-2 ms-1 mt-4 border-top">
+              <div class="row px-2 mt-4">
                 <div class="col-12 text-center">
                   <span class="fs-3 fw-bold text-danger">
                     SKILLS
@@ -298,7 +305,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 px-4 border-start">
+            <div class="col-6 px-4 border-start pb-2">
               <div class="row mt-4">
                 <div class="col-12 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -488,13 +495,13 @@
             </div>
           </div>
           <div class="row mt-4 ps-3">
-            <div class="row">
+            <div class="row pe-0">
               <div class="col-3 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   POWER
                 </span>
               </div>
-              <div class="col-2 ps-0">
+              <div class="col-1 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   PP
                 </span>
@@ -509,20 +516,20 @@
                   DUR.
                 </span>
               </div>
-              <div class="col-3 ps-1">
+              <div class="col-4 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   EFFECT
                 </span>
               </div>
             </div>
-            <div v-for="p in editable.powers" :key="p.id" class="row pe-0"
+            <div v-for="(p, index) in editable.powers" :key="p.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
               <div class="col-3 border-bottom ps-0">
                 <span class="fs-small">
                   {{ p.name }}
                 </span>
               </div>
-              <div class="col-2 border-bottom ps-0">
+              <div class="col-1 border-bottom ps-0">
                 <span class="fs-small">
                   {{ p.powerPoints }}
                 </span>
@@ -537,11 +544,17 @@
                   {{ p.duration }}
                 </span>
               </div>
-              <div class="col-3 selectable border-bottom px-1" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
-                @click="p.expanded = !p.expanded">
-                <span class="fs-small">
-                  {{ p.description }}
-                </span>
+              <div class="col-4 border-bottom px-0 d-flex">
+                <div class="selectable w-90" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
+                  @click="p.expanded = !p.expanded">
+                  <span class="fs-small">
+                    {{ p.description }}
+                  </span>
+                </div>
+                <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
+                  @click="deletePower(p.name, index)">
+                  <i class="mdi mdi-delete text-danger"></i>
+                </div>
               </div>
             </div>
             <div class="row pe-0">
@@ -554,7 +567,7 @@
             </div>
           </div>
           <div class="row mt-4 ps-3">
-            <div class="row">
+            <div class="row pe-0">
               <div class="col-3 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   WEAPON
@@ -591,43 +604,49 @@
                 </span>
               </div>
             </div>
-            <div v-for="w in editable.weapons" :key="w.id" class="row pe-0"
+            <div v-for="(w, index) in editable.weapons" :key="w.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
-              <div class="col-3 border-bottom px-1">
+              <div class="col-3 border-bottom ps-0 pe-1">
                 <span class="fs-small">
                   {{ w.name }}
                 </span>
               </div>
-              <div class="col-2 border-bottom px-1">
+              <div class="col-2 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.range }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.damage }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.ap }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.rof }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.weight }}
                 </span>
               </div>
-              <div class="col-3 selectable border-bottom ps-0" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
-                @click="w.expanded = !w.expanded">
-                <span class="fs-small">
-                  {{ w.notes }}
-                </span>
+              <div class="col-3 border-bottom d-flex px-0">
+                <div class="selectable w-90" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
+                  @click="w.expanded = !w.expanded">
+                  <span class="fs-small">
+                    {{ w.notes }}
+                  </span>
+                </div>
+                <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
+                  @click="deleteWeapon(w.name, index)">
+                  <i class="mdi mdi-delete text-danger"></i>
+                </div>
               </div>
             </div>
             <div class="row pe-0">
@@ -659,18 +678,13 @@
                 class="character-picture border d-flex align-items-end justify-content-between p-1"
                 :style="{ backgroundImage: `url(${character.picture})` }">
                 <button type="button" class="btn picture-btn"
-                  :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'"
+                  :class="theme == 'light' ? 'btn-light border border-dark' : 'btn-dark border border-light'"
                   data-bs-target="#characterPictureModal" data-bs-toggle="modal">
                   <i class="mdi mdi-magnify"></i>
                 </button>
-                <button type="button" v-if="theme == 'light'" class="btn btn-dark border border-light"
-                  :class="character.creatorId == user.id ? 'picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
-                  data-bs-target="#editCharacterPictureModal">
-                  <i class="mdi mdi-image-edit fs-5"></i>
-                </button>
-                <button type="button" v-if="theme !== 'light'" class="btn btn-light border border-dark"
-                  :class="character.creatorId == user.id ? 'picture-btn btn-dark' : 'd-none'" data-bs-toggle="modal"
-                  data-bs-target="#editCharacterPictureModal">
+                <button type="button" class="btn picture-btn"
+                  :class="theme == 'light' ? 'btn-light border border-dark' : 'btn-dark border border-light'"
+                  data-bs-toggle="modal" data-bs-target="#editCharacterPictureModal">
                   <i class="mdi mdi-image-edit fs-5"></i>
                 </button>
               </div>
@@ -738,13 +752,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row mt-3 text-end">
-        <div class="col-12">
-          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
-            Save Changes
-          </button>
         </div>
       </div>
     </form>
@@ -1800,6 +1807,7 @@ export default {
       addHindrance() {
         try {
           const hindranceData = hindranceEditable.value
+          // @ts-ignore
           hindranceData.expanded = false
           // @ts-ignore
           editable.value.hindrances.push({ ...hindranceData })
@@ -1821,6 +1829,7 @@ export default {
       addEdge() {
         try {
           const edgeData = edgeEditable.value
+          // @ts-ignore
           edgeData.expanded = false
           // @ts-ignore
           editable.value.edges.push({ ...edgeData })
@@ -1842,6 +1851,7 @@ export default {
       addPower() {
         try {
           const powerData = powerEditable.value
+          // @ts-ignore
           powerData.expanded = false
           // @ts-ignore
           editable.value.powers.push({ ...powerData })
@@ -1853,6 +1863,7 @@ export default {
       addWeapon() {
         try {
           const weaponData = weaponEditable.value
+          // @ts-ignore
           weaponData.expanded = false
           // @ts-ignore
           editable.value.weapons.push({ ...weaponData })
@@ -1863,9 +1874,32 @@ export default {
       },
       restorePowerPoints() {
         try {
+          // @ts-ignore
           editable.value.currentPowerPoints += 5
+          // @ts-ignore
           if (editable.value.currentPowerPoints > editable.value.maxPowerPoints) {
+            // @ts-ignore
             editable.value.currentPowerPoints = editable.value.maxPowerPoints
+          }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      async deletePower(powerName, powerIndex) {
+        try {
+          if (await Pop.confirm(`Are you sure you wish to delete the ${powerName} power?`)) {
+            // @ts-ignore
+            editable.value.powers.splice(powerIndex, 1)
+          }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      async deleteWeapon(weaponName, weaponIndex) {
+        try {
+          if (await Pop.confirm(`Are you sure you wish to delete the ${weaponName} weapon?`)) {
+            // @ts-ignore
+            editable.value.weapons.splice(weaponIndex, 1)
           }
         } catch (error) {
           Pop.error(error.message)
