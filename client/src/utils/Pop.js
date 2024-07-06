@@ -15,6 +15,7 @@ export default class Pop {
   static async confirm(title = 'Are you sure?', text = "You won't be able to revert this!", confirmButtonText = 'Yes', icon = 'warning') {
     try {
       const res = await Swal.fire({
+        scrollbarPadding: false,
         title,
         text,
         icon,

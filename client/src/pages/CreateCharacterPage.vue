@@ -308,7 +308,7 @@
                 </div>
                 <div class="col-3 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="text" required v-model="editable.height" name="height" id="height" maxlength="20"
+                  <input type="text" v-model="editable.height" name="height" id="height" maxlength="20"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">HT</label>
                 </div>
@@ -326,9 +326,9 @@
                 </div>
                 <div class="col-3 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="number" required v-model="editable.weight" name="weight" id="weight"
+                  <input type="text" v-model="editable.weight" name="weight" id="weight"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
-                  <label for="height" class="border-bottom border-1">WT</label>
+                  <label for="weight" class="border-bottom border-1">WT</label>
                 </div>
                 <div class="col-9 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -632,12 +632,12 @@
                   <button type="button" class="btn edit-picture-btn"
                     :class="theme === 'light' ? 'btn-dark' : 'btn-light'" data-bs-toggle="modal"
                     data-bs-target="#editCharacterPictureModal">
-                    <i class="mdi mdi-pencil fs-5"></i>
+                    <i class="mdi mdi-image-edit fs-5"></i>
                   </button>
                 </div>
                 <button v-else type="button" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'"
                   data-bs-toggle="modal" data-bs-target="#uploadCharacterPictureModal">
-                  Upload a Picture! <i class="mdi mdi-panorama-variant-outline"></i>
+                  Upload a Picture! <i class="mdi mdi-image"></i>
                 </button>
               </div>
             </div>
@@ -1011,7 +1011,7 @@ export default {
     const weaponEditable = ref({});
 
     onMounted(() => {
-      document.title = `EasilySWADE - Character Creator`
+      document.title = `Character Creator - EasilySWADE`
     })
 
     return {
@@ -1027,7 +1027,7 @@ export default {
           const characterData = editable.value
           await charactersService.createCharacter(characterData)
           Pop.success('Successfully created a character!')
-          router.push({ name: 'CharacterSheetPage', params: { characterId: AppState.character.id } })
+          router.push({ name: 'CharacterSheet', params: { characterId: AppState.character.id } })
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet! Oh no!', error.message)
         }

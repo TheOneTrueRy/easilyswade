@@ -29,7 +29,7 @@ export default {
     const editable = ref({})
 
     onMounted(() => {
-      document.title = 'EasilySWADE - Home'
+      document.title = 'Home - EasilySwade'
     })
 
     return {

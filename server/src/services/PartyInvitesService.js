@@ -37,8 +37,7 @@ class PartyInvitesService {
     if (requestorId != partyInvite.creatorId || partyInvite.receiverId) {
       throw new Forbidden("Hey! That's not your party invite to delete!")
     }
-    //@ts-ignore
-    await partyInvite.remove()
+    await partyInvite.deleteOne()
     return "Party Invite successfully removed!"
   }
 }

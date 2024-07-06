@@ -1,6 +1,4 @@
 <!-- TODO 
-  Move Secret to be a Powers/Weapons sized textarea underneath Weapons
-  PP section underneath Wounds and Fatigue, same size
   Background banner, probably gradient, on the hindrances and edges column and around attributes + skills
   Possibly Border Lines to be separating sections more so everything isn't blending together as much
   MAKE NON-CREATOR NON-FORM VERSION
@@ -10,10 +8,17 @@
   <div v-if="character.creatorId == user.id" class="py-3" :class="editable.dead ? 'bloody' : ''">
     <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="saveSheet"
       :class="editable.dead ? 'grayscale' : ''">
+      <div class="row save-btn">
+        <div class="col-12 d-flex justify-content-start">
+          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Save Changes
+          </button>
+        </div>
+      </div>
       <div class="row mt-1">
-        <div class="col-9">
-          <div class="row">
-            <div class="col-6">
+        <div class="col-9 pb-2">
+          <div class="row border-bottom ms-1">
+            <div class="col-6 ps-0 pb-2">
               <div class="row px-2">
                 <div class="col-12 text-center">
                   <span class="fs-3 fw-bold text-danger">
@@ -57,7 +62,7 @@
                     <input required v-model="editable.agility" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       AGILITY
                     </span>
@@ -100,7 +105,7 @@
                     <input required v-model="editable.smarts" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       SMARTS
                     </span>
@@ -143,7 +148,7 @@
                     <input required v-model="editable.spirit" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       SPIRIT
                     </span>
@@ -186,7 +191,7 @@
                     <input required v-model="editable.strength" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       STRENGTH
                     </span>
@@ -229,7 +234,7 @@
                     <input required v-model="editable.vigor" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-2">
+                  <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       VIGOR
                     </span>
@@ -289,8 +294,8 @@
                     </div>
                     <button
                       v-if="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth'"
-                      type="button" class="btn btn-danger py-0 px-1 delete-skill d-none"
-                      @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can"></i></button>
+                      type="button" class="btn btn-danger py-0 px-1 delete-skill mh-26 d-none rounded-0"
+                      @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can mh-26"></i></button>
                   </div>
                 </div>
                 <div class="col-8 offset-2 rounded selectable text-center mt-2 border"
@@ -300,7 +305,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 ps-0 px-4">
+            <div class="col-6 px-4 border-start pb-2">
               <div class="row mt-4">
                 <div class="col-12 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -308,19 +313,19 @@
                   <input type="text" required v-model="editable.name" name="name" id="name" maxlength="120"
                     class="form-control p-0 ps-1 border-0 border-bottom rounded-0">
                 </div>
-                <div class="col-9 d-flex align-items-end px-0"
+                <div class="col-8 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="race" class="border-bottom border-1">Race:</label>
                   <input type="text" required v-model="editable.race" name="race" id="race" maxlength="100"
                     class="form-control p-0 ps-1 border-0 border-bottom border-end rounded-0">
                 </div>
-                <div class="col-3 d-flex align-items-end g-0 ps-0"
+                <div class="col-4 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="text" required v-model="editable.height" name="height" id="height" maxlength="20"
+                  <input type="text" v-model="editable.height" name="height" id="height" maxlength="20"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">HT</label>
                 </div>
-                <div class="col-9 d-flex align-items-end px-0"
+                <div class="col-8 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="rank" class="border-bottom border-1">Rank:</label>
                   <select v-model="editable.rank" name="rank" id="rank"
@@ -332,13 +337,13 @@
                     <option value="Legendary">Legendary</option>
                   </select>
                 </div>
-                <div class="col-3 d-flex align-items-end g-0 ps-0"
+                <div class="col-4 d-flex align-items-end g-0 ps-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                  <input type="number" required v-model="editable.weight" name="weight" id="weight"
+                  <input type="text" v-model="editable.weight" name="weight" id="weight"
                     class="form-control py-0 px-1 border-0 border-bottom border-start rounded-0">
                   <label for="height" class="border-bottom border-1">WT</label>
                 </div>
-                <div class="col-9 d-flex align-items-end px-0"
+                <div class="col-8 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="conviction" class="border-bottom border-1">Conviction:</label>
                   <select v-model="editable.conviction" name="conviction" id="conviction"
@@ -347,33 +352,56 @@
                     <option :value="false">False</option>
                   </select>
                 </div>
-                <div class="col-3 d-flex align-items-end px-0">
+                <div class="col-4 d-flex align-items-end px-0">
                   <input type="text" required v-model="editable.bennies" name="bennies" id="bennies" maxlength="10"
                     class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="bennies" class="border-bottom border-1"
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies</label>
                 </div>
+                <div class="col-8 d-flex align-items-end px-0"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <label for="playerCharacter" class="border-bottom border-1">Type:</label>
+                  <select v-model="editable.playerCharacter" name="playerCharacter" id="playerCharacter"
+                    class="form-control py-0 px-1 border-0 border-bottom border-end rounded-0">
+                    <option selected :value="true">Player Character</option>
+                    <option :value="false">Non-Player Character</option>
+                  </select>
+                </div>
+                <div class="col-4 d-flex align-items-end px-0">
+                  <select type="text" v-model="editable.privacy" name="privacy" id="privacy" maxlength="10"
+                    class="form-control p-0 ps-1 border-0 border-bottom border-start rounded-0"
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                    <option selected :value="'Public'">Public</option>
+                    <option :value="'Private'">Private</option>
+                    <option :value="'Deactivated'">Deactivated</option>
+                  </select>
+                  <label for="privacy" class="border-bottom border-1"
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">Privacy</label>
+                </div>
               </div>
               <div class="row mt-4">
                 <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
                   <input type="number" required v-model="editable.pace" name="pace" id="pace"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50"
-                    title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">
+                    class="form-control text-center fw-bold fs-4 p-0 w-50"
+                    title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc."
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="pace" class="fw-bold fs-5"
                     title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.parry" name="parry" id="parry"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50"
-                    title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">
+                    class="form-control text-center fw-bold fs-4 p-0 w-50"
+                    title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons."
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="parry" class="fw-bold fs-5"
                     title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
                   <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
-                    class="form-control text-center fw-bold fs-5 p-0 w-50"
-                    title="Toughness is 2 plus half your character's Vigor attribute.">
+                    class="form-control text-center fw-bold fs-4 p-0 w-50"
+                    title="Toughness is 2 plus half your character's Vigor attribute."
+                    :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <label for="toughness" class="fw-bold fs-5"
                     title="Toughness is 2 plus half your character's Vigor attribute.">Toughness</label>
                 </div>
@@ -417,7 +445,7 @@
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="maxPP" class="fs-4 fw-bold text-danger">MAX PP</label>
                 <input type="number" name="maxPP" id="maxPP" required v-model="editable.maxPowerPoints"
-                  class="form-control w-25 ms-4 fs-5 py-1">
+                  class="form-control w-25 ms-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
               <div class="col-2 d-flex align-items-center justify-content-center">
                 <div
@@ -429,14 +457,15 @@
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
                 <input type="number" name="currentPP" id="currentPP" required v-model="editable.currentPowerPoints"
-                  class="form-control w-25 me-4 fs-5 py-1">
+                  class="form-control w-25 me-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="currentPP" class="fs-4 fw-bold text-danger">CUR. PP</label>
               </div>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-center">
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="wounds" class="fs-4 fw-bold text-danger">WOUNDS</label>
-                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-5 py-1">
+                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-4 py-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -454,7 +483,8 @@
                 </div>
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
-                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-5 py-1">
+                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-4 py-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -465,13 +495,13 @@
             </div>
           </div>
           <div class="row mt-4 ps-3">
-            <div class="row">
+            <div class="row pe-0">
               <div class="col-3 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   POWER
                 </span>
               </div>
-              <div class="col-2 ps-0">
+              <div class="col-1 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   PP
                 </span>
@@ -486,20 +516,20 @@
                   DUR.
                 </span>
               </div>
-              <div class="col-3 ps-1">
+              <div class="col-4 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   EFFECT
                 </span>
               </div>
             </div>
-            <div v-for="p in editable.powers" :key="p.id" class="row pe-0"
+            <div v-for="(p, index) in editable.powers" :key="p.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
               <div class="col-3 border-bottom ps-0">
                 <span class="fs-small">
                   {{ p.name }}
                 </span>
               </div>
-              <div class="col-2 border-bottom ps-0">
+              <div class="col-1 border-bottom ps-0">
                 <span class="fs-small">
                   {{ p.powerPoints }}
                 </span>
@@ -514,11 +544,17 @@
                   {{ p.duration }}
                 </span>
               </div>
-              <div class="col-3 selectable border-bottom px-1" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
-                @click="p.expanded = !p.expanded">
-                <span class="fs-small">
-                  {{ p.description }}
-                </span>
+              <div class="col-4 border-bottom px-0 d-flex">
+                <div class="selectable w-90" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
+                  @click="p.expanded = !p.expanded">
+                  <span class="fs-small">
+                    {{ p.description }}
+                  </span>
+                </div>
+                <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
+                  @click="deletePower(p.name, index)">
+                  <i class="mdi mdi-delete text-danger"></i>
+                </div>
               </div>
             </div>
             <div class="row pe-0">
@@ -531,7 +567,7 @@
             </div>
           </div>
           <div class="row mt-4 ps-3">
-            <div class="row">
+            <div class="row pe-0">
               <div class="col-3 ps-0">
                 <span class="fs-4 fw-bold text-danger">
                   WEAPON
@@ -568,43 +604,49 @@
                 </span>
               </div>
             </div>
-            <div v-for="w in editable.weapons" :key="w.id" class="row pe-0"
+            <div v-for="(w, index) in editable.weapons" :key="w.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
-              <div class="col-3 border-bottom px-1">
+              <div class="col-3 border-bottom ps-0 pe-1">
                 <span class="fs-small">
                   {{ w.name }}
                 </span>
               </div>
-              <div class="col-2 border-bottom px-1">
+              <div class="col-2 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.range }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.damage }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.ap }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.rof }}
                 </span>
               </div>
-              <div class="col-1 border-bottom px-1">
+              <div class="col-1 border-bottom ps-0 pe-1 overflow-hidden ellipsis">
                 <span class="fs-small">
                   {{ w.weight }}
                 </span>
               </div>
-              <div class="col-3 selectable border-bottom ps-0" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
-                @click="w.expanded = !w.expanded">
-                <span class="fs-small">
-                  {{ w.notes }}
-                </span>
+              <div class="col-3 border-bottom d-flex px-0">
+                <div class="selectable w-90" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
+                  @click="w.expanded = !w.expanded">
+                  <span class="fs-small">
+                    {{ w.notes }}
+                  </span>
+                </div>
+                <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
+                  @click="deleteWeapon(w.name, index)">
+                  <i class="mdi mdi-delete text-danger"></i>
+                </div>
               </div>
             </div>
             <div class="row pe-0">
@@ -629,28 +671,27 @@
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 border-start">
           <div class="row">
             <div class="col-12">
               <div v-if="character.picture"
-                class="character-picture shadow d-flex align-items-end justify-content-end selectable p-1"
-                :style="{ backgroundImage: `url(${character.picture})` }" data-bs-target="#characterPictureModal"
-                data-bs-toggle="modal">
-                <button type="button" v-if="theme == 'light'" class="btn btn-dark"
-                  :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'"
-                  data-bs-toggle="modal" data-bs-target="#editCharacterPictureModal">
-                  <i class="mdi mdi-pencil fs-5"></i>
+                class="character-picture border d-flex align-items-end justify-content-between p-1"
+                :style="{ backgroundImage: `url(${character.picture})` }">
+                <button type="button" class="btn picture-btn"
+                  :class="theme == 'light' ? 'btn-light border border-dark' : 'btn-dark border border-light'"
+                  data-bs-target="#characterPictureModal" data-bs-toggle="modal">
+                  <i class="mdi mdi-magnify"></i>
                 </button>
-                <button type="button" v-if="theme !== 'light'" class="btn btn-light"
-                  :class="character.creatorId == user.id ? 'edit-picture-btn btn-dark' : 'd-none'"
+                <button type="button" class="btn picture-btn"
+                  :class="theme == 'light' ? 'btn-light border border-dark' : 'btn-dark border border-light'"
                   data-bs-toggle="modal" data-bs-target="#editCharacterPictureModal">
-                  <i class="mdi mdi-pencil fs-5"></i>
+                  <i class="mdi mdi-image-edit fs-5"></i>
                 </button>
               </div>
               <div v-else class="d-flex align-items-center justify-content-center p-2 mt-2">
                 <button type="button" class="btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'"
                   data-bs-toggle="modal" data-bs-target="#editCharacterPictureModal">
-                  Upload a Picture! <i class="mdi mdi-panorama-variant-outline"></i>
+                  Upload a Picture! <i class="mdi mdi-image"></i>
                 </button>
               </div>
             </div>
@@ -713,17 +754,632 @@
           </div>
         </div>
       </div>
-      <div class="row mt-3 text-end">
-        <div class="col-12">
-          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
-            Save Changes
-          </button>
-        </div>
-      </div>
     </form>
   </div>
   <div v-else class="container-fluid p-3">
-
+    <div class="row mt-1">
+      <div class="col-9 pb-2">
+        <div class="row border-bottom ms-1">
+          <div class="col-6 ps-0 pb-2">
+            <div class="row px-2">
+              <div class="col-12 text-center">
+                <span class="fs-3 fw-bold text-danger">
+                  ATTRIBUTES
+                </span>
+              </div>
+              <!-- SECTION AGILITY -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.agility == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.agility == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.agility == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.agility == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.agility == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="character.agility" type="number"
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-1 ms-1">
+                  <span class="fs-5 fw-bold">
+                    AGILITY
+                  </span>
+                </div>
+              </div>
+              <!-- SECTION SMARTS -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.smarts == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.smarts == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.smarts == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.smarts == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.smarts == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="character.smarts" type="number"
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-1 ms-1">
+                  <span class="fs-5 fw-bold">
+                    SMARTS
+                  </span>
+                </div>
+              </div>
+              <!-- SECTION SPIRIT -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.spirit == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.spirit == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.spirit == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.spirit == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.spirit == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="character.spirit" type="number"
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-1 ms-1">
+                  <span class="fs-5 fw-bold">
+                    SPIRIT
+                  </span>
+                </div>
+              </div>
+              <!-- SECTION STRENGTH -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.strength == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.strength == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.strength == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.strength == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.strength == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="character.strength" type="number"
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-1 ms-1">
+                  <span class="fs-5 fw-bold">
+                    STRENGTH
+                  </span>
+                </div>
+              </div>
+              <!-- SECTION VIGOR -->
+              <div class="col-12 align-items-center justify-content-center g-0 d-flex">
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.vigor == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.vigor == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.vigor == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.vigor == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[character.vigor == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="character.vigor" type="number"
+                    class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-2">
+                  <span class="fs-5 fw-bold">
+                    VIGOR
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row px-2 mt-4">
+              <div class="col-12 text-center">
+                <span class="fs-3 fw-bold text-danger">
+                  SKILLS
+                </span>
+              </div>
+              <div v-for="s in character.skills" :key="s.name"
+                class="col-12 align-items-center justify-content-center g-0 d-flex skill-line">
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[s.die == 4 ? 'fw-bold' : 'opacity-50']">
+                    4
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[s.die == 6 ? 'fw-bold' : 'opacity-50']">
+                    6
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[s.die == 8 ? 'fw-bold' : 'opacity-50']">
+                    8
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[s.die == 10 ? 'fw-bold' : 'opacity-50']">
+                    10
+                  </span>
+                </div>
+                <div class="text-center border attribute-number no-highlight"
+                  :class="[theme == 'light' ? 'border-dark' : '']">
+                  <span :class="[s.die == 12 ? 'fw-bold' : 'opacity-50']">
+                    12
+                  </span>
+                </div>
+                <div class="ms-2 text-center border-bottom attribute-number"
+                  :class="[theme == 'light' ? 'border-dark' : 'border-light']">
+                  <input required v-model="s.die" type="number"
+                    class="fw-bold attribute-input text-danger w-100 h-100 p-0 text-center fs-5" readonly>
+                </div>
+                <div class="col-4 ps-1 d-flex justify-content-between h-100 border-bottom border-1 ms-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  <div class="d-flex align-items-end"
+                    :class="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth' ? 'ellipsis' : 'nowrap'">
+                    <span class="fs-small">
+                      {{ s.name }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 border-start px-4 pb-2">
+            <div class="row mt-4">
+              <div class="col-12 d-flex align-items-end px-0"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <label for="name" class="border-bottom border-1">Name:</label>
+                <span class="p-0 ps-1 border-0 border-bottom rounded-0 flex-grow">
+                  {{ character.name }}
+                </span>
+              </div>
+              <div class="col-9 d-flex align-items-end px-0" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <label for="race" class="border-bottom border-1">Race:</label>
+                <span class="p-0 ps-1 border-0 border-bottom border-end rounded-0 flex-grow">
+                  {{ character.race }}
+                </span>
+              </div>
+              <div class="col-3 d-flex align-items-end g-0 ps-0"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <span class="py-0 px-1 border-0 border-bottom border-start rounded-0 flex-grow">
+                  {{ character.height }}
+                </span>
+                <label for="height" class="border-bottom border-1">HT</label>
+              </div>
+              <div class="col-9 d-flex align-items-end px-0" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <label for="rank" class="border-bottom border-1">Rank:</label>
+                <span class="p-0 ps-1 border-0 border-bottom rounded-0 border-end flex-grow">
+                  {{ character.rank }}
+                </span>
+              </div>
+              <div class="col-3 d-flex align-items-end g-0 ps-0"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <span class="py-0 px-1 border-0 border-bottom border-start rounded-0 flex-grow">
+                  {{ character.weight }}
+                </span>
+                <label for="height" class="border-bottom border-1">WT</label>
+              </div>
+              <div class="col-9 d-flex align-items-end px-0" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <label for="conviction" class="border-bottom border-1">Conviction:</label>
+                <span class="py-0 px-1 border-0 border-bottom border-end rounded-0 flex-grow">
+                  {{ character.conviction }}
+                </span>
+              </div>
+              <div class="col-3 d-flex align-items-end px-0">
+                <span class="p-0 ps-1 border-0 border-bottom border-start rounded-0 flex-grow"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  {{ character.bennies }}
+                </span>
+                <label for="bennies" class="border-bottom border-1"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">Bennies</label>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
+                <span class="text-center fw-bold fs-4 p-0 w-50 border rounded"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  {{ character.pace }}
+                </span>
+                <label for="pace" class="fw-bold fs-5"
+                  title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
+              </div>
+              <div class="col-4 d-flex flex-column align-items-center px-0">
+                <span class="text-center fw-bold fs-4 p-0 w-50 border rounded"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  {{ character.parry }}
+                </span>
+                <label for="parry" class="fw-bold fs-5"
+                  title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
+              </div>
+              <div class="col-4 d-flex flex-column align-items-center px-0">
+                <span class="text-center fw-bold fs-4 p-0 w-50 border rounded"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  {{ character.toughness }}
+                </span>
+                <label for="toughness" class="fw-bold fs-5"
+                  title="Toughness is 2 plus half your character's Vigor attribute.">Toughness</label>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-12 text-center">
+                <span class="fs-3 fw-bold text-danger">
+                  GEAR
+                </span>
+              </div>
+              <div v-for="g in character.gear" :key="g" class="col-12 border-bottom border-1 pe-0 ps-1 pt-1"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                <div class="input-group">
+                  <span class="fs-small d-flex align-items-center flex-grow">
+                    {{ g }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-6 d-flex align-items-center justify-content-center">
+            <div class="col-5 d-flex align-items-center justify-content-end">
+              <label for="maxPP" class="fs-4 fw-bold text-danger">MAX PP</label>
+              <span class="w-25 ms-4 fw-bold fs-4 py-1 text-center border rounded"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                {{ character.maxPowerPoints }}
+              </span>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <div
+                class="bg-dark border border-1 border-dark rounded-circle death-btn-alt d-flex align-items-center justify-content-center"
+                :title="`Rest and regain 5 Power Points up to a maximum of ${character.maxPowerPoints}`">
+                <i class="mdi mdi-sleep fs-1 holy-undo text-light"></i>
+              </div>
+            </div>
+            <div class="col-5 d-flex align-items-center justify-content-start">
+              <span class="w-25 me-4 fw-bold fs-4 py-1 text-center border rounded"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                {{ character.currentPowerPoints }}
+              </span>
+              <label for="currentPP" class="fs-4 fw-bold text-danger">CUR. PP</label>
+            </div>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-center">
+            <div class="col-5 d-flex align-items-center justify-content-center">
+              <label for="wounds" class="fs-4 fw-bold text-danger">WOUNDS</label>
+              <span class="w-25 ms-4 fw-bold fs-4 py-1 text-center border rounded"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                {{ character.wounds }}
+              </span>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <div
+                class="bg-dark border border-1 border-dark rounded-circle death-btn-alt d-flex align-items-center justify-content-center">
+                <i v-if="!character.dead" class="mdi mdi-skull fs-1 skull text-light"></i>
+                <i v-if="character.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
+              </div>
+            </div>
+            <div class="col-5 d-flex align-items-center justify-content-center">
+              <span class="w-25 me-4 fw-bold fs-4 py-1 text-center border rounded"
+                :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                {{ character.fatigue }}
+              </span>
+              <label for="fatigue" class="fs-4 fw-bold text-danger">FATIGUE</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4 ps-3">
+          <div class="row">
+            <div class="col-3 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                POWER
+              </span>
+            </div>
+            <div class="col-2 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                PP
+              </span>
+            </div>
+            <div class="col-2 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                RANGE
+              </span>
+            </div>
+            <div class="col-2 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                DUR.
+              </span>
+            </div>
+            <div class="col-3 ps-1">
+              <span class="fs-4 fw-bold text-danger">
+                EFFECT
+              </span>
+            </div>
+          </div>
+          <div v-for="p in character.powers" :key="p.id" class="row pe-0"
+            :class="theme == 'light' ? 'border-dark' : 'border-light'">
+            <div class="col-3 border-bottom ps-0">
+              <span class="fs-small">
+                {{ p.name }}
+              </span>
+            </div>
+            <div class="col-2 border-bottom ps-0">
+              <span class="fs-small">
+                {{ p.powerPoints }}
+              </span>
+            </div>
+            <div class="col-2 border-bottom ps-0">
+              <span class="fs-small">
+                {{ p.range }}
+              </span>
+            </div>
+            <div class="col-2 border-bottom ps-0">
+              <span class="fs-small">
+                {{ p.duration }}
+              </span>
+            </div>
+            <div class="col-3 selectable border-bottom px-1" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
+              @click="p.expanded = !p.expanded">
+              <span class="fs-small">
+                {{ p.description }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4 ps-3">
+          <div class="row">
+            <div class="col-3 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                WEAPON
+              </span>
+            </div>
+            <div class="col-2 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                RANGE
+              </span>
+            </div>
+            <div class="col-1 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                DMG
+              </span>
+            </div>
+            <div class="col-1 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                AP
+              </span>
+            </div>
+            <div class="col-1 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                ROF
+              </span>
+            </div>
+            <div class="col-1 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                WT
+              </span>
+            </div>
+            <div class="col-3 ps-0">
+              <span class="fs-4 fw-bold text-danger">
+                NOTES
+              </span>
+            </div>
+          </div>
+          <div v-for="w in character.weapons" :key="w.id" class="row pe-0"
+            :class="theme == 'light' ? 'border-dark' : 'border-light'">
+            <div class="col-3 border-bottom px-1">
+              <span class="fs-small">
+                {{ w.name }}
+              </span>
+            </div>
+            <div class="col-2 border-bottom px-1">
+              <span class="fs-small">
+                {{ w.range }}
+              </span>
+            </div>
+            <div class="col-1 border-bottom px-1">
+              <span class="fs-small">
+                {{ w.damage }}
+              </span>
+            </div>
+            <div class="col-1 border-bottom px-1">
+              <span class="fs-small">
+                {{ w.ap }}
+              </span>
+            </div>
+            <div class="col-1 border-bottom px-1">
+              <span class="fs-small">
+                {{ w.rof }}
+              </span>
+            </div>
+            <div class="col-1 border-bottom px-1">
+              <span class="fs-small">
+                {{ w.weight }}
+              </span>
+            </div>
+            <div class="col-3 selectable border-bottom ps-0" :class="w.expanded ? '' : 'overflow-hidden ellipsis'"
+              @click="w.expanded = !w.expanded">
+              <span class="fs-small">
+                {{ w.notes }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div v-if="character.party && character.party.dungeonMasterIds.find(id => id == user.id)" class="row mt-4">
+          <div class="col-12">
+            <span class="fs-3 fw-bold text-danger">
+              SECRET
+            </span>
+          </div>
+          <div class="col-12">
+            <span class="p-1">
+              {{ character.secret }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 border-start">
+        <div class="row">
+          <div class="col-12">
+            <div v-if="character.picture"
+              class="character-picture border d-flex align-items-end justify-content-start p-1"
+              :style="{ backgroundImage: `url(${character.picture})` }">
+              <button type="button" class="btn picture-btn"
+                :class="theme == 'light' ? 'btn-light border border-dark' : 'btn-dark border border-light'"
+                data-bs-target="#characterPictureModal" data-bs-toggle="modal">
+                <i class="mdi mdi-magnify"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <span class="fs-3 fw-bold text-danger">
+              HINDRANCES
+            </span>
+          </div>
+          <div v-for="h in character.hindrances" :key="h" class="col-12">
+            <div class="border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+              <div @click="h.expanded = !h.expanded" class="selectable w-100 px-1"
+                :class="h.expanded ? '' : 'overflow-hidden ellipsis'"
+                :title="h.expanded ? 'Minimize the description of this hindrance!' : 'Expand the description of this hindrance!'">
+                <span class="fs-small">
+                  {{ h.name }} <span class="fs-small">- {{ h.description }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <span class="fs-3 fw-bold text-danger">
+              EDGES & ADVANCES
+            </span>
+          </div>
+          <div v-for="e in character.edges" :key="e" class="col-12">
+            <div class="border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+              <div @click="e.expanded = !e.expanded" class="selectable w-100 px-1"
+                :class="e.expanded ? '' : 'overflow-hidden ellipsis'"
+                :title="e.expanded ? 'Minimize the description of this edge!' : 'Expand the description of this edge!'">
+                <span class="fs-small">
+                  {{ e.name }} <span class="fs-small">- {{ e.description }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- SECTION Add Skill Modal -->
@@ -781,7 +1437,7 @@
           </button>
         </div>
         <div class="col-12">
-          <input type="file" id="picture" name="fileInput" class="form-control" required>
+          <input type="file" id="picture" name="fileInput" accept="image/*" class="form-control" required>
         </div>
         <div class="col-12 text-end mt-3">
           <button type="submit" class="btn" data-bs-dismiss="modal"
@@ -985,7 +1641,7 @@
 
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onUnmounted, ref, watchEffect } from "vue";
 import { AppState } from "../AppState.js";
 import { useRoute } from "vue-router";
 import { charactersService } from "../services/CharactersService.js";
@@ -1009,11 +1665,8 @@ export default {
       }
       if (AppState.character.id) {
         editable.value = { ...AppState.character }
+        document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
       }
-    })
-
-    onMounted(() => {
-      document.title = `EasilySWADE - ${AppState.character.name}`
     })
 
     onUnmounted(() => {
@@ -1144,7 +1797,7 @@ export default {
           if (!picture) {
             throw new Error('This form has no image uploaded into it!')
           }
-          let newPictureURL = await charactersService.updateCharacterPicture(picture,);
+          let newPictureURL = await charactersService.updateCharacterPicture(picture);
           // @ts-ignore
           editable.value.picture = newPictureURL
         } catch (error) {
@@ -1154,6 +1807,7 @@ export default {
       addHindrance() {
         try {
           const hindranceData = hindranceEditable.value
+          // @ts-ignore
           hindranceData.expanded = false
           // @ts-ignore
           editable.value.hindrances.push({ ...hindranceData })
@@ -1175,6 +1829,7 @@ export default {
       addEdge() {
         try {
           const edgeData = edgeEditable.value
+          // @ts-ignore
           edgeData.expanded = false
           // @ts-ignore
           editable.value.edges.push({ ...edgeData })
@@ -1196,6 +1851,7 @@ export default {
       addPower() {
         try {
           const powerData = powerEditable.value
+          // @ts-ignore
           powerData.expanded = false
           // @ts-ignore
           editable.value.powers.push({ ...powerData })
@@ -1207,6 +1863,7 @@ export default {
       addWeapon() {
         try {
           const weaponData = weaponEditable.value
+          // @ts-ignore
           weaponData.expanded = false
           // @ts-ignore
           editable.value.weapons.push({ ...weaponData })
@@ -1217,9 +1874,32 @@ export default {
       },
       restorePowerPoints() {
         try {
+          // @ts-ignore
           editable.value.currentPowerPoints += 5
+          // @ts-ignore
           if (editable.value.currentPowerPoints > editable.value.maxPowerPoints) {
+            // @ts-ignore
             editable.value.currentPowerPoints = editable.value.maxPowerPoints
+          }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      async deletePower(powerName, powerIndex) {
+        try {
+          if (await Pop.confirm(`Are you sure you wish to delete the ${powerName} power?`)) {
+            // @ts-ignore
+            editable.value.powers.splice(powerIndex, 1)
+          }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      async deleteWeapon(weaponName, weaponIndex) {
+        try {
+          if (await Pop.confirm(`Are you sure you wish to delete the ${weaponName} weapon?`)) {
+            // @ts-ignore
+            editable.value.weapons.splice(weaponIndex, 1)
           }
         } catch (error) {
           Pop.error(error.message)
@@ -1276,7 +1956,6 @@ input[type=number] {
 .ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
-
 }
 
 .nowrap {
@@ -1323,12 +2002,12 @@ form::-webkit-scrollbar-thumb {
   flex-basis: auto;
 }
 
-.edit-picture-btn {
+.picture-btn {
   display: none;
 }
 
 .character-picture:hover {
-  .edit-picture-btn {
+  .picture-btn {
     display: block
   }
 }
@@ -1373,6 +2052,12 @@ textarea::-webkit-scrollbar-thumb {
   width: 75px;
   max-width: 100%;
   transition: 0.4s;
+}
+
+.death-btn-alt {
+  height: 75px;
+  width: 75px;
+  max-width: 100%;
 }
 
 .skull {
@@ -1432,5 +2117,9 @@ textarea:valid {
 
 .save-btn {
   position: absolute;
+}
+
+.mh-26 {
+  max-height: 26px !important;
 }
 </style>
