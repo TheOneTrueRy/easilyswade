@@ -1,6 +1,5 @@
 <!-- TODO 
   Background banner, probably gradient, on the hindrances and edges column and around attributes + skills
-  Possibly Border Lines to be separating sections more so everything isn't blending together as much
   MAKE NON-CREATOR NON-FORM VERSION
   UPDATE CREATE CHARACTER PAGE WITH CHANGES ABOVE
 -->
