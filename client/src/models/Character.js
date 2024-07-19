@@ -36,7 +36,7 @@ export class Character {
     this.skills = data.skills || []
     this.dead = data.dead || false
     this.privacy = data.privacy || 'Public'
-    this.playerCharacter = data.playerCharacter || true
+    this.playerCharacter = data.playerCharacter
     this.sheetStyle = data.sheetStyle || 'Default'
     this.lastSaved = data.lastSaved || ''
   }

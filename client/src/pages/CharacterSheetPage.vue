@@ -363,7 +363,7 @@
                   <label for="playerCharacter" class="border-bottom border-1">Type:</label>
                   <select v-model="editable.playerCharacter" name="playerCharacter" id="playerCharacter"
                     class="form-control py-0 px-1 border-0 border-bottom border-end rounded-0">
-                    <option selected :value="true">Player Character</option>
+                    <option :value="true">Player Character</option>
                     <option :value="false">Non-Player Character</option>
                   </select>
                 </div>
