@@ -5,6 +5,12 @@ import { api } from "./AxiosService.js";
 import { supabaseService } from "./SupabaseService.js";
 
 class CharactersService {
+  async searchCharacters(query) {
+    AppState.characters = [];
+    const res = await api.get('api/characters', { params: { name: query.query } })
+    AppState.characters = res.data.map(p => new Character(p))
+  }
+
   async getCharacters() {
     const res = await api.get(`api/characters`)
     AppState.characters = res.data.map(c => new Character(c))

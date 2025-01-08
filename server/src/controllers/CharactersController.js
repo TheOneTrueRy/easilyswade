@@ -8,7 +8,7 @@ export class CharactersController extends BaseController {
   constructor() {
     super('api/characters')
     this.router
-      .get('', this.getAllCharacters)
+      .get('', this.getCharacters)
       .get('/:characterId', this.getCharacterById)
       .get('/:characterId/art', this.getCharacterArt)
       .get('/:characterId/stories', this.getCharacterStories)
@@ -19,9 +19,9 @@ export class CharactersController extends BaseController {
       .delete('/:characterId/delete', this.deleteCharacter)
   }
 
-  async getAllCharacters(req, res, next) {
+  async getCharacters(req, res, next) {
     try {
-      const characters = await charactersService.getAllCharacters()
+      const characters = await charactersService.getCharacters()
       res.send(characters)
     } catch (error) {
       next(error)
