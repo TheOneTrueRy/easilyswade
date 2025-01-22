@@ -9,7 +9,8 @@
       :class="editable.dead ? 'grayscale' : ''">
       <div class="row save-btn">
         <div class="col-12 d-flex justify-content-start">
-          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+          <button id="saveButton" type="submit" class="btn btn-sm submit-btn"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Save Changes
           </button>
         </div>
@@ -476,7 +477,8 @@
                 <div
                   class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
                   @click="// @ts-ignore
-    editable.dead = !editable.dead" :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
+                    editable.dead = !editable.dead"
+                  :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
                   <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull text-light"></i>
                   <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
                 </div>
@@ -544,11 +546,15 @@
                 </span>
               </div>
               <div class="col-4 border-bottom px-0 d-flex">
-                <div class="selectable w-90" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
+                <div class="selectable w-80" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
                   @click="p.expanded = !p.expanded">
                   <span class="fs-small">
                     {{ p.description }}
                   </span>
+                </div>
+                <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
+                  data-bs-toggle="modal" data-bs-target="#editPowerModal" @click="editPowerEditable = p">
+                  <i class="mdi mdi-pencil"></i>
                 </div>
                 <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
                   @click="deletePower(p.name, index)">
@@ -1636,6 +1642,66 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Edit Power Modal -->
+  <Modal id="editPowerModal">
+    <form @submit.prevent="editPower" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Edit the {{ editPowerEditable.name }} power!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Power Name</label>
+          <input v-model="editPowerEditable.name" type="text" name="name" id="name" required class="form-control">
+        </div>
+        <div class="col-6">
+          <label for="rank">Power Rank</label>
+          <select v-model="editPowerEditable.rank" name="rank" id="rank" class="form-control">
+            <option selected value="None">None</option>
+            <option value="Novice">Novice</option>
+            <option value="Seasoned">Seasoned</option>
+            <option value="Veteran">Veteran</option>
+            <option value="Heroic">Heroic</option>
+            <option value="Legendary">Legendary</option>
+          </select>
+        </div>
+        <div class="col-4 mt-2">
+          <label for="powerPoints">Power Points Req.</label>
+          <input v-model="editPowerEditable.powerPoints" type="number" name="powerPoints" id="powerPoints"
+            class="form-control">
+        </div>
+        <div class="col-4 mt-2">
+          <label for="range">Power Range</label>
+          <input v-model="editPowerEditable.range" type="text" name="range" id="range" class="form-control">
+        </div>
+        <div class="col-4 mt-2">
+          <label for="duration">Power Duration</label>
+          <input v-model="editPowerEditable.duration" type="text" name="duration" id="duration" required
+            class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="trappings">Power Trappings</label>
+          <input v-model="editPowerEditable.trappings" type="text" name="trappings" id="trappings" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Power Description</label>
+          <textarea required v-model="editPowerEditable.description" name="description" id="description" rows="10"
+            class="form-control" maxlength="1500"></textarea>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Edit Power
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -1656,6 +1722,7 @@ export default {
     const powerEditable = ref({});
     const weaponEditable = ref({});
     const route = useRoute();
+    const editPowerEditable = ref({});
 
     // eslint-disable-next-line space-before-function-paren
     watchEffect(async () => {
@@ -1679,14 +1746,21 @@ export default {
       edgeEditable,
       powerEditable,
       weaponEditable,
+      editPowerEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
       async saveSheet() {
         try {
+          let saveButton = document.getElementById('saveButton')
+          saveButton.toggleAttribute('disabled');
+          saveButton.innerHTML = `Save Changes <span class="spinner-border spinner-border-sm" role="status">
+  <span class="visually-hidden"></span>
+</span>`
           const sheetData = editable.value
           await charactersService.updateCharacter(sheetData)
-          Pop.success('Successfully saved the character sheet!')
+          saveButton.toggleAttribute('disabled');
+          saveButton.innerHTML = `Save Changes`
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet! Oh no!', error.message)
         }
@@ -1695,6 +1769,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.agility = num;
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1703,6 +1778,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.smarts = num;
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1711,6 +1787,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.spirit = num;
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1719,6 +1796,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.strength = num;
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1727,6 +1805,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.vigor = num;
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1736,6 +1815,7 @@ export default {
           // @ts-ignore
           let skill = editable.value.skills.find(s => s.name == skillName)
           skill.die = die
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to change the die level of that skill! Oh no!', error.message)
         }
@@ -1751,6 +1831,7 @@ export default {
           // @ts-ignore
           editable.value.skills.push({ name: skillData.name, die: skillData.die })
           skillEditable.value = { die: 4 }
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1760,6 +1841,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${skillName} skill?`)) {
             // @ts-ignore
             editable.value.skills.splice(skillIndex, 1)
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete that skill! Oh no!', error.message)
@@ -1776,6 +1858,7 @@ export default {
           editable.value.gear.push(item)
           // @ts-ignore
           document.getElementById('gear').value = ''
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1785,6 +1868,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${gearName} piece of gear?`)) {
             // @ts-ignore
             editable.value.gear.splice(gearIndex, 1)
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete this piece of gear! Oh no!', error.message)
@@ -1799,6 +1883,7 @@ export default {
           let newPictureURL = await charactersService.updateCharacterPicture(picture);
           // @ts-ignore
           editable.value.picture = newPictureURL
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1811,6 +1896,7 @@ export default {
           // @ts-ignore
           editable.value.hindrances.push({ ...hindranceData })
           hindranceEditable.value = {}
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1820,6 +1906,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${hindranceName} hindrance?`)) {
             // @ts-ignore
             editable.value.hindrances.splice(hindranceIndex, 1)
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete this hindrance! Oh no!', error.message)
@@ -1833,6 +1920,7 @@ export default {
           // @ts-ignore
           editable.value.edges.push({ ...edgeData })
           edgeEditable.value = {}
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1842,6 +1930,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${edgeName} edge?`)) {
             // @ts-ignore
             editable.value.edges.splice(edgeIndex, 1)
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempted to delete this edge! Oh no!', error.message)
@@ -1855,6 +1944,7 @@ export default {
           // @ts-ignore
           editable.value.powers.push({ ...powerData })
           powerEditable.value = {}
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1867,6 +1957,7 @@ export default {
           // @ts-ignore
           editable.value.weapons.push({ ...weaponData })
           weaponEditable.value = {}
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1880,6 +1971,7 @@ export default {
             // @ts-ignore
             editable.value.currentPowerPoints = editable.value.maxPowerPoints
           }
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1889,6 +1981,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${powerName} power?`)) {
             // @ts-ignore
             editable.value.powers.splice(powerIndex, 1)
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error(error.message)
@@ -1899,7 +1992,19 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${weaponName} weapon?`)) {
             // @ts-ignore
             editable.value.weapons.splice(weaponIndex, 1)
+            this.saveSheet()
           }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      editPower() {
+        try {
+          // @ts-ignore
+          let powerIndex = editable.value.powers.findIndex(p => p.id == editPowerEditable.value.id)
+          editable.value.powers.splice(powerIndex, 1, editPowerEditable.value)
+          Pop.success(`Edited the ${editPowerEditable.value.name} power.`)
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -2108,6 +2213,10 @@ textarea:valid {
 
 .w-90 {
   width: 90%;
+}
+
+.w-80 {
+  width: 80%;
 }
 
 .w-10 {
