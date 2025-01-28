@@ -382,7 +382,7 @@
               </div>
               <div class="row mt-4">
                 <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
-                  <input type="number" required v-model="editable.pace" name="pace" id="pace"
+                  <input type="text" required v-model="editable.pace" name="pace" id="pace"
                     class="form-control text-center fw-bold fs-4 p-0 w-50"
                     title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc."
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -390,7 +390,7 @@
                     title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
-                  <input type="number" required v-model="editable.parry" name="parry" id="parry"
+                  <input type="text" required v-model="editable.parry" name="parry" id="parry"
                     class="form-control text-center fw-bold fs-4 p-0 w-50"
                     title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons."
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -398,7 +398,7 @@
                     title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
-                  <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
+                  <input type="text" required v-model="editable.toughness" name="toughness" id="toughness"
                     class="form-control text-center fw-bold fs-4 p-0 w-50"
                     title="Toughness is 2 plus half your character's Vigor attribute."
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -415,10 +415,10 @@
                 <div v-for="(g, index) in editable.gear" :key="g" class="col-12 border-bottom border-1 pe-0 ps-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <div class="input-group">
-                    <span class="fs-small d-flex align-items-center flex-grow">
+                    <span class="fs-small d-flex align-items-center flex-grow w-90 pe-1">
                       {{ g }}
                     </span>
-                    <div class="input-group-append selectable">
+                    <div class="input-group-append selectable text-end">
                       <button type="button" class="btn py-0" @click="deleteGear(g, index)"
                         :title="`Delete the '${g}' gear item.`">
                         <i class="mdi mdi-delete text-danger"></i>

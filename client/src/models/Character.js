@@ -12,9 +12,9 @@ export class Character {
     this.weight = data.weight || ''
     this.bennies = data.bennies || 0
     this.conviction = data.conviction || false
-    this.pace = data.pace || 0
-    this.parry = data.parry || 0
-    this.toughness = data.toughness || 0
+    this.pace = data.pace || '0'
+    this.parry = data.parry || '0'
+    this.toughness = data.toughness || '0'
     this.agility = data.agility || 4
     this.smarts = data.smarts || 4
     this.spirit = data.spirit || 4
