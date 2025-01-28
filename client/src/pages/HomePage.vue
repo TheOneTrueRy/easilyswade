@@ -6,13 +6,12 @@
           EasilySWADE
         </span>
       </div>
-      <form
-        @submit.prevent="searchType.value == 'Profiles' ? searchProfiles : searchType.value == 'Characters' ? searchCharacters : searchType.value == 'Parties' ? searchParties : ''"
+      <form @submit.prevent="search"
         class="col-8 offset-2 d-flex justify-content-center align-items-center py-3 fade-in">
         <div class="w-100">
           <label for="query" class="form-label col-2">
             Search for:
-            <select v-model="searchType.value" name="searchSelect" id="searchSelect" class="form-control">
+            <select v-model="searchType" name="searchSelect" id="searchSelect" class="form-control">
               <option selected value="Profiles">
                 Profiles
               </option>
@@ -25,7 +24,7 @@
             </select>
           </label>
           <input v-model="editable.query" type="text" name="query" id="query"
-            :placeholder="searchType.value == 'Profiles' ? 'Profile name...' : searchType.value == 'Characters' ? 'Character name...' : searchType.value == 'Parties' ? 'Party name...' : ''"
+            :placeholder="searchType == 'Profiles' ? 'Profile name...' : searchType == 'Characters' ? 'Character name...' : searchType == 'Parties' ? 'Party name...' : ''"
             class="form-control">
         </div>
       </form>
@@ -44,10 +43,11 @@ import { partiesService } from "../services/PartiesService.js";
 export default {
   setup() {
     const editable = ref({ query: '' })
-    const searchType = ref({ value: 'Profiles' })
+    const searchType = ref('Profiles')
 
     onMounted(() => {
       document.title = 'Home - EasilySwade'
+      console.log(searchType.value)
     })
 
     return {
@@ -81,6 +81,22 @@ export default {
           router.push({ name: 'Search' })
         } catch (error) {
           Pop.error('Experienced an error when attempting to search parties.', error.message)
+        }
+      },
+      search() {
+        try {
+          if (searchType.value == 'Profiles') {
+            // @ts-ignore
+            this.searchProfiles()
+          } else if (searchType.value == 'Characters') {
+            // @ts-ignore
+            this.searchCharacters()
+          } else if (searchType.value == 'Parties') {
+            // @ts-ignore
+            this.searchParties()
+          }
+        } catch (error) {
+          Pop.error('Experienced an error attempted to even search anything at all just kill me')
         }
       }
     }
