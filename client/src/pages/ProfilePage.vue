@@ -137,7 +137,7 @@
 
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Pop from '../utils/Pop.js';
 import { profilesService } from "../services/ProfilesService.js";
@@ -205,6 +205,10 @@ export default {
         getCharactersByProfileId();
         getParties();
       }
+    })
+
+    watch(route, () => {
+      location.reload()
     })
 
     onMounted(() => {
