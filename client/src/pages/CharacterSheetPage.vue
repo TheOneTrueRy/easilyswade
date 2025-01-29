@@ -768,7 +768,7 @@
           </div>
         </div>
         <div class="col-12 text-end">
-          <a class="btn btn-outline-light"
+          <a class="btn" :class="theme == 'light' ? 'btn-outline-dark' : 'btn-outline-light'"
             href="https://udixydcfgbzwwnvpwubp.supabase.co/storage/v1/object/public/sandbox/God/SWADE%20Core%20Rulebook.pdf"
             target="_blank">Rulebook</a>
         </div>
