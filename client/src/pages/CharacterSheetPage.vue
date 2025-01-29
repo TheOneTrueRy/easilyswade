@@ -4,7 +4,7 @@
   UPDATE CREATE CHARACTER PAGE WITH CHANGES ABOVE
 -->
 <template>
-  <div v-if="character.creatorId == user.id" class="py-3" :class="editable.dead ? 'bloody' : ''">
+  <div v-if="character.creatorId == user.id" class="py-2" :class="editable.dead ? 'bloody' : ''">
     <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="saveSheet"
       :class="editable.dead ? 'grayscale' : ''">
       <div class="row save-btn">
@@ -305,7 +305,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 px-4 border-start pb-2">
+            <div class="col-6 px-4 border-start pb-3">
               <div class="row mt-4">
                 <div class="col-12 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -415,9 +415,15 @@
                 <div v-for="(g, index) in editable.gear" :key="g" class="col-12 border-bottom border-1 pe-0 ps-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <div class="input-group">
-                    <span class="fs-small d-flex align-items-center flex-grow w-90 pe-1">
+                    <span class="fs-small d-flex align-items-center flex-grow w-80 pe-1">
                       {{ g }}
                     </span>
+                    <div class="input-group-append selectable text-end">
+                      <button type="button" class="btn py-0" data-bs-toggle="modal" data-bs-target="#editGearModal"
+                        @click="editGearEditable = { index: index, gear: g }" :title="`Edit the '${g}' gear item.`">
+                        <i class="mdi mdi-pencil"></i>
+                      </button>
+                    </div>
                     <div class="input-group-append selectable text-end">
                       <button type="button" class="btn py-0" @click="deleteGear(g, index)"
                         :title="`Delete the '${g}' gear item.`">
@@ -445,7 +451,8 @@
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="maxPP" class="fs-4 fw-bold text-danger">MAX PP</label>
                 <input type="number" name="maxPP" id="maxPP" required v-model="editable.maxPowerPoints"
-                  class="form-control w-25 ms-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  class="form-control w-25 ms-4 fs-4 py-1 text-center"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
               <div class="col-2 d-flex align-items-center justify-content-center">
                 <div
@@ -457,14 +464,16 @@
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
                 <input type="number" name="currentPP" id="currentPP" required v-model="editable.currentPowerPoints"
-                  class="form-control w-25 me-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  class="form-control w-25 me-4 fs-4 py-1 text-center"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="currentPP" class="fs-4 fw-bold text-danger">CUR. PP</label>
               </div>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-center">
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="wounds" class="fs-4 fw-bold text-danger">WOUNDS</label>
-                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-4 py-1"
+                <select v-model="editable.wounds" name="wounds" id="wounds"
+                  class="form-control w-25 ms-4 fs-4 py-1 text-center"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
@@ -484,7 +493,7 @@
                 </div>
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
-                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-4 py-1"
+                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-4 py-1 text-center"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
@@ -757,6 +766,11 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-12 text-end">
+          <a class="btn btn-outline-light"
+            href="https://udixydcfgbzwwnvpwubp.supabase.co/storage/v1/object/public/sandbox/God/SWADE%20Core%20Rulebook.pdf"
+            target="_blank">Rulebook</a>
         </div>
       </div>
     </form>
@@ -1702,6 +1716,32 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Edit Gear Modal -->
+  <Modal id="editGearModal">
+    <form @submit.prevent="editGear" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Edit this piece of gear!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-12">
+          <label for="gear">Gear</label>
+          <input v-model="editGearEditable.gear" type="text" name="gear" id="gear" required class="form-control">
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Edit Gear
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -1723,6 +1763,7 @@ export default {
     const weaponEditable = ref({});
     const route = useRoute();
     const editPowerEditable = ref({});
+    const editGearEditable = ref({ index: 0, gear: "" })
 
     // eslint-disable-next-line space-before-function-paren
     watchEffect(async () => {
@@ -1747,6 +1788,7 @@ export default {
       powerEditable,
       weaponEditable,
       editPowerEditable,
+      editGearEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
@@ -1769,6 +1811,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.agility = num;
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
@@ -1778,6 +1821,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.smarts = num;
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
@@ -1787,6 +1831,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.spirit = num;
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
@@ -1796,6 +1841,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.strength = num;
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
@@ -1805,6 +1851,7 @@ export default {
         try {
           // @ts-ignore
           editable.value.vigor = num;
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
@@ -1815,6 +1862,7 @@ export default {
           // @ts-ignore
           let skill = editable.value.skills.find(s => s.name == skillName)
           skill.die = die
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to change the die level of that skill! Oh no!', error.message)
@@ -1831,6 +1879,7 @@ export default {
           // @ts-ignore
           editable.value.skills.push({ name: skillData.name, die: skillData.die })
           skillEditable.value = { die: 4 }
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1841,6 +1890,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${skillName} skill?`)) {
             // @ts-ignore
             editable.value.skills.splice(skillIndex, 1)
+            // @ts-ignore
             this.saveSheet()
           }
         } catch (error) {
@@ -1858,6 +1908,7 @@ export default {
           editable.value.gear.push(item)
           // @ts-ignore
           document.getElementById('gear').value = ''
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1868,6 +1919,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${gearName} piece of gear?`)) {
             // @ts-ignore
             editable.value.gear.splice(gearIndex, 1)
+            // @ts-ignore
             this.saveSheet()
           }
         } catch (error) {
@@ -1883,6 +1935,7 @@ export default {
           let newPictureURL = await charactersService.updateCharacterPicture(picture);
           // @ts-ignore
           editable.value.picture = newPictureURL
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1896,6 +1949,7 @@ export default {
           // @ts-ignore
           editable.value.hindrances.push({ ...hindranceData })
           hindranceEditable.value = {}
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1906,6 +1960,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${hindranceName} hindrance?`)) {
             // @ts-ignore
             editable.value.hindrances.splice(hindranceIndex, 1)
+            // @ts-ignore
             this.saveSheet()
           }
         } catch (error) {
@@ -1920,6 +1975,7 @@ export default {
           // @ts-ignore
           editable.value.edges.push({ ...edgeData })
           edgeEditable.value = {}
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1930,6 +1986,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${edgeName} edge?`)) {
             // @ts-ignore
             editable.value.edges.splice(edgeIndex, 1)
+            // @ts-ignore
             this.saveSheet()
           }
         } catch (error) {
@@ -1944,6 +2001,7 @@ export default {
           // @ts-ignore
           editable.value.powers.push({ ...powerData })
           powerEditable.value = {}
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1957,6 +2015,7 @@ export default {
           // @ts-ignore
           editable.value.weapons.push({ ...weaponData })
           weaponEditable.value = {}
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1971,6 +2030,7 @@ export default {
             // @ts-ignore
             editable.value.currentPowerPoints = editable.value.maxPowerPoints
           }
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
@@ -1981,6 +2041,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${powerName} power?`)) {
             // @ts-ignore
             editable.value.powers.splice(powerIndex, 1)
+            // @ts-ignore
             this.saveSheet()
           }
         } catch (error) {
@@ -1992,6 +2053,7 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${weaponName} weapon?`)) {
             // @ts-ignore
             editable.value.weapons.splice(weaponIndex, 1)
+            // @ts-ignore
             this.saveSheet()
           }
         } catch (error) {
@@ -2002,8 +2064,23 @@ export default {
         try {
           // @ts-ignore
           let powerIndex = editable.value.powers.findIndex(p => p.id == editPowerEditable.value.id)
+          // @ts-ignore
           editable.value.powers.splice(powerIndex, 1, editPowerEditable.value)
+          // @ts-ignore
           Pop.success(`Edited the ${editPowerEditable.value.name} power.`)
+          // @ts-ignore
+          this.saveSheet()
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      editGear() {
+        try {
+          let gearIndex = editGearEditable.value.index
+          // @ts-ignore
+          editable.value.gear.splice(gearIndex, 1, editGearEditable.value.gear)
+          Pop.success(`Edited the ${editGearEditable.value.gear} item.`)
+          // @ts-ignore
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
