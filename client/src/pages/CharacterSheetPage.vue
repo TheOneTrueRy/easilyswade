@@ -62,15 +62,16 @@
                     <input required v-model="editable.agility" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
+                  <div class="col-4 ps-1 ms-1 d-flex">
                     <span class="fs-5 fw-bold">
                       AGILITY
                     </span>
-                    <span title="Click to Increase Attribute Bonus" v-if="editable.agility == 12"
-                      class="fs-5 fw-bold ms-1 selectable"
-                      @click="editable.agilityBonus >= 5 ? editable.agilityBonus = 0 : editable.agilityBonus += 1">
-                      (+{{ editable.agilityBonus }})
-                    </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.agility == 12" class="fs-5 fw-bold"
+                        @click="editable.agilityBonus >= 5 ? editable.agilityBonus = 0 : editable.agilityBonus += 1">
+                        (+{{ editable.agilityBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION SMARTS -->
@@ -110,15 +111,16 @@
                     <input required v-model="editable.smarts" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
+                  <div class="col-4 ps-1 ms-1 d-flex">
                     <span class="fs-5 fw-bold">
                       SMARTS
                     </span>
-                    <span title="Click to Increase Attribute Bonus" v-if="editable.smarts == 12"
-                      class="fs-5 fw-bold ms-1 selectable"
-                      @click="editable.smartsBonus >= 5 ? editable.smartsBonus = 0 : editable.smartsBonus += 1">
-                      (+{{ editable.smartsBonus }})
-                    </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.smarts == 12" class="fs-5 fw-bold"
+                        @click="editable.smartsBonus >= 5 ? editable.smartsBonus = 0 : editable.smartsBonus += 1">
+                        (+{{ editable.smartsBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION SPIRIT -->
@@ -158,15 +160,16 @@
                     <input required v-model="editable.spirit" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
+                  <div class="col-4 ps-1 ms-1 d-flex">
                     <span class="fs-5 fw-bold">
                       SPIRIT
                     </span>
-                    <span title="Click to Increase Attribute Bonus" v-if="editable.spirit == 12"
-                      class="fs-5 fw-bold ms-1 selectable"
-                      @click="editable.spiritBonus >= 5 ? editable.spiritBonus = 0 : editable.spiritBonus += 1">
-                      (+{{ editable.spiritBonus }})
-                    </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.spirit == 12" class="fs-5 fw-bold"
+                        @click="editable.spiritBonus >= 5 ? editable.spiritBonus = 0 : editable.spiritBonus += 1">
+                        (+{{ editable.spiritBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION STRENGTH -->
@@ -206,15 +209,17 @@
                     <input required v-model="editable.strength" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
+                  <div class="col-4 ps-1 ms-1 d-flex">
                     <span class="fs-5 fw-bold">
                       STRENGTH
                     </span>
-                    <span title="Click to Increase Attribute Bonus" v-if="editable.strength == 12"
-                      class="fs-5 fw-bold ms-1 selectable"
-                      @click="editable.strengthBonus >= 5 ? editable.strengthBonus = 0 : editable.strengthBonus += 1">
-                      (+{{ editable.strengthBonus }})
-                    </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.strength == 12"
+                        class="fs-5 fw-bold"
+                        @click="editable.strengthBonus >= 5 ? editable.strengthBonus = 0 : editable.strengthBonus += 1">
+                        (+{{ editable.strengthBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION VIGOR -->
@@ -254,15 +259,16 @@
                     <input required v-model="editable.vigor" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
+                  <div class="col-4 ps-1 ms-1 d-flex">
                     <span class="fs-5 fw-bold">
                       VIGOR
                     </span>
-                    <span title="Click to Increase Attribute Bonus" v-if="editable.vigor == 12"
-                      class="fs-5 fw-bold ms-1 selectable"
-                      @click="editable.vigorBonus >= 5 ? editable.vigorBonus = 0 : editable.vigorBonus += 1">
-                      (+{{ editable.vigorBonus }})
-                    </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.vigor == 12" class="fs-5 fw-bold"
+                        @click="editable.vigorBonus >= 5 ? editable.vigorBonus = 0 : editable.vigorBonus += 1">
+                        (+{{ editable.vigorBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -273,7 +279,7 @@
                   </span>
                 </div>
                 <div v-for="(s, index) in editable.skills" :key="s.name"
-                  class="col-12 align-items-center justify-content-center g-0 d-flex skill-line">
+                  class="col-12 align-items-end justify-content-center g-0 d-flex skill-line">
                   <div class="text-center border attribute-number selectable no-highlight"
                     :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 4)">
                     <span :class="[s.die == 4 ? 'fw-bold' : 'opacity-50']">
@@ -321,6 +327,12 @@
                       v-if="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth'"
                       type="button" class="btn btn-danger py-0 px-1 delete-skill mh-26 d-none rounded-0"
                       @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can mh-26"></i></button>
+                    <div class="ms-1 hover-btn d-flex align-items-center">
+                      <span v-if="s.die == 12" class="fs-small"
+                        @click="!s.dieBonus ? s.dieBonus = 1 : s.dieBonus >= 5 ? s.dieBonus = 0 : s.dieBonus += 1">
+                        (+{{ s.dieBonus || 0 }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div class="col-8 offset-2 rounded selectable text-center mt-2 border"
@@ -2331,5 +2343,18 @@ textarea:valid {
 
 .mh-26 {
   max-height: 26px !important;
+}
+
+.hover-btn {
+  transition: 0.4s;
+}
+
+.hover-btn:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.hover-btn:active {
+  transform: scale(0.95);
 }
 </style>
