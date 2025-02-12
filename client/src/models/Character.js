@@ -20,6 +20,11 @@ export class Character {
     this.spirit = data.spirit || 4
     this.strength = data.strength || 4
     this.vigor = data.vigor || 4
+    this.agilityBonus = data.agilityBonus || 0
+    this.smartsBonus = data.smartsBonus || 0
+    this.spiritBonus = data.spiritBonus || 0
+    this.strengthBonus = data.strengthBonus || 0
+    this.vigorBonus = data.vigorBonus || 0
     this.fatigue = data.fatigue || 0
     this.wounds = data.wounds || 0
     this.picture = data.picture || ''

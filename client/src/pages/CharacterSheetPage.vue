@@ -66,6 +66,11 @@
                     <span class="fs-5 fw-bold">
                       AGILITY
                     </span>
+                    <span title="Click to Increase Attribute Bonus" v-if="editable.agility == 12"
+                      class="fs-5 fw-bold ms-1 selectable"
+                      @click="editable.agilityBonus >= 5 ? editable.agilityBonus = 0 : editable.agilityBonus += 1">
+                      (+{{ editable.agilityBonus }})
+                    </span>
                   </div>
                 </div>
                 <!-- SECTION SMARTS -->
@@ -108,6 +113,11 @@
                   <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       SMARTS
+                    </span>
+                    <span title="Click to Increase Attribute Bonus" v-if="editable.smarts == 12"
+                      class="fs-5 fw-bold ms-1 selectable"
+                      @click="editable.smartsBonus >= 5 ? editable.smartsBonus = 0 : editable.smartsBonus += 1">
+                      (+{{ editable.smartsBonus }})
                     </span>
                   </div>
                 </div>
@@ -152,6 +162,11 @@
                     <span class="fs-5 fw-bold">
                       SPIRIT
                     </span>
+                    <span title="Click to Increase Attribute Bonus" v-if="editable.spirit == 12"
+                      class="fs-5 fw-bold ms-1 selectable"
+                      @click="editable.spiritBonus >= 5 ? editable.spiritBonus = 0 : editable.spiritBonus += 1">
+                      (+{{ editable.spiritBonus }})
+                    </span>
                   </div>
                 </div>
                 <!-- SECTION STRENGTH -->
@@ -195,6 +210,11 @@
                     <span class="fs-5 fw-bold">
                       STRENGTH
                     </span>
+                    <span title="Click to Increase Attribute Bonus" v-if="editable.strength == 12"
+                      class="fs-5 fw-bold ms-1 selectable"
+                      @click="editable.strengthBonus >= 5 ? editable.strengthBonus = 0 : editable.strengthBonus += 1">
+                      (+{{ editable.strengthBonus }})
+                    </span>
                   </div>
                 </div>
                 <!-- SECTION VIGOR -->
@@ -237,6 +257,11 @@
                   <div class="col-4 ps-1 ms-1">
                     <span class="fs-5 fw-bold">
                       VIGOR
+                    </span>
+                    <span title="Click to Increase Attribute Bonus" v-if="editable.vigor == 12"
+                      class="fs-5 fw-bold ms-1 selectable"
+                      @click="editable.vigorBonus >= 5 ? editable.vigorBonus = 0 : editable.vigorBonus += 1">
+                      (+{{ editable.vigorBonus }})
                     </span>
                   </div>
                 </div>
@@ -1237,7 +1262,7 @@
               <span class="fs-small">
                 {{ p.powerPoints }}
               </span>
-            </div>
+            </div>``
             <div class="col-2 border-bottom ps-0">
               <span class="fs-small">
                 {{ p.range }}
