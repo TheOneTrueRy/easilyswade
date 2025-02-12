@@ -328,7 +328,7 @@
                       type="button" class="btn btn-danger py-0 px-1 delete-skill mh-26 d-none rounded-0"
                       @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can mh-26"></i></button>
                     <div class="ms-1 hover-btn d-flex align-items-center">
-                      <span v-if="s.die == 12" class="fs-small"
+                      <span title="Click to increase skill bonus" v-if="s.die == 12" class="fs-small"
                         @click="!s.dieBonus ? s.dieBonus = 1 : s.dieBonus >= 5 ? s.dieBonus = 0 : s.dieBonus += 1">
                         (+{{ s.dieBonus || 0 }})
                       </span>
