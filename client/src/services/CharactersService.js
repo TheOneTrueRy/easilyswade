@@ -9,7 +9,8 @@ class CharactersService {
     AppState.characters = [];
     const res = await api.get('api/characters', { params: { name: query.query } })
     let searchedCharacters = res.data.map(c => new Character(c))
-    AppState.characters = searchedCharacters.filter(c => c.privacy == 'Public')
+    logger.log(searchedCharacters)
+    AppState.characters = searchedCharacters.filter(c => c.privacy == 'Public' || c.creatorId == AppState.user.id)
   }
 
   async getCharacters() {

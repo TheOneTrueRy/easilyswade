@@ -55,20 +55,20 @@ export default {
       searchType,
       async searchProfiles() {
         try {
-          const query = editable.value
-          await profilesService.searchProfiles(query)
+          const profileQuery = editable.value
+          await profilesService.searchProfiles(profileQuery)
           editable.value = { query: '' }
-          router.push({ name: 'Search' })
+          router.push({ name: 'Search', query: { profileName: profileQuery.query } })
         } catch (error) {
           Pop.error('Experienced an error when attempting to search profiles.', error.message)
         }
       },
       async searchCharacters() {
         try {
-          const query = editable.value
-          await charactersService.searchCharacters(query)
+          const characterQuery = editable.value
+          await charactersService.searchCharacters(characterQuery)
           editable.value = { query: '' }
-          router.push({ name: 'Search' })
+          router.push({ name: 'Search', query: { characterName: characterQuery.query } })
         } catch (error) {
           Pop.error('Experienced an error when attempting to search characters.', error.message)
         }

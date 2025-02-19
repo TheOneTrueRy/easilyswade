@@ -7,10 +7,14 @@ class CharactersService {
     return character
   }
 
-  async getCharacters() {
-    let characters = await dbContext.Character.find()
-      .populate('creator', 'name picture')
-    return characters
+  async searchCharacters(name = '') {
+    const filter = new RegExp(name, 'ig')
+    return await dbContext.Character
+      .aggregate([{
+        $match: { name: filter }
+      }])
+      .collation({ locale: 'en_US', strength: 1 })
+      .exec()
   }
 
   async getCharacterById(characterId) {

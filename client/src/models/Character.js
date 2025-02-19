@@ -1,6 +1,6 @@
 export class Character {
   constructor(data) {
-    this.id = data.id
+    this.id = data.id || data._id
     this.creatorId = data.creatorId
     this.partyId = data.partyId
     this.creator = data.creator

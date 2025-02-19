@@ -755,7 +755,7 @@
             </div>
             <div v-for="(h, index) in editable.hindrances" :key="h" class="col-12">
               <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                <div @click="h.expanded = !h.expanded" class="selectable w-90 px-1"
+                <div @click="h.expanded = !h.expanded" class="selectable w-80 px-1"
                   :class="h.expanded ? '' : 'overflow-hidden ellipsis'"
                   :title="h.expanded ? 'Minimize the description of this hindrance!' : 'Expand the description of this hindrance!'">
                   <span class="fs-small">
@@ -763,7 +763,12 @@
                   </span>
                 </div>
                 <div class="input-group-append selectable w-10 d-flex align-items-center justify-content-center"
-                  @click="deleteHindrance(h.name, index)" :title="`Delete the '${h.name}' gear item.`">
+                  data-bs-toggle="modal" data-bs-target="#editHindranceModal" @click="editHindranceEditable = h"
+                  :title="`Edit the '${h.name}' hindrance.`">
+                  <i class="mdi mdi-pencil"></i>
+                </div>
+                <div class="input-group-append selectable w-10 d-flex align-items-center justify-content-center"
+                  @click="deleteHindrance(h.name, index)" :title="`Delete the '${h.name}' hindrance.`">
                   <i class="mdi mdi-delete text-danger"></i>
                 </div>
               </div>
@@ -1779,6 +1784,38 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Edit Hindrance -->
+  <Modal id="editHindranceModal">
+    <form @submit.prevent="editHindrance" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Edit the {{ editHindranceEditable.name }} hindrance!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Hindrance Name</label>
+          <input type="text" required v-model="editHindranceEditable.name" name="name" id="name" minlength="2"
+            maxlength="60" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Hindrance Description</label>
+          <textarea v-model="editHindranceEditable.description" name="description" id="description" rows="10"
+            maxlength="2000" class="form-control"></textarea>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Save Hindrance
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
@@ -1800,6 +1837,8 @@ export default {
     const weaponEditable = ref({});
     const route = useRoute();
     const editPowerEditable = ref({});
+    const editHindranceEditable = ref({});
+    const editEdgeEditable = ref({});
     const editGearEditable = ref({ index: 0, gear: "" })
 
     // eslint-disable-next-line space-before-function-paren
@@ -1826,6 +1865,8 @@ export default {
       weaponEditable,
       editPowerEditable,
       editGearEditable,
+      editHindranceEditable,
+      editEdgeEditable,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),

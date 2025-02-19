@@ -21,7 +21,7 @@ export class CharactersController extends BaseController {
 
   async getCharacters(req, res, next) {
     try {
-      const characters = await charactersService.getCharacters()
+      const characters = await charactersService.searchCharacters(req.query.name)
       res.send(characters)
     } catch (error) {
       next(error)
