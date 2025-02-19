@@ -1878,6 +1878,7 @@ export default {
   <span class="visually-hidden"></span>
 </span>`
           const sheetData = editable.value
+          sheetData.lastSaved = new Date()
           await charactersService.updateCharacter(sheetData)
           saveButton.toggleAttribute('disabled');
           saveButton.innerHTML = `Save Changes`
@@ -2158,6 +2159,20 @@ export default {
           // @ts-ignore
           editable.value.gear.splice(gearIndex, 1, editGearEditable.value.gear)
           Pop.success(`Edited the ${editGearEditable.value.gear} item.`)
+          // @ts-ignore
+          this.saveSheet()
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      editHindrance() {
+        try {
+          // @ts-ignore
+          let hindranceIndex = editable.value.hindrances.findIndex(h => h.id == editHindranceEditable.value.id)
+          // @ts-ignore
+          editable.value.hindrances.splice(hindranceIndex, 1, editHindranceEditable.value)
+          // @ts-ignore
+          Pop.success(`Edited the ${editHindranceEditable.value.name} hindrance.`)
           // @ts-ignore
           this.saveSheet()
         } catch (error) {
