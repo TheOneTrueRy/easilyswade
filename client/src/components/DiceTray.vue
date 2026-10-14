@@ -82,13 +82,6 @@
         </div>
       </div>
 
-      <!-- Recent rolls from the whole party -->
-      <details v-if="rolls.length" class="mt-2">
-        <summary class="fs-small">Recent rolls</summary>
-        <div v-for="r in rolls.slice(0, 5)" :key="r.id" class="fs-small recent-roll">
-          <b>{{ r.characterName }}</b>: {{ r.description }} = <b>{{ r.total }}</b>
-        </div>
-      </details>
     </div>
 
     <div class="d-flex gap-2 mt-2">
@@ -152,7 +145,6 @@ export default {
       dieName,
       tray: computed(() => AppState.diceTray),
       lastRoll: computed(() => AppState.lastRoll),
-      rolls: computed(() => AppState.rolls),
       openTray() {
         diceService.openTray()
       },
@@ -315,11 +307,6 @@ export default {
   font-weight: bold;
   min-width: 2.5ch;
   text-align: center;
-}
-
-.recent-roll {
-  border-bottom: 1px solid var(--bs-border-color);
-  padding: 2px 0;
 }
 
 // NOTE phones + tablets use the full width of the bottom of the screen

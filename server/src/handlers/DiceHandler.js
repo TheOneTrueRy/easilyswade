@@ -1,4 +1,5 @@
 import { diceService } from '../services/DiceService'
+import { partyChatService } from '../services/PartyChatService'
 import { SocketHandler } from '../utils/SocketHandler'
 
 export class DiceHandler extends SocketHandler {
@@ -15,9 +16,14 @@ export class DiceHandler extends SocketHandler {
 
   async onRollDice(rollData) {
     try {
-      const { roll, recipientIds } = await diceService.rollDice(rollData, this.user.id)
-      // NOTE every user joins a room named after their account id when they authenticate
-      this.io.to(recipientIds).emit('DICE_ROLLED', roll)
+      const { roll, character } = await diceService.rollDice(rollData, this.user.id)
+      const message = await partyChatService.recordRoll(character, roll)
+      // NOTE the party hears about the roll through its room, which only the sockets on a party member's sheet are in
+      if (message.partyId && this.socket.data.partyId == String(message.partyId)) {
+        this.io.to(partyChatService.roomName(message.partyId)).emit('PARTY_MESSAGE', message)
+      } else {
+        this.socket.emit('PARTY_MESSAGE', message)
+      }
     } catch (error) {
       // NOTE async errors skip the try catch in SocketHandler.on so they are sent back here
       this.socket.emit('error', { message: error.message })

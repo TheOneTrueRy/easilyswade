@@ -6,6 +6,7 @@ import { StorySchema } from "../models/Story.js";
 import { ArtSchema } from "../models/Art.js";
 import { PartyInviteSchema } from "../models/PartyInvite.js";
 import { JoinRequestSchema } from "../models/JoinRequest.js";
+import { PartyMessageSchema } from "../models/PartyMessage.js";
 
 class DbContext {
   Account = mongoose.model('Account', AccountSchema);
@@ -15,6 +16,7 @@ class DbContext {
   Story = mongoose.model('Story', StorySchema);
   PartyInvite = mongoose.model('PartyInvite', PartyInviteSchema);
   JoinRequest = mongoose.model('JoinRequest', JoinRequestSchema);
+  PartyMessage = mongoose.model('PartyMessage', PartyMessageSchema);
 }
 
 export const dbContext = new DbContext()

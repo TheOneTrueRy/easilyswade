@@ -1465,6 +1465,9 @@
   <!-- SECTION Dice Tray, only the creator rolls for their character -->
   <DiceTray v-if="canEdit && character?.id" :character-id="character.id" />
 
+  <!-- SECTION Party Chat, only for the creator of a character that's in a party, being here is what puts them in the party's chat -->
+  <PartyChat v-if="canEdit && character?.id && character.partyId" :character-id="character.id" />
+
   <!-- SECTION Add Skill Modal -->
   <Modal id="addSkillModal">
     <form @submit.prevent="addSkill" class="container-fluid">
@@ -1850,6 +1853,7 @@ import Pop from "../utils/Pop.js";
 import Modal from "../components/Modal.vue";
 import MobileSheet from "../components/sheet/MobileSheet.vue";
 import DiceTray from "../components/DiceTray.vue";
+import PartyChat from "../components/PartyChat.vue";
 import { diceService } from "../services/DiceService.js";
 import { useIsMobile } from "../utils/Viewport.js";
 
@@ -2279,7 +2283,7 @@ export default {
     }
   },
 
-  components: { Modal, MobileSheet, DiceTray }
+  components: { Modal, MobileSheet, DiceTray, PartyChat }
 }
 </script>
 

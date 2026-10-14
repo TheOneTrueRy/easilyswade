@@ -29,8 +29,10 @@ export const AppState = reactive({
 
   theme: null,
 
-  // NOTE the dice tray holds the roll being built, rolls is every roll we've heard about (newest first) and lastRoll is the one the user just made
+  // NOTE the dice tray holds the roll being built and lastRoll is the one the user just made
   diceTray: { open: false, pool: [], modifier: 0, ace: false, rolling: false },
-  rolls: [],
-  lastRoll: null
+  lastRoll: null,
+
+  // NOTE the chatroom of the party that the character sheet being viewed is in, only filled while on that sheet
+  partyChat: { characterId: null, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false }
 })

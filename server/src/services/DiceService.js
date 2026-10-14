@@ -13,7 +13,7 @@ class DiceService {
    * Rolls a pool of dice for one of the requestor's characters.
    * @param {{ characterId: string, dice: { label: string, sides: number, bonus: number }[], modifier: number, ace: boolean }} rollData
    * @param {string} requestorId The id of the account asking for the roll.
-   * @returns {Promise<{ roll: any, recipientIds: string[] }>} The finished roll and the ids of every account that should hear about it.
+   * @returns {Promise<{ roll: any, character: any }>} The finished roll and the character that made it.
    */
   async rollDice(rollData, requestorId) {
     if (!rollData) {
@@ -35,8 +35,7 @@ class DiceService {
       creatorId: String(character.creatorId),
       rolledAt: new Date()
     }
-    const recipientIds = await this.getRecipientIds(character)
-    return { roll, recipientIds }
+    return { roll, character }
   }
 
   /**
@@ -92,27 +91,6 @@ class DiceService {
       throw new BadRequest(`The ${name} must be a whole number from ${min} to ${max}!`)
     }
     return number
-  }
-
-  /**
-   * Everyone who should hear about a roll: the character's creator, and if the character is in a party,
-   * the party's creator, its DMs, and the creators of every other character in the party.
-   * @returns {Promise<string[]>} Account ids, which are also the socket rooms each user joins.
-   */
-  async getRecipientIds(character) {
-    const recipientIds = new Set([String(character.creatorId)])
-    if (character.partyId) {
-      const party = await dbContext.Party.findById(character.partyId)
-      if (party) {
-        recipientIds.add(String(party.creatorId))
-        party.dungeonMasterIds.forEach(id => recipientIds.add(String(id)))
-        const partyCharacters = await dbContext.Character
-          .find({ $or: [{ partyId: party._id }, { _id: { $in: party.characterIds } }] })
-          .select('creatorId')
-        partyCharacters.forEach(c => recipientIds.add(String(c.creatorId)))
-      }
-    }
-    return [...recipientIds]
   }
 }
 
