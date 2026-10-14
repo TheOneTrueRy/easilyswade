@@ -3,15 +3,17 @@
     <!-- SECTION Attributes -->
     <div class="sheet-heading text-center mb-2">ATTRIBUTES</div>
     <div v-for="a in attributes" :key="a.field" class="sheet-card mb-2">
-      <div class="trait-row" :class="{ selectable: canEdit }" @click="canEdit && toggleOpen(a.field)">
+      <div class="trait-row" :class="{ selectable: canEdit, 'roll-target': rolling }"
+        @click="pickTrait(a.field, a.label, sheet[a.field], sheet[a.field] == 12 ? sheet[`${a.field}Bonus`] : 0)">
         <span class="fs-5 fw-bold">{{ a.label }}</span>
         <span class="trait-die">
           d{{ sheet[a.field] }}<span v-if="sheet[a.field] == 12 && sheet[`${a.field}Bonus`]">+{{
             sheet[`${a.field}Bonus`] }}</span>
-          <i v-if="canEdit" class="mdi text-body fs-5 ms-1" :class="open == a.field ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+          <i v-if="rolling" class="mdi mdi-dice-d20 text-body fs-5 ms-1"></i>
+          <i v-else-if="canEdit" class="mdi text-body fs-5 ms-1" :class="open == a.field ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
         </span>
       </div>
-      <div v-if="canEdit && open == a.field" class="px-3 pb-3">
+      <div v-if="canEdit && !rolling && open == a.field" class="px-3 pb-3">
         <div class="d-flex gap-2">
           <button v-for="die in dice" :key="die" type="button" class="chip" :class="{ active: sheet[a.field] == die }"
             @click="$emit('update-field', a.field, die)">
@@ -38,14 +40,16 @@
     <!-- SECTION Skills -->
     <div class="sheet-heading text-center mt-4 mb-2">SKILLS</div>
     <div v-for="(s, index) in sheet.skills" :key="s.name" class="sheet-card mb-2">
-      <div class="trait-row" :class="{ selectable: canEdit }" @click="canEdit && toggleOpen(`skill-${s.name}`)">
+      <div class="trait-row" :class="{ selectable: canEdit, 'roll-target': rolling }"
+        @click="pickTrait(`skill-${s.name}`, s.name, s.die, s.die == 12 ? s.dieBonus : 0)">
         <span class="fs-5 overflow-hidden clip-text">{{ s.name }}</span>
         <span class="trait-die text-nowrap">
           d{{ s.die }}<span v-if="s.die == 12 && s.dieBonus">+{{ s.dieBonus }}</span>
-          <i v-if="canEdit" class="mdi text-body fs-5 ms-1" :class="open == `skill-${s.name}` ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+          <i v-if="rolling" class="mdi mdi-dice-d20 text-body fs-5 ms-1"></i>
+          <i v-else-if="canEdit" class="mdi text-body fs-5 ms-1" :class="open == `skill-${s.name}` ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
         </span>
       </div>
-      <div v-if="canEdit && open == `skill-${s.name}`" class="px-3 pb-3">
+      <div v-if="canEdit && !rolling && open == `skill-${s.name}`" class="px-3 pb-3">
         <div class="d-flex gap-2">
           <button v-for="die in dice" :key="die" type="button" class="chip" :class="{ active: s.die == die }"
             @click="$emit('update-skill', s.name, 'die', die)">
@@ -81,7 +85,10 @@
 
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { AppState } from '../../AppState.js';
+import { diceService } from '../../services/DiceService.js';
+import Pop from '../../utils/Pop.js';
 
 export default {
   props: {
@@ -101,12 +108,14 @@ export default {
 
   emits: ['update-field', 'update-skill', 'delete-skill'],
 
-  setup() {
+  setup(props) {
     // NOTE which attribute/skill is expanded into its die picker, only one at a time
     const open = ref('')
 
     return {
       open,
+      // NOTE while the dice tray is open, tapping a trait adds its die to the roll instead of opening its editor
+      rolling: computed(() => AppState.diceTray.open),
       dice: [4, 6, 8, 10, 12],
       attributes: [
         { field: 'agility', label: 'Agility' },
@@ -117,8 +126,17 @@ export default {
       ],
       // NOTE same skills the desktop sheet refuses to delete
       coreSkills: ['Athletics', 'Common Knowledge', 'Notice', 'Persuasion', 'Stealth'],
-      toggleOpen(key) {
-        open.value = open.value == key ? '' : key
+      pickTrait(key, label, sides, bonus) {
+        try {
+          if (AppState.diceTray.open) {
+            return diceService.addToPool(label, sides, bonus)
+          }
+          if (props.canEdit) {
+            open.value = open.value == key ? '' : key
+          }
+        } catch (error) {
+          Pop.error(error.message)
+        }
       }
     }
   }

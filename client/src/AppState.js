@@ -27,5 +27,10 @@ export const AppState = reactive({
   sentJoinRequests: [],
   receivedJoinRequests: [],
 
-  theme: null
+  theme: null,
+
+  // NOTE the dice tray holds the roll being built, rolls is every roll we've heard about (newest first) and lastRoll is the one the user just made
+  diceTray: { open: false, pool: [], modifier: 0, ace: false, rolling: false },
+  rolls: [],
+  lastRoll: null
 })

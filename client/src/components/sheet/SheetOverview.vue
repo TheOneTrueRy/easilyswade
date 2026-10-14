@@ -76,7 +76,8 @@
     <!-- SECTION Attributes at a glance, edit them on the Traits screen -->
     <div class="sheet-card p-2 mb-3">
       <div class="d-flex justify-content-between text-center">
-        <div v-for="a in attributes" :key="a.field" class="flex-fill">
+        <div v-for="a in attributes" :key="a.field" class="flex-fill rounded" :class="{ 'roll-target': rolling }"
+          @click="rollAttribute(a)">
           <div class="fs-5 fw-bold accent">
             d{{ sheet[a.field] }}<span v-if="sheet[a.field] == 12 && sheet[`${a.field}Bonus`]">+{{
               sheet[`${a.field}Bonus`] }}</span>
@@ -99,6 +100,9 @@
 
 <script>
 import { computed } from 'vue';
+import { AppState } from '../../AppState.js';
+import { diceService } from '../../services/DiceService.js';
+import Pop from '../../utils/Pop.js';
 
 export default {
   props: {
@@ -128,12 +132,23 @@ export default {
         { field: 'toughness', label: 'Toughness', title: "Toughness is 2 plus half your character's Vigor attribute." }
       ],
       attributes: [
-        { field: 'agility', short: 'AGI' },
-        { field: 'smarts', short: 'SMA' },
-        { field: 'spirit', short: 'SPI' },
-        { field: 'strength', short: 'STR' },
-        { field: 'vigor', short: 'VIG' }
+        { field: 'agility', label: 'Agility', short: 'AGI' },
+        { field: 'smarts', label: 'Smarts', short: 'SMA' },
+        { field: 'spirit', label: 'Spirit', short: 'SPI' },
+        { field: 'strength', label: 'Strength', short: 'STR' },
+        { field: 'vigor', label: 'Vigor', short: 'VIG' }
       ],
+      // NOTE while the dice tray is open, tapping an attribute adds its die to the roll
+      rolling: computed(() => AppState.diceTray.open),
+      rollAttribute(attribute) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          const die = props.sheet[attribute.field]
+          diceService.addToPool(attribute.label, die, die == 12 ? props.sheet[`${attribute.field}Bonus`] : 0)
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
       wounds: computed(() => Number(props.sheet.wounds) || 0),
       fatigue: computed(() => Number(props.sheet.fatigue) || 0),
       // NOTE bennies is a free text field on the desktop sheet, anything that isn't a number counts as 0

@@ -1,7 +1,8 @@
 <template>
   <div class="px-3 pt-3">
     <div class="sheet-heading text-center mb-2">WEAPONS</div>
-    <div v-for="(w, index) in sheet.weapons" :key="w.id || w.name" class="sheet-card p-3 mb-2">
+    <div v-for="(w, index) in sheet.weapons" :key="w.id || w.name" class="sheet-card p-3 mb-2"
+      :class="{ 'roll-target': rolling }" @click="rollDamage(w)">
       <div class="d-flex align-items-start justify-content-between">
         <span class="fs-4 fw-bold lh-sm overflow-hidden pe-2">{{ w.name }}</span>
         <span class="fs-4 fw-bold accent text-nowrap" title="Damage">{{ w.damage }}</span>
@@ -14,12 +15,12 @@
           <span class="sheet-badge">WT {{ w.weight || 0 }}</span>
         </div>
         <button v-if="canEdit" type="button" class="icon-btn flex-shrink-0" :title="`Delete the '${w.name}' weapon.`"
-          @click="$emit('delete-weapon', w.name, index)">
+          @click.stop="$emit('delete-weapon', w.name, index)">
           <i class="mdi mdi-delete accent"></i>
         </button>
       </div>
       <div v-if="w.notes" class="mt-1 selectable" :class="expanded.includes(index) ? '' : 'clamp-2'"
-        @click="toggleExpanded(index)">
+        @click.stop="toggleExpanded(index)">
         {{ w.notes }}
       </div>
     </div>
@@ -35,7 +36,10 @@
 
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { AppState } from '../../AppState.js';
+import { diceService } from '../../services/DiceService.js';
+import Pop from '../../utils/Pop.js';
 
 export default {
   props: {
@@ -55,12 +59,23 @@ export default {
 
   emits: ['delete-weapon'],
 
-  setup() {
+  setup(props) {
     // NOTE indexes of the weapons whose notes are fully shown
     const expanded = ref([])
 
     return {
       expanded,
+      // NOTE while the dice tray is open, tapping a weapon adds its damage to the roll
+      rolling: computed(() => AppState.diceTray.open),
+      rollDamage(weapon) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          const strength = props.sheet.strength
+          diceService.addDamage(weapon.name, weapon.damage, { sides: strength, bonus: strength == 12 ? props.sheet.strengthBonus : 0 })
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
       toggleExpanded(index) {
         const i = expanded.value.indexOf(index)
         i == -1 ? expanded.value.push(index) : expanded.value.splice(i, 1)

@@ -77,7 +77,8 @@
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
                   <div class="col-4 ps-1 ms-1 d-flex">
-                    <span class="fs-5 fw-bold">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Agility', 'agility')">
                       AGILITY
                     </span>
                     <div class="ms-2 hover-btn">
@@ -126,7 +127,8 @@
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
                   <div class="col-4 ps-1 ms-1 d-flex">
-                    <span class="fs-5 fw-bold">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Smarts', 'smarts')">
                       SMARTS
                     </span>
                     <div class="ms-2 hover-btn">
@@ -175,7 +177,8 @@
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
                   <div class="col-4 ps-1 ms-1 d-flex">
-                    <span class="fs-5 fw-bold">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Spirit', 'spirit')">
                       SPIRIT
                     </span>
                     <div class="ms-2 hover-btn">
@@ -224,7 +227,8 @@
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
                   <div class="col-4 ps-1 ms-1 d-flex">
-                    <span class="fs-5 fw-bold">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Strength', 'strength')">
                       STRENGTH
                     </span>
                     <div class="ms-2 hover-btn">
@@ -274,7 +278,8 @@
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
                   <div class="col-4 ps-1 ms-1 d-flex">
-                    <span class="fs-5 fw-bold">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Vigor', 'vigor')">
                       VIGOR
                     </span>
                     <div class="ms-2 hover-btn">
@@ -333,7 +338,7 @@
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
                     <div class="d-flex align-items-end"
                       :class="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth' ? 'ellipsis' : 'nowrap'">
-                      <span class="fs-small">
+                      <span class="fs-small" :class="{ 'roll-target': rollMode }" @click="addSkillToRoll(s)">
                         {{ s.name }}
                       </span>
                     </div>
@@ -672,7 +677,7 @@
             <div v-for="(w, index) in editable.weapons" :key="w.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
               <div class="col-3 border-bottom ps-0 pe-1">
-                <span class="fs-small">
+                <span class="fs-small" :class="{ 'roll-target': rollMode }" @click="addWeaponToRoll(w)">
                   {{ w.name }}
                 </span>
               </div>
@@ -1457,6 +1462,9 @@
     </div>
   </div>
 
+  <!-- SECTION Dice Tray, only the creator rolls for their character -->
+  <DiceTray v-if="canEdit && character?.id" :character-id="character.id" />
+
   <!-- SECTION Add Skill Modal -->
   <Modal id="addSkillModal">
     <form @submit.prevent="addSkill" class="container-fluid">
@@ -1841,6 +1849,8 @@ import { charactersService } from "../services/CharactersService.js";
 import Pop from "../utils/Pop.js";
 import Modal from "../components/Modal.vue";
 import MobileSheet from "../components/sheet/MobileSheet.vue";
+import DiceTray from "../components/DiceTray.vue";
+import { diceService } from "../services/DiceService.js";
 import { useIsMobile } from "../utils/Viewport.js";
 
 export default {
@@ -1874,6 +1884,7 @@ export default {
 
     onUnmounted(() => {
       AppState.character = null;
+      diceService.reset()
     })
 
     return {
@@ -1891,6 +1902,8 @@ export default {
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
+      // NOTE while the dice tray is open, clicking a trait or weapon on the desktop sheet adds it to the roll
+      rollMode: computed(() => AppState.diceTray.open),
       canEdit: computed(() => !!AppState.character && AppState.character.creatorId == AppState.user.id),
       // NOTE the secret is for the creator and the DMs of the character's party
       canSeeSecret: computed(() => {
@@ -2017,6 +2030,36 @@ export default {
           document.getElementById('gear').value = ''
           // @ts-ignore
           this.saveSheet()
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      addAttributeToRoll(label, field) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          // @ts-ignore
+          const die = editable.value[field]
+          // @ts-ignore
+          diceService.addToPool(label, die, die == 12 ? editable.value[`${field}Bonus`] : 0)
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      addSkillToRoll(skill) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          diceService.addToPool(skill.name, skill.die, skill.die == 12 ? skill.dieBonus : 0)
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      addWeaponToRoll(weapon) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          // @ts-ignore
+          const strength = editable.value.strength
+          // @ts-ignore
+          diceService.addDamage(weapon.name, weapon.damage, { sides: strength, bonus: strength == 12 ? editable.value.strengthBonus : 0 })
         } catch (error) {
           Pop.error(error.message)
         }
@@ -2236,7 +2279,7 @@ export default {
     }
   },
 
-  components: { Modal, MobileSheet }
+  components: { Modal, MobileSheet, DiceTray }
 }
 </script>
 
@@ -2453,6 +2496,13 @@ textarea:valid {
 
 .mh-26 {
   max-height: 26px !important;
+}
+
+// NOTE what can be clicked to add to a roll while the dice tray is open
+.roll-target {
+  cursor: pointer;
+  outline: 2px dashed var(--bs-danger);
+  outline-offset: 2px;
 }
 
 .hover-btn {

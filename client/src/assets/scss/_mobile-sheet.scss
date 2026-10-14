@@ -6,8 +6,8 @@
   // NOTE the accent used for headings, labels and dice, the dark theme's page is too dark for the light theme's red
   --sheet-accent: var(--bs-danger);
 
-  // NOTE leaves room so the floating menu button never covers the last item
-  padding-bottom: 6rem;
+  // NOTE leaves room so the floating menu button (and the dice tray when it's open) never covers the last item
+  padding-bottom: calc(6rem + var(--dice-tray-height, 0px));
 
   // NOTE keeps lines readable on tablets, phones just fill the width
   .sheet-inner {
@@ -147,6 +147,13 @@
     }
   }
 
+  // NOTE while the dice tray is open, tapping a trait adds it to the roll
+  .roll-target {
+    cursor: pointer;
+    outline: 2px dashed var(--sheet-accent);
+    outline-offset: -2px;
+  }
+
   // NOTE collapsed descriptions show two lines until tapped
   .clamp-2 {
     -webkit-box-orient: vertical;
@@ -222,7 +229,8 @@
 .sheet-fab {
   align-items: center;
   border-radius: 28px;
-  bottom: 16px;
+  // NOTE rides above the dice tray while it's open
+  bottom: calc(16px + var(--dice-tray-height, 0px));
   display: flex;
   // NOTE sits above the sticky header (1020) but under offcanvases and modals (1045+)
   z-index: 1030;
