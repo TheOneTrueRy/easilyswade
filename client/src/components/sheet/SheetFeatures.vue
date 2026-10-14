@@ -35,7 +35,7 @@
       <div class="d-flex align-items-center justify-content-between">
         <span class="fs-5 fw-bold lh-sm overflow-hidden pe-2">{{ e.name }}</span>
         <div class="d-flex align-items-center flex-shrink-0">
-          <span v-if="e.rank && e.rank != 'None'" class="badge text-bg-secondary">{{ e.rank }}</span>
+          <span v-if="e.rank && e.rank != 'None'" class="sheet-badge">{{ e.rank }}</span>
           <button v-if="canEdit" type="button" class="icon-btn" :title="`Delete the '${e.name}' edge.`"
             @click="$emit('delete-edge', e.name, index)">
             <i class="mdi mdi-delete accent"></i>

@@ -48,9 +48,9 @@
       </div>
       <div class="d-flex align-items-center mt-2">
         <div class="d-flex flex-wrap gap-2 fs-small flex-grow-1">
-          <span v-if="p.rank && p.rank != 'None'" class="badge text-bg-secondary">{{ p.rank }}</span>
-          <span v-if="p.range" class="badge text-bg-secondary">Range {{ p.range }}</span>
-          <span v-if="p.duration" class="badge text-bg-secondary">Duration {{ p.duration }}</span>
+          <span v-if="p.rank && p.rank != 'None'" class="sheet-badge">{{ p.rank }}</span>
+          <span v-if="p.range" class="sheet-badge">Range {{ p.range }}</span>
+          <span v-if="p.duration" class="sheet-badge">Duration {{ p.duration }}</span>
         </div>
         <div v-if="canEdit" class="d-flex flex-shrink-0">
           <button type="button" class="icon-btn" :title="`Edit the '${p.name}' power.`" data-bs-toggle="modal"

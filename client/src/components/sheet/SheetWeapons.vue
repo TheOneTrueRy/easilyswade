@@ -8,10 +8,10 @@
       </div>
       <div class="d-flex align-items-center mt-2">
         <div class="d-flex flex-wrap gap-2 fs-small flex-grow-1">
-          <span v-if="w.range" class="badge text-bg-secondary">Range {{ w.range }}</span>
-          <span class="badge text-bg-secondary">AP {{ w.ap || 0 }}</span>
-          <span class="badge text-bg-secondary">ROF {{ w.rof || 1 }}</span>
-          <span class="badge text-bg-secondary">WT {{ w.weight || 0 }}</span>
+          <span v-if="w.range" class="sheet-badge">Range {{ w.range }}</span>
+          <span class="sheet-badge">AP {{ w.ap || 0 }}</span>
+          <span class="sheet-badge">ROF {{ w.rof || 1 }}</span>
+          <span class="sheet-badge">WT {{ w.weight || 0 }}</span>
         </div>
         <button v-if="canEdit" type="button" class="icon-btn flex-shrink-0" :title="`Delete the '${w.name}' weapon.`"
           @click="$emit('delete-weapon', w.name, index)">

@@ -42,7 +42,7 @@
     </div>
 
     <!-- SECTION Menu Button, always on screen -->
-    <button type="button" class="sheet-fab btn shadow" :class="theme == 'light' ? 'btn-dark' : 'btn-light'"
+    <button type="button" class="sheet-fab btn btn-danger shadow"
       data-bs-toggle="offcanvas" data-bs-target="#sheetMenu" aria-controls="sheetMenu"
       title="Open the character sheet menu.">
       <i class="mdi mdi-menu fs-3 me-2"></i>
