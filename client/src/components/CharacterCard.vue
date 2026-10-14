@@ -225,6 +225,13 @@ export default {
   filter: grayscale(1);
 }
 
+// NOTE touch screens can't hover, so the buttons are always shown there
+@media (hover: none) {
+  .character-btn {
+    display: block;
+  }
+}
+
 @media screen and (max-width: 576px) {
   .character-card {
     width: 40vh;

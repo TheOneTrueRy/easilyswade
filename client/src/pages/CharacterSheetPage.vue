@@ -4,7 +4,21 @@
   UPDATE CREATE CHARACTER PAGE WITH CHANGES ABOVE
 -->
 <template>
-  <div v-if="character.creatorId == user.id" class="py-2" :class="editable.dead ? 'bloody' : ''">
+  <!-- SECTION Mobile Sheet, the desktop sheets below are only shown on larger screens -->
+  <!-- NOTE the handlers are arrow functions because handlers passed straight to a component lose `this`, which these handlers need -->
+  <MobileSheet v-if="isMobile" :sheet="canEdit ? editable : character" :can-edit="canEdit"
+    :can-see-secret="canSeeSecret" @save="() => saveSheet()"
+    @update-field="(field, value) => setField(field, value)"
+    @update-skill="(skillName, field, value) => setSkillField(skillName, field, value)"
+    @rest-power-points="() => restorePowerPoints()" @add-gear="() => addGear()"
+    @edit-gear="(index, gear) => editGearEditable = { index: index, gear: gear }"
+    @edit-power="p => editPowerEditable = p" @edit-hindrance="h => editHindranceEditable = h"
+    @delete-skill="(name, index) => deleteSkill(name, index)" @delete-gear="(name, index) => deleteGear(name, index)"
+    @delete-power="(name, index) => deletePower(name, index)"
+    @delete-weapon="(name, index) => deleteWeapon(name, index)"
+    @delete-hindrance="(name, index) => deleteHindrance(name, index)"
+    @delete-edge="(name, index) => deleteEdge(name, index)" />
+  <div v-else-if="character.creatorId == user.id" class="py-2" :class="editable.dead ? 'bloody' : ''">
     <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="saveSheet"
       :class="editable.dead ? 'grayscale' : ''">
       <div class="row save-btn">
@@ -1482,7 +1496,7 @@
 
   <!-- SECTION Enlarge Character Picture Modal -->
   <Modal id="characterPictureModal">
-    <img :src="character?.picture" :alt="`${character.name}'s Picture Enlarged.`">
+    <img :src="character?.picture" :alt="`${character?.name}'s Picture Enlarged.`">
   </Modal>
 
   <!-- SECTION Edit Character Picture Modal -->
@@ -1820,12 +1834,14 @@
 
 
 <script>
-import { computed, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onUnmounted, ref, watch } from "vue";
 import { AppState } from "../AppState.js";
 import { useRoute } from "vue-router";
 import { charactersService } from "../services/CharactersService.js";
 import Pop from "../utils/Pop.js";
 import Modal from "../components/Modal.vue";
+import MobileSheet from "../components/sheet/MobileSheet.vue";
+import { useIsMobile } from "../utils/Viewport.js";
 
 export default {
   setup() {
@@ -1840,17 +1856,21 @@ export default {
     const editHindranceEditable = ref({});
     const editEdgeEditable = ref({});
     const editGearEditable = ref({ index: 0, gear: "" })
+    const isMobile = useIsMobile()
+    // NOTE used by the mobile sheet so tapping through vitals doesn't send a request per tap
+    let saveTimer = null
 
+    // NOTE only watches the id itself, so changing the url's query (the mobile sheet's ?screen=) doesn't reload the character
     // eslint-disable-next-line space-before-function-paren
-    watchEffect(async () => {
-      if (route.params.characterId) {
-        await charactersService.getCharacterById(route.params.characterId)
+    watch(() => route.params.characterId, async (characterId) => {
+      if (characterId) {
+        await charactersService.getCharacterById(characterId)
       }
       if (AppState.character.id) {
         editable.value = { ...AppState.character }
         document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
       }
-    })
+    }, { immediate: true })
 
     onUnmounted(() => {
       AppState.character = null;
@@ -1867,9 +1887,17 @@ export default {
       editGearEditable,
       editHindranceEditable,
       editEdgeEditable,
+      isMobile,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
+      canEdit: computed(() => !!AppState.character && AppState.character.creatorId == AppState.user.id),
+      // NOTE the secret is for the creator and the DMs of the character's party
+      canSeeSecret: computed(() => {
+        const character = AppState.character
+        if (!character) return false
+        return character.creatorId == AppState.user.id || !!character.party?.dungeonMasterIds?.find(id => id == AppState.user.id)
+      }),
       async saveSheet() {
         try {
           let saveButton = document.getElementById('saveButton')
@@ -1991,6 +2019,32 @@ export default {
           this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
+        }
+      },
+      queueSave() {
+        clearTimeout(saveTimer)
+        // @ts-ignore
+        saveTimer = setTimeout(() => this.saveSheet(), 600)
+      },
+      setField(field, value) {
+        try {
+          // @ts-ignore
+          editable.value[field] = value
+          // @ts-ignore
+          this.queueSave()
+        } catch (error) {
+          Pop.error('Experienced an error attempting to update your Character Sheet! Oh no!', error.message)
+        }
+      },
+      setSkillField(skillName, field, value) {
+        try {
+          // @ts-ignore
+          let skill = editable.value.skills.find(s => s.name == skillName)
+          skill[field] = value
+          // @ts-ignore
+          this.queueSave()
+        } catch (error) {
+          Pop.error('Experienced an error attempting to update that skill! Oh no!', error.message)
         }
       },
       async deleteGear(gearName, gearIndex) {
@@ -2182,7 +2236,7 @@ export default {
     }
   },
 
-  components: { Modal }
+  components: { Modal, MobileSheet }
 }
 </script>
 

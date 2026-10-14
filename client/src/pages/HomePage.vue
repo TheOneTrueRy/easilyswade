@@ -7,9 +7,9 @@
         </span>
       </div>
       <form @submit.prevent="search"
-        class="col-8 offset-2 d-flex justify-content-center align-items-center py-3 fade-in">
+        class="col-10 offset-1 col-sm-8 offset-sm-2 d-flex justify-content-center align-items-center py-3 fade-in">
         <div class="w-100">
-          <label for="query" class="form-label col-2">
+          <label for="query" class="form-label col-12 col-sm-4 col-md-2">
             Search for:
             <select v-model="searchType" name="searchSelect" id="searchSelect" class="form-control">
               <option selected value="Profiles">
@@ -120,7 +120,8 @@ export default {
 }
 
 #EasilySWADE {
-  font-size: 4rem;
+  // NOTE shrinks on phones so the title doesn't overflow the screen
+  font-size: clamp(2.25rem, 13vw, 4rem);
   font-weight: bold;
 }
 </style>

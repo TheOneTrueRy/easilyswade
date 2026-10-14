@@ -257,6 +257,13 @@ export default {
   overflow-x: hidden;
 }
 
+// NOTE on phones the page scrolls instead of each section, a 30vh box is too short to be useful
+@media screen and (max-width: 575.98px) {
+  .row-of-cards {
+    max-height: none;
+  }
+}
+
 .stylized-scrollbar::-webkit-scrollbar {
   background-color: #505050;
   border-radius: 8px;

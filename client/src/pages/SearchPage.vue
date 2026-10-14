@@ -2,7 +2,7 @@
   <div class="container-fluid pt-5">
     <div class="row">
       <ProfileCard v-for="p in profiles" :key="p.id" :profile="p" />
-      <div class="col-2 p-2 d-flex justify-content-center" v-for="c in characters" :key="c.id">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 p-2 d-flex justify-content-center" v-for="c in characters" :key="c.id">
         <CharacterCard :character="c" />
       </div>
     </div>
