@@ -18,13 +18,13 @@
     <div class="w-100 mt-auto">
       <div class="d-flex pb-1 px-1"
         :class="character.privacy == 'Public' || character.creatorId == user.id ? 'justify-content-between' : 'justify-content-start'">
-        <router-link :to="{ name: 'CharacterPage', params: { characterId: character?.id } }"
+        <router-link :to="{ name: 'CharacterPage', params: { characterId: character.id } }"
           :title="`Visit ${character?.name}'s Character Page!`">
           <button class="btn selectable px-2 py-0 character-btn"
             :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'">Page</button>
         </router-link>
         <router-link v-if="character.privacy == 'Public' || user.id == character.creatorId"
-          :to="{ name: 'CharacterSheet', params: { characterId: character?.id } }"
+          :to="{ name: 'CharacterSheet', params: { characterId: character.id } }"
           :title="`Visit ${character?.name}'s Character Sheet!`">
           <button class="btn selectable px-2 py-0 character-btn"
             :class="theme == 'light' ? 'btn-dark border border-light' : 'btn-light border border-dark'">Sheet</button>
@@ -223,6 +223,13 @@ export default {
 
 .grayscale {
   filter: grayscale(1);
+}
+
+// NOTE touch screens can't hover, so the buttons are always shown there
+@media (hover: none) {
+  .character-btn {
+    display: block;
+  }
 }
 
 @media screen and (max-width: 576px) {

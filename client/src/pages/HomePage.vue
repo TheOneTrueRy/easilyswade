@@ -6,11 +6,25 @@
           EasilySWADE
         </span>
       </div>
-      <form @submit.prevent="searchProfiles"
-        class="col-8 offset-2 d-flex justify-content-center align-items-center py-3 fade-in">
+      <form @submit.prevent="search"
+        class="col-10 offset-1 col-sm-8 offset-sm-2 d-flex justify-content-center align-items-center py-3 fade-in">
         <div class="w-100">
-          <label for="query" class="form-label">Search for: Profiles</label>
-          <input v-model="editable.query" type="text" name="query" id="query" placeholder="Profile Name..."
+          <label for="query" class="form-label col-12 col-sm-4 col-md-2">
+            Search for:
+            <select v-model="searchType" name="searchSelect" id="searchSelect" class="form-control">
+              <option selected value="Profiles">
+                Profiles
+              </option>
+              <option value="Characters">
+                Characters
+              </option>
+              <option value="Parties">
+                Parties
+              </option>
+            </select>
+          </label>
+          <input v-model="editable.query" type="text" name="query" id="query"
+            :placeholder="searchType == 'Profiles' ? 'Profile name...' : searchType == 'Characters' ? 'Character name...' : searchType == 'Parties' ? 'Party name...' : ''"
             class="form-control">
         </div>
       </form>
@@ -23,25 +37,66 @@ import { onMounted, ref } from "vue";
 import Pop from "../utils/Pop.js";
 import { profilesService } from "../services/ProfilesService.js";
 import { router } from "../router.js";
+import { charactersService } from "../services/CharactersService.js";
+import { partiesService } from "../services/PartiesService.js";
 
 export default {
   setup() {
-    const editable = ref({})
+    const editable = ref({ query: '' })
+    const searchType = ref('Profiles')
 
     onMounted(() => {
       document.title = 'Home - EasilySwade'
+      console.log(searchType.value)
     })
 
     return {
       editable,
+      searchType,
       async searchProfiles() {
         try {
-          const query = editable.value
-          await profilesService.searchProfiles(query)
-          editable.value = {}
-          router.push({ name: 'Search' })
+          const profileQuery = editable.value
+          await profilesService.searchProfiles(profileQuery)
+          editable.value = { query: '' }
+          router.push({ name: 'Search', query: { profileName: profileQuery.query } })
         } catch (error) {
           Pop.error('Experienced an error when attempting to search profiles.', error.message)
+        }
+      },
+      async searchCharacters() {
+        try {
+          const characterQuery = editable.value
+          await charactersService.searchCharacters(characterQuery)
+          editable.value = { query: '' }
+          router.push({ name: 'Search', query: { characterName: characterQuery.query } })
+        } catch (error) {
+          Pop.error('Experienced an error when attempting to search characters.', error.message)
+        }
+      },
+      async searchParties() {
+        try {
+          const query = editable.value
+          await partiesService.searchParties(query)
+          editable.value = { query: '' }
+          router.push({ name: 'Search' })
+        } catch (error) {
+          Pop.error('Experienced an error when attempting to search parties.', error.message)
+        }
+      },
+      search() {
+        try {
+          if (searchType.value == 'Profiles') {
+            // @ts-ignore
+            this.searchProfiles()
+          } else if (searchType.value == 'Characters') {
+            // @ts-ignore
+            this.searchCharacters()
+          } else if (searchType.value == 'Parties') {
+            // @ts-ignore
+            this.searchParties()
+          }
+        } catch (error) {
+          Pop.error('Experienced an error attempted to even search anything at all just kill me')
         }
       }
     }
@@ -65,7 +120,8 @@ export default {
 }
 
 #EasilySWADE {
-  font-size: 4rem;
+  // NOTE shrinks on phones so the title doesn't overflow the screen
+  font-size: clamp(2.25rem, 13vw, 4rem);
   font-weight: bold;
 }
 </style>

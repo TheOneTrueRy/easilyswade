@@ -4,12 +4,27 @@
   UPDATE CREATE CHARACTER PAGE WITH CHANGES ABOVE
 -->
 <template>
-  <div v-if="character.creatorId == user.id" class="py-3" :class="editable.dead ? 'bloody' : ''">
+  <!-- SECTION Mobile Sheet, the desktop sheets below are only shown on larger screens -->
+  <!-- NOTE the handlers are arrow functions because handlers passed straight to a component lose `this`, which these handlers need -->
+  <MobileSheet v-if="isMobile" :sheet="canEdit ? editable : character" :can-edit="canEdit"
+    :can-see-secret="canSeeSecret" @save="() => saveSheet()"
+    @update-field="(field, value) => setField(field, value)"
+    @update-skill="(skillName, field, value) => setSkillField(skillName, field, value)"
+    @rest-power-points="() => restorePowerPoints()" @add-gear="() => addGear()"
+    @edit-gear="(index, gear) => editGearEditable = { index: index, gear: gear }"
+    @edit-power="p => editPowerEditable = p" @edit-hindrance="h => editHindranceEditable = h"
+    @delete-skill="(name, index) => deleteSkill(name, index)" @delete-gear="(name, index) => deleteGear(name, index)"
+    @delete-power="(name, index) => deletePower(name, index)"
+    @delete-weapon="(name, index) => deleteWeapon(name, index)"
+    @delete-hindrance="(name, index) => deleteHindrance(name, index)"
+    @delete-edge="(name, index) => deleteEdge(name, index)" />
+  <div v-else-if="character.creatorId == user.id" class="py-2" :class="editable.dead ? 'bloody' : ''">
     <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="saveSheet"
       :class="editable.dead ? 'grayscale' : ''">
       <div class="row save-btn">
         <div class="col-12 d-flex justify-content-start">
-          <button type="submit" class="btn submit-btn" :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+          <button id="saveButton" type="submit" class="btn btn-sm submit-btn"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
             Save Changes
           </button>
         </div>
@@ -61,10 +76,17 @@
                     <input required v-model="editable.agility" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
-                    <span class="fs-5 fw-bold">
+                  <div class="col-4 ps-1 ms-1 d-flex">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Agility', 'agility')">
                       AGILITY
                     </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.agility == 12" class="fs-5 fw-bold"
+                        @click="editable.agilityBonus >= 5 ? editable.agilityBonus = 0 : editable.agilityBonus += 1">
+                        (+{{ editable.agilityBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION SMARTS -->
@@ -104,10 +126,17 @@
                     <input required v-model="editable.smarts" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
-                    <span class="fs-5 fw-bold">
+                  <div class="col-4 ps-1 ms-1 d-flex">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Smarts', 'smarts')">
                       SMARTS
                     </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.smarts == 12" class="fs-5 fw-bold"
+                        @click="editable.smartsBonus >= 5 ? editable.smartsBonus = 0 : editable.smartsBonus += 1">
+                        (+{{ editable.smartsBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION SPIRIT -->
@@ -147,10 +176,17 @@
                     <input required v-model="editable.spirit" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
-                    <span class="fs-5 fw-bold">
+                  <div class="col-4 ps-1 ms-1 d-flex">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Spirit', 'spirit')">
                       SPIRIT
                     </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.spirit == 12" class="fs-5 fw-bold"
+                        @click="editable.spiritBonus >= 5 ? editable.spiritBonus = 0 : editable.spiritBonus += 1">
+                        (+{{ editable.spiritBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION STRENGTH -->
@@ -190,10 +226,18 @@
                     <input required v-model="editable.strength" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
-                    <span class="fs-5 fw-bold">
+                  <div class="col-4 ps-1 ms-1 d-flex">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Strength', 'strength')">
                       STRENGTH
                     </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.strength == 12"
+                        class="fs-5 fw-bold"
+                        @click="editable.strengthBonus >= 5 ? editable.strengthBonus = 0 : editable.strengthBonus += 1">
+                        (+{{ editable.strengthBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- SECTION VIGOR -->
@@ -233,10 +277,17 @@
                     <input required v-model="editable.vigor" type="number"
                       class="fw-bold text-danger attribute-input w-100 h-100 p-0 text-center fs-5" readonly>
                   </div>
-                  <div class="col-4 ps-1 ms-1">
-                    <span class="fs-5 fw-bold">
+                  <div class="col-4 ps-1 ms-1 d-flex">
+                    <span class="fs-5 fw-bold" :class="{ 'roll-target': rollMode }"
+                      @click="addAttributeToRoll('Vigor', 'vigor')">
                       VIGOR
                     </span>
+                    <div class="ms-2 hover-btn">
+                      <span title="Click to Increase Attribute Bonus" v-if="editable.vigor == 12" class="fs-5 fw-bold"
+                        @click="editable.vigorBonus >= 5 ? editable.vigorBonus = 0 : editable.vigorBonus += 1">
+                        (+{{ editable.vigorBonus }})
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -247,7 +298,7 @@
                   </span>
                 </div>
                 <div v-for="(s, index) in editable.skills" :key="s.name"
-                  class="col-12 align-items-center justify-content-center g-0 d-flex skill-line">
+                  class="col-12 align-items-end justify-content-center g-0 d-flex skill-line">
                   <div class="text-center border attribute-number selectable no-highlight"
                     :class="[theme == 'light' ? 'border-dark' : '']" @click="changeSkillDie(s.name, 4)">
                     <span :class="[s.die == 4 ? 'fw-bold' : 'opacity-50']">
@@ -287,7 +338,7 @@
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
                     <div class="d-flex align-items-end"
                       :class="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth' ? 'ellipsis' : 'nowrap'">
-                      <span class="fs-small">
+                      <span class="fs-small" :class="{ 'roll-target': rollMode }" @click="addSkillToRoll(s)">
                         {{ s.name }}
                       </span>
                     </div>
@@ -295,6 +346,12 @@
                       v-if="s.name !== 'Athletics' && s.name !== 'Common Knowledge' && s.name !== 'Notice' && s.name !== 'Persuasion' && s.name !== 'Stealth'"
                       type="button" class="btn btn-danger py-0 px-1 delete-skill mh-26 d-none rounded-0"
                       @click="deleteSkill(s.name, index)"><i class="mdi mdi-trash-can mh-26"></i></button>
+                    <div class="ms-1 hover-btn d-flex align-items-center">
+                      <span title="Click to increase skill bonus" v-if="s.die == 12" class="fs-small"
+                        @click="!s.dieBonus ? s.dieBonus = 1 : s.dieBonus >= 5 ? s.dieBonus = 0 : s.dieBonus += 1">
+                        (+{{ s.dieBonus || 0 }})
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div class="col-8 offset-2 rounded selectable text-center mt-2 border"
@@ -304,7 +361,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 px-4 border-start pb-2">
+            <div class="col-6 px-4 border-start pb-3">
               <div class="row mt-4">
                 <div class="col-12 d-flex align-items-end px-0"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -363,7 +420,7 @@
                   <label for="playerCharacter" class="border-bottom border-1">Type:</label>
                   <select v-model="editable.playerCharacter" name="playerCharacter" id="playerCharacter"
                     class="form-control py-0 px-1 border-0 border-bottom border-end rounded-0">
-                    <option selected :value="true">Player Character</option>
+                    <option :value="true">Player Character</option>
                     <option :value="false">Non-Player Character</option>
                   </select>
                 </div>
@@ -381,7 +438,7 @@
               </div>
               <div class="row mt-4">
                 <div class="col-4 d-flex flex-column align-items-center justify-content-center px-0">
-                  <input type="number" required v-model="editable.pace" name="pace" id="pace"
+                  <input type="text" required v-model="editable.pace" name="pace" id="pace"
                     class="form-control text-center fw-bold fs-4 p-0 w-50"
                     title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc."
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -389,7 +446,7 @@
                     title="Pace is a default of 6 plus or minus any values from certain hindrances, edges, etc.">Pace</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
-                  <input type="number" required v-model="editable.parry" name="parry" id="parry"
+                  <input type="text" required v-model="editable.parry" name="parry" id="parry"
                     class="form-control text-center fw-bold fs-4 p-0 w-50"
                     title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons."
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -397,7 +454,7 @@
                     title="Parry is 2 plus half your character's Fighting skill die, plus any bonuses from shields or certain weapons.">Parry</label>
                 </div>
                 <div class="col-4 d-flex flex-column align-items-center px-0">
-                  <input type="number" required v-model="editable.toughness" name="toughness" id="toughness"
+                  <input type="text" required v-model="editable.toughness" name="toughness" id="toughness"
                     class="form-control text-center fw-bold fs-4 p-0 w-50"
                     title="Toughness is 2 plus half your character's Vigor attribute."
                     :class="theme == 'light' ? 'border-dark' : 'border-light'">
@@ -414,10 +471,16 @@
                 <div v-for="(g, index) in editable.gear" :key="g" class="col-12 border-bottom border-1 pe-0 ps-1"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <div class="input-group">
-                    <span class="fs-small d-flex align-items-center flex-grow">
+                    <span class="fs-small d-flex align-items-center flex-grow w-80 pe-1">
                       {{ g }}
                     </span>
-                    <div class="input-group-append selectable">
+                    <div class="input-group-append selectable text-end">
+                      <button type="button" class="btn py-0" data-bs-toggle="modal" data-bs-target="#editGearModal"
+                        @click="editGearEditable = { index: index, gear: g }" :title="`Edit the '${g}' gear item.`">
+                        <i class="mdi mdi-pencil"></i>
+                      </button>
+                    </div>
+                    <div class="input-group-append selectable text-end">
                       <button type="button" class="btn py-0" @click="deleteGear(g, index)"
                         :title="`Delete the '${g}' gear item.`">
                         <i class="mdi mdi-delete text-danger"></i>
@@ -444,7 +507,8 @@
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="maxPP" class="fs-4 fw-bold text-danger">MAX PP</label>
                 <input type="number" name="maxPP" id="maxPP" required v-model="editable.maxPowerPoints"
-                  class="form-control w-25 ms-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  class="form-control w-25 ms-4 fs-4 py-1 text-center"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
               </div>
               <div class="col-2 d-flex align-items-center justify-content-center">
                 <div
@@ -456,14 +520,16 @@
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
                 <input type="number" name="currentPP" id="currentPP" required v-model="editable.currentPowerPoints"
-                  class="form-control w-25 me-4 fs-4 py-1" :class="theme == 'light' ? 'border-dark' : 'border-light'">
+                  class="form-control w-25 me-4 fs-4 py-1 text-center"
+                  :class="theme == 'light' ? 'border-dark' : 'border-light'">
                 <label for="currentPP" class="fs-4 fw-bold text-danger">CUR. PP</label>
               </div>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-center">
               <div class="col-5 d-flex align-items-center justify-content-end">
                 <label for="wounds" class="fs-4 fw-bold text-danger">WOUNDS</label>
-                <select v-model="editable.wounds" name="wounds" id="wounds" class="form-control w-25 ms-4 fs-4 py-1"
+                <select v-model="editable.wounds" name="wounds" id="wounds"
+                  class="form-control w-25 ms-4 fs-4 py-1 text-center"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
@@ -476,13 +542,14 @@
                 <div
                   class="bg-dark border border-1 border-dark rounded-circle death-btn d-flex align-items-center justify-content-center"
                   @click="// @ts-ignore
-    editable.dead = !editable.dead" :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
+                    editable.dead = !editable.dead"
+                  :title="editable.dead ? 'Bring them back!' : 'Mark your character as dead...'">
                   <i v-if="!editable.dead" class="mdi mdi-skull fs-1 skull text-light"></i>
                   <i v-if="editable.dead" class="mdi mdi-undo fs-1 holy-undo"></i>
                 </div>
               </div>
               <div class="col-5 d-flex align-items-center justify-content-start">
-                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-4 py-1"
+                <select name="fatigue" id="fatigue" class="form-control w-25 me-4 fs-4 py-1 text-center"
                   :class="theme == 'light' ? 'border-dark' : 'border-light'">
                   <option selected value="0">0</option>
                   <option value="1">1</option>
@@ -544,11 +611,15 @@
                 </span>
               </div>
               <div class="col-4 border-bottom px-0 d-flex">
-                <div class="selectable w-90" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
+                <div class="selectable w-80" :class="p.expanded ? '' : 'overflow-hidden ellipsis'"
                   @click="p.expanded = !p.expanded">
                   <span class="fs-small">
                     {{ p.description }}
                   </span>
+                </div>
+                <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
+                  data-bs-toggle="modal" data-bs-target="#editPowerModal" @click="editPowerEditable = p">
+                  <i class="mdi mdi-pencil"></i>
                 </div>
                 <div class="input-group-append w-10 selectable d-flex align-items-center justify-content-center"
                   @click="deletePower(p.name, index)">
@@ -606,7 +677,7 @@
             <div v-for="(w, index) in editable.weapons" :key="w.id" class="row pe-0"
               :class="theme == 'light' ? 'border-dark' : 'border-light'">
               <div class="col-3 border-bottom ps-0 pe-1">
-                <span class="fs-small">
+                <span class="fs-small" :class="{ 'roll-target': rollMode }" @click="addWeaponToRoll(w)">
                   {{ w.name }}
                 </span>
               </div>
@@ -703,7 +774,7 @@
             </div>
             <div v-for="(h, index) in editable.hindrances" :key="h" class="col-12">
               <div class="input-group border-bottom" :class="theme == 'light' ? 'border-dark' : 'border-light'">
-                <div @click="h.expanded = !h.expanded" class="selectable w-90 px-1"
+                <div @click="h.expanded = !h.expanded" class="selectable w-80 px-1"
                   :class="h.expanded ? '' : 'overflow-hidden ellipsis'"
                   :title="h.expanded ? 'Minimize the description of this hindrance!' : 'Expand the description of this hindrance!'">
                   <span class="fs-small">
@@ -711,7 +782,12 @@
                   </span>
                 </div>
                 <div class="input-group-append selectable w-10 d-flex align-items-center justify-content-center"
-                  @click="deleteHindrance(h.name, index)" :title="`Delete the '${h.name}' gear item.`">
+                  data-bs-toggle="modal" data-bs-target="#editHindranceModal" @click="editHindranceEditable = h"
+                  :title="`Edit the '${h.name}' hindrance.`">
+                  <i class="mdi mdi-pencil"></i>
+                </div>
+                <div class="input-group-append selectable w-10 d-flex align-items-center justify-content-center"
+                  @click="deleteHindrance(h.name, index)" :title="`Delete the '${h.name}' hindrance.`">
                   <i class="mdi mdi-delete text-danger"></i>
                 </div>
               </div>
@@ -751,6 +827,11 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-12 text-end">
+          <a class="btn" :class="theme == 'light' ? 'btn-outline-dark' : 'btn-outline-light'"
+            href="https://udixydcfgbzwwnvpwubp.supabase.co/storage/v1/object/public/sandbox/God/SWADE%20Core%20Rulebook.pdf"
+            target="_blank">Rulebook</a>
         </div>
       </div>
     </form>
@@ -1217,7 +1298,7 @@
               <span class="fs-small">
                 {{ p.powerPoints }}
               </span>
-            </div>
+            </div>``
             <div class="col-2 border-bottom ps-0">
               <span class="fs-small">
                 {{ p.range }}
@@ -1381,6 +1462,12 @@
     </div>
   </div>
 
+  <!-- SECTION Dice Tray, only the creator rolls for their character -->
+  <DiceTray v-if="canEdit && character?.id" :character-id="character.id" />
+
+  <!-- SECTION Party Chat, only for the creator of a character that's in a party, being here is what puts them in the party's chat -->
+  <PartyChat v-if="canEdit && character?.id && character.partyId" :character-id="character.id" />
+
   <!-- SECTION Add Skill Modal -->
   <Modal id="addSkillModal">
     <form @submit.prevent="addSkill" class="container-fluid">
@@ -1420,7 +1507,7 @@
 
   <!-- SECTION Enlarge Character Picture Modal -->
   <Modal id="characterPictureModal">
-    <img :src="character?.picture" :alt="`${character.name}'s Picture Enlarged.`">
+    <img :src="character?.picture" :alt="`${character?.name}'s Picture Enlarged.`">
   </Modal>
 
   <!-- SECTION Edit Character Picture Modal -->
@@ -1636,16 +1723,139 @@
       </div>
     </form>
   </Modal>
+
+  <!-- SECTION Edit Power Modal -->
+  <Modal id="editPowerModal">
+    <form @submit.prevent="editPower" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Edit the {{ editPowerEditable.name }} power!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Power Name</label>
+          <input v-model="editPowerEditable.name" type="text" name="name" id="name" required class="form-control">
+        </div>
+        <div class="col-6">
+          <label for="rank">Power Rank</label>
+          <select v-model="editPowerEditable.rank" name="rank" id="rank" class="form-control">
+            <option selected value="None">None</option>
+            <option value="Novice">Novice</option>
+            <option value="Seasoned">Seasoned</option>
+            <option value="Veteran">Veteran</option>
+            <option value="Heroic">Heroic</option>
+            <option value="Legendary">Legendary</option>
+          </select>
+        </div>
+        <div class="col-4 mt-2">
+          <label for="powerPoints">Power Points Req.</label>
+          <input v-model="editPowerEditable.powerPoints" type="number" name="powerPoints" id="powerPoints"
+            class="form-control">
+        </div>
+        <div class="col-4 mt-2">
+          <label for="range">Power Range</label>
+          <input v-model="editPowerEditable.range" type="text" name="range" id="range" class="form-control">
+        </div>
+        <div class="col-4 mt-2">
+          <label for="duration">Power Duration</label>
+          <input v-model="editPowerEditable.duration" type="text" name="duration" id="duration" required
+            class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="trappings">Power Trappings</label>
+          <input v-model="editPowerEditable.trappings" type="text" name="trappings" id="trappings" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Power Description</label>
+          <textarea required v-model="editPowerEditable.description" name="description" id="description" rows="10"
+            class="form-control" maxlength="1500"></textarea>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Edit Power
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- SECTION Edit Gear Modal -->
+  <Modal id="editGearModal">
+    <form @submit.prevent="editGear" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Edit this piece of gear!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-12">
+          <label for="gear">Gear</label>
+          <input v-model="editGearEditable.gear" type="text" name="gear" id="gear" required class="form-control">
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Edit Gear
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- SECTION Edit Hindrance -->
+  <Modal id="editHindranceModal">
+    <form @submit.prevent="editHindrance" class="container-fluid">
+      <div class="row">
+        <div class="col-12 mb-2 d-flex justify-content-between">
+          <span class="fs-4">
+            Edit the {{ editHindranceEditable.name }} hindrance!
+          </span>
+          <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="mdi mdi-close fs-4"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <label for="name">Hindrance Name</label>
+          <input type="text" required v-model="editHindranceEditable.name" name="name" id="name" minlength="2"
+            maxlength="60" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+          <label for="description">Hindrance Description</label>
+          <textarea v-model="editHindranceEditable.description" name="description" id="description" rows="10"
+            maxlength="2000" class="form-control"></textarea>
+        </div>
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            :class="theme == 'light' ? 'btn-dark' : 'btn-light'">
+            Save Hindrance
+          </button>
+        </div>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 
 <script>
-import { computed, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onUnmounted, ref, watch } from "vue";
 import { AppState } from "../AppState.js";
 import { useRoute } from "vue-router";
 import { charactersService } from "../services/CharactersService.js";
 import Pop from "../utils/Pop.js";
 import Modal from "../components/Modal.vue";
+import MobileSheet from "../components/sheet/MobileSheet.vue";
+import DiceTray from "../components/DiceTray.vue";
+import PartyChat from "../components/PartyChat.vue";
+import { diceService } from "../services/DiceService.js";
+import { useIsMobile } from "../utils/Viewport.js";
 
 export default {
   setup() {
@@ -1656,20 +1866,29 @@ export default {
     const powerEditable = ref({});
     const weaponEditable = ref({});
     const route = useRoute();
+    const editPowerEditable = ref({});
+    const editHindranceEditable = ref({});
+    const editEdgeEditable = ref({});
+    const editGearEditable = ref({ index: 0, gear: "" })
+    const isMobile = useIsMobile()
+    // NOTE used by the mobile sheet so tapping through vitals doesn't send a request per tap
+    let saveTimer = null
 
+    // NOTE only watches the id itself, so changing the url's query (the mobile sheet's ?screen=) doesn't reload the character
     // eslint-disable-next-line space-before-function-paren
-    watchEffect(async () => {
-      if (route.params.characterId) {
-        await charactersService.getCharacterById(route.params.characterId)
+    watch(() => route.params.characterId, async (characterId) => {
+      if (characterId) {
+        await charactersService.getCharacterById(characterId)
       }
       if (AppState.character.id) {
         editable.value = { ...AppState.character }
         document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
       }
-    })
+    }, { immediate: true })
 
     onUnmounted(() => {
       AppState.character = null;
+      diceService.reset()
     })
 
     return {
@@ -1679,14 +1898,35 @@ export default {
       edgeEditable,
       powerEditable,
       weaponEditable,
+      editPowerEditable,
+      editGearEditable,
+      editHindranceEditable,
+      editEdgeEditable,
+      isMobile,
       character: computed(() => AppState.character),
       user: computed(() => AppState.user),
       theme: computed(() => AppState.theme),
+      // NOTE while the dice tray is open, clicking a trait or weapon on the desktop sheet adds it to the roll
+      rollMode: computed(() => AppState.diceTray.open),
+      canEdit: computed(() => !!AppState.character && AppState.character.creatorId == AppState.user.id),
+      // NOTE the secret is for the creator and the DMs of the character's party
+      canSeeSecret: computed(() => {
+        const character = AppState.character
+        if (!character) return false
+        return character.creatorId == AppState.user.id || !!character.party?.dungeonMasterIds?.find(id => id == AppState.user.id)
+      }),
       async saveSheet() {
         try {
+          let saveButton = document.getElementById('saveButton')
+          saveButton.toggleAttribute('disabled');
+          saveButton.innerHTML = `Save Changes <span class="spinner-border spinner-border-sm" role="status">
+  <span class="visually-hidden"></span>
+</span>`
           const sheetData = editable.value
+          sheetData.lastSaved = new Date()
           await charactersService.updateCharacter(sheetData)
-          Pop.success('Successfully saved the character sheet!')
+          saveButton.toggleAttribute('disabled');
+          saveButton.innerHTML = `Save Changes`
         } catch (error) {
           Pop.error('Experienced an error attempting to save your Character Sheet! Oh no!', error.message)
         }
@@ -1695,6 +1935,8 @@ export default {
         try {
           // @ts-ignore
           editable.value.agility = num;
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1703,6 +1945,8 @@ export default {
         try {
           // @ts-ignore
           editable.value.smarts = num;
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1711,6 +1955,8 @@ export default {
         try {
           // @ts-ignore
           editable.value.spirit = num;
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1719,6 +1965,8 @@ export default {
         try {
           // @ts-ignore
           editable.value.strength = num;
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1727,6 +1975,8 @@ export default {
         try {
           // @ts-ignore
           editable.value.vigor = num;
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to set that attribute value! Oh no!', error.message)
         }
@@ -1736,6 +1986,8 @@ export default {
           // @ts-ignore
           let skill = editable.value.skills.find(s => s.name == skillName)
           skill.die = die
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error('Experienced an error attempting to change the die level of that skill! Oh no!', error.message)
         }
@@ -1751,6 +2003,8 @@ export default {
           // @ts-ignore
           editable.value.skills.push({ name: skillData.name, die: skillData.die })
           skillEditable.value = { die: 4 }
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1760,6 +2014,8 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${skillName} skill?`)) {
             // @ts-ignore
             editable.value.skills.splice(skillIndex, 1)
+            // @ts-ignore
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete that skill! Oh no!', error.message)
@@ -1776,8 +2032,66 @@ export default {
           editable.value.gear.push(item)
           // @ts-ignore
           document.getElementById('gear').value = ''
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
+        }
+      },
+      addAttributeToRoll(label, field) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          // @ts-ignore
+          const die = editable.value[field]
+          // @ts-ignore
+          diceService.addToPool(label, die, die == 12 ? editable.value[`${field}Bonus`] : 0)
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      addSkillToRoll(skill) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          diceService.addToPool(skill.name, skill.die, skill.die == 12 ? skill.dieBonus : 0)
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      addWeaponToRoll(weapon) {
+        try {
+          if (!AppState.diceTray.open) { return }
+          // @ts-ignore
+          const strength = editable.value.strength
+          // @ts-ignore
+          diceService.addDamage(weapon.name, weapon.damage, { sides: strength, bonus: strength == 12 ? editable.value.strengthBonus : 0 })
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      queueSave() {
+        clearTimeout(saveTimer)
+        // @ts-ignore
+        saveTimer = setTimeout(() => this.saveSheet(), 600)
+      },
+      setField(field, value) {
+        try {
+          // @ts-ignore
+          editable.value[field] = value
+          // @ts-ignore
+          this.queueSave()
+        } catch (error) {
+          Pop.error('Experienced an error attempting to update your Character Sheet! Oh no!', error.message)
+        }
+      },
+      setSkillField(skillName, field, value) {
+        try {
+          // @ts-ignore
+          let skill = editable.value.skills.find(s => s.name == skillName)
+          skill[field] = value
+          // @ts-ignore
+          this.queueSave()
+        } catch (error) {
+          Pop.error('Experienced an error attempting to update that skill! Oh no!', error.message)
         }
       },
       async deleteGear(gearName, gearIndex) {
@@ -1785,6 +2099,8 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${gearName} piece of gear?`)) {
             // @ts-ignore
             editable.value.gear.splice(gearIndex, 1)
+            // @ts-ignore
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete this piece of gear! Oh no!', error.message)
@@ -1799,6 +2115,8 @@ export default {
           let newPictureURL = await charactersService.updateCharacterPicture(picture);
           // @ts-ignore
           editable.value.picture = newPictureURL
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1811,6 +2129,8 @@ export default {
           // @ts-ignore
           editable.value.hindrances.push({ ...hindranceData })
           hindranceEditable.value = {}
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1820,6 +2140,8 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${hindranceName} hindrance?`)) {
             // @ts-ignore
             editable.value.hindrances.splice(hindranceIndex, 1)
+            // @ts-ignore
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempting to delete this hindrance! Oh no!', error.message)
@@ -1833,6 +2155,8 @@ export default {
           // @ts-ignore
           editable.value.edges.push({ ...edgeData })
           edgeEditable.value = {}
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1842,6 +2166,8 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${edgeName} edge?`)) {
             // @ts-ignore
             editable.value.edges.splice(edgeIndex, 1)
+            // @ts-ignore
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error('Experienced an error attempted to delete this edge! Oh no!', error.message)
@@ -1855,6 +2181,8 @@ export default {
           // @ts-ignore
           editable.value.powers.push({ ...powerData })
           powerEditable.value = {}
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1867,6 +2195,8 @@ export default {
           // @ts-ignore
           editable.value.weapons.push({ ...weaponData })
           weaponEditable.value = {}
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1880,6 +2210,8 @@ export default {
             // @ts-ignore
             editable.value.currentPowerPoints = editable.value.maxPowerPoints
           }
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1889,6 +2221,8 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${powerName} power?`)) {
             // @ts-ignore
             editable.value.powers.splice(powerIndex, 1)
+            // @ts-ignore
+            this.saveSheet()
           }
         } catch (error) {
           Pop.error(error.message)
@@ -1899,7 +2233,49 @@ export default {
           if (await Pop.confirm(`Are you sure you wish to delete the ${weaponName} weapon?`)) {
             // @ts-ignore
             editable.value.weapons.splice(weaponIndex, 1)
+            // @ts-ignore
+            this.saveSheet()
           }
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      editPower() {
+        try {
+          // @ts-ignore
+          let powerIndex = editable.value.powers.findIndex(p => p.id == editPowerEditable.value.id)
+          // @ts-ignore
+          editable.value.powers.splice(powerIndex, 1, editPowerEditable.value)
+          // @ts-ignore
+          Pop.success(`Edited the ${editPowerEditable.value.name} power.`)
+          // @ts-ignore
+          this.saveSheet()
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      editGear() {
+        try {
+          let gearIndex = editGearEditable.value.index
+          // @ts-ignore
+          editable.value.gear.splice(gearIndex, 1, editGearEditable.value.gear)
+          Pop.success(`Edited the ${editGearEditable.value.gear} item.`)
+          // @ts-ignore
+          this.saveSheet()
+        } catch (error) {
+          Pop.error(error.message)
+        }
+      },
+      editHindrance() {
+        try {
+          // @ts-ignore
+          let hindranceIndex = editable.value.hindrances.findIndex(h => h.id == editHindranceEditable.value.id)
+          // @ts-ignore
+          editable.value.hindrances.splice(hindranceIndex, 1, editHindranceEditable.value)
+          // @ts-ignore
+          Pop.success(`Edited the ${editHindranceEditable.value.name} hindrance.`)
+          // @ts-ignore
+          this.saveSheet()
         } catch (error) {
           Pop.error(error.message)
         }
@@ -1907,7 +2283,7 @@ export default {
     }
   },
 
-  components: { Modal }
+  components: { Modal, MobileSheet, DiceTray, PartyChat }
 }
 </script>
 
@@ -2110,6 +2486,10 @@ textarea:valid {
   width: 90%;
 }
 
+.w-80 {
+  width: 80%;
+}
+
 .w-10 {
   width: 10%;
 }
@@ -2120,5 +2500,25 @@ textarea:valid {
 
 .mh-26 {
   max-height: 26px !important;
+}
+
+// NOTE what can be clicked to add to a roll while the dice tray is open
+.roll-target {
+  cursor: pointer;
+  outline: 2px dashed var(--bs-danger);
+  outline-offset: 2px;
+}
+
+.hover-btn {
+  transition: 0.4s;
+}
+
+.hover-btn:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.hover-btn:active {
+  transform: scale(0.95);
 }
 </style>

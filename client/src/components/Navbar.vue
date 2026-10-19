@@ -99,6 +99,19 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 
+@media screen and (max-width: 575.98px) {
+  /* NOTE keeps the brand, theme toggle and menu button on one row on small phones */
+  .navbar-brand .fs-1 {
+    font-size: 1.75rem !important;
+  }
+}
+
+@media screen and (max-width: 359.98px) {
+  .navbar-brand .fs-1 {
+    font-size: 1.4rem !important;
+  }
+}
+
 @media screen and (min-width: 576px) {
   nav {
     height: 64px;

@@ -6,6 +6,9 @@ import App from './App.vue'
 import { registerGlobalComponents } from './registerGlobalComponents'
 import { router } from './router'
 import './utils/SocketProvider.js'
+// NOTE these need to exist before the socket connects or they miss the 'connected' message, they only act while on a character sheet
+import './handlers/DiceHandler.js'
+import './handlers/PartyChatHandler.js'
 
 const root = createApp(App)
 async function init() {

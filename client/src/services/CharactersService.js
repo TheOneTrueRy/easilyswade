@@ -5,6 +5,14 @@ import { api } from "./AxiosService.js";
 import { supabaseService } from "./SupabaseService.js";
 
 class CharactersService {
+  async searchCharacters(query) {
+    AppState.characters = [];
+    const res = await api.get('api/characters', { params: { name: query.query } })
+    let searchedCharacters = res.data.map(c => new Character(c))
+    logger.log(searchedCharacters)
+    AppState.characters = searchedCharacters.filter(c => c.privacy == 'Public' || c.creatorId == AppState.user.id)
+  }
+
   async getCharacters() {
     const res = await api.get(`api/characters`)
     AppState.characters = res.data.map(c => new Character(c))

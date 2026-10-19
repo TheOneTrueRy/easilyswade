@@ -137,7 +137,7 @@
 
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Pop from '../utils/Pop.js';
 import { profilesService } from "../services/ProfilesService.js";
@@ -207,6 +207,10 @@ export default {
       }
     })
 
+    watch(route, () => {
+      location.reload()
+    })
+
     onMounted(() => {
       document.title = `${AppState.profile.name}'s Profile - EasilySWADE`
     })
@@ -251,6 +255,13 @@ export default {
 .row-of-cards {
   max-height: 30vh;
   overflow-x: hidden;
+}
+
+// NOTE on phones the page scrolls instead of each section, a 30vh box is too short to be useful
+@media screen and (max-width: 575.98px) {
+  .row-of-cards {
+    max-height: none;
+  }
 }
 
 .stylized-scrollbar::-webkit-scrollbar {

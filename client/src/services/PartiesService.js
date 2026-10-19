@@ -3,6 +3,12 @@ import { Party } from "../models/Party.js";
 import { api } from "./AxiosService.js";
 
 class PartiesService {
+  async searchParties(query) {
+    AppState.parties = [];
+    const res = await api.get('api/parties', { params: { name: query.query } })
+    AppState.parties = res.data.map(p => new Party(p))
+  }
+
   async getParties() {
     const res = await api.get(`api/parties`)
     AppState.parties = res.data.map(p => new Party(p))

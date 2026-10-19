@@ -1,6 +1,6 @@
 export class Character {
   constructor(data) {
-    this.id = data.id
+    this.id = data.id || data._id
     this.creatorId = data.creatorId
     this.partyId = data.partyId
     this.creator = data.creator
@@ -12,14 +12,19 @@ export class Character {
     this.weight = data.weight || ''
     this.bennies = data.bennies || 0
     this.conviction = data.conviction || false
-    this.pace = data.pace || 0
-    this.parry = data.parry || 0
-    this.toughness = data.toughness || 0
+    this.pace = data.pace || '0'
+    this.parry = data.parry || '0'
+    this.toughness = data.toughness || '0'
     this.agility = data.agility || 4
     this.smarts = data.smarts || 4
     this.spirit = data.spirit || 4
     this.strength = data.strength || 4
     this.vigor = data.vigor || 4
+    this.agilityBonus = data.agilityBonus || 0
+    this.smartsBonus = data.smartsBonus || 0
+    this.spiritBonus = data.spiritBonus || 0
+    this.strengthBonus = data.strengthBonus || 0
+    this.vigorBonus = data.vigorBonus || 0
     this.fatigue = data.fatigue || 0
     this.wounds = data.wounds || 0
     this.picture = data.picture || ''
@@ -36,7 +41,7 @@ export class Character {
     this.skills = data.skills || []
     this.dead = data.dead || false
     this.privacy = data.privacy || 'Public'
-    this.playerCharacter = data.playerCharacter || true
+    this.playerCharacter = data.playerCharacter
     this.sheetStyle = data.sheetStyle || 'Default'
     this.lastSaved = data.lastSaved || ''
   }
