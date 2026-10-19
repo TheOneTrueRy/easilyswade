@@ -18,7 +18,7 @@
     @delete-weapon="(name, index) => deleteWeapon(name, index)"
     @delete-hindrance="(name, index) => deleteHindrance(name, index)"
     @delete-edge="(name, index) => deleteEdge(name, index)" />
-  <div v-else-if="character.creatorId == user.id" class="py-2" :class="editable.dead ? 'bloody' : ''">
+  <div v-else-if="character.creatorId == user.id" class="pt-2 sheet-bottom-room" :class="editable.dead ? 'bloody' : ''">
     <form class="container-fluid" v-on:keydown.enter.prevent @submit.prevent="saveSheet"
       :class="editable.dead ? 'grayscale' : ''">
       <div class="row save-btn">
@@ -1465,8 +1465,8 @@
   <!-- SECTION Dice Tray, only the creator rolls for their character -->
   <DiceTray v-if="canEdit && character?.id" :character-id="character.id" />
 
-  <!-- SECTION Party Chat, only for the creator of a character that's in a party, being here is what puts them in the party's chat -->
-  <PartyChat v-if="canEdit && character?.id && character.partyId" :character-id="character.id" />
+  <!-- SECTION Party Chat, for the creator of a character. If the character is in a party, being here is what puts them in the party's chat -->
+  <PartyChat v-if="canEdit && character?.id" :character-id="character.id" :party-id="character.partyId || ''" />
 
   <!-- SECTION Add Skill Modal -->
   <Modal id="addSkillModal">
@@ -2500,6 +2500,11 @@ textarea:valid {
 
 .mh-26 {
   max-height: 26px !important;
+}
+
+// NOTE leaves room for the dice and chat buttons (and the dice tray when it's open) so the bottom of the sheet can be scrolled clear of them
+.sheet-bottom-room {
+  padding-bottom: calc(9rem + var(--dice-tray-height, 0px));
 }
 
 // NOTE what can be clicked to add to a roll while the dice tray is open

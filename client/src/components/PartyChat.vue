@@ -15,14 +15,18 @@
           <i class="mdi mdi-chat"></i> {{ chat.partyName || 'Party Chat' }}
         </h5>
         <div class="fs-small opacity-75">
-          {{ chat.joined ? 'Only the members of this party can see this chat.' : 'Connecting...' }}
+          {{ !partyId ? "This character isn't in a party yet." : chat.joined ? 'Only the members of this party can see this chat.' : 'Connecting...' }}
         </div>
       </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div ref="feedElement" class="feed">
-      <i v-if="chat.joined && !chat.messages.length" class="d-block text-center py-4">
+      <i v-if="!partyId" class="d-block text-center py-4">
+        Once this character is in a party, you'll be able to chat with the rest of the party here, and everyone's dice
+        rolls will be logged.
+      </i>
+      <i v-else-if="chat.joined && !chat.messages.length" class="d-block text-center py-4">
         Nothing here yet, say hello or roll some dice!
       </i>
       <div v-for="m in chat.messages" :key="m.id" class="entry" :class="{ mine: isMine(m), roll: m.roll }">
@@ -49,8 +53,8 @@
 
     <form class="d-flex gap-2 p-2 border-top" @submit.prevent="sendMessage">
       <input v-model="text" type="text" maxlength="500" class="form-control" placeholder="Message your party..."
-        aria-label="Message your party" :disabled="!chat.joined" autocomplete="off">
-      <button type="submit" class="btn btn-danger" :disabled="!chat.joined || !text.trim()" title="Send">
+        aria-label="Message your party" :disabled="!partyId || !chat.joined" autocomplete="off">
+      <button type="submit" class="btn btn-danger" :disabled="!partyId || !chat.joined || !text.trim()" title="Send">
         <i class="mdi mdi-send"></i>
       </button>
     </form>
@@ -70,6 +74,11 @@ export default {
     characterId: {
       type: String,
       required: true
+    },
+    // NOTE blank when the character isn't in a party, the button is still shown but there's no chat to join
+    partyId: {
+      type: String,
+      default: ''
     }
   },
 
@@ -98,13 +107,17 @@ export default {
 
     // NOTE being on the sheet is what puts the user in their party's chat, leaving it takes them out
     onMounted(() => {
-      partyChatService.joinParty(props.characterId)
+      if (props.partyId) {
+        partyChatService.joinParty(props.characterId)
+      }
       panelElement.value.addEventListener('shown.bs.offcanvas', onShown)
       panelElement.value.addEventListener('hidden.bs.offcanvas', onHidden)
     })
 
     onBeforeUnmount(() => {
-      partyChatService.leaveParty()
+      if (props.partyId) {
+        partyChatService.leaveParty()
+      }
     })
 
     watch(() => chat.value.messages.length, () => {
@@ -160,9 +173,9 @@ export default {
   z-index: 1030;
   height: 56px;
   justify-content: center;
+  left: 16px;
   padding: 0;
   position: fixed;
-  right: 16px;
   width: 56px;
 
   // NOTE rides above the dice tray while it's open
@@ -244,11 +257,6 @@ export default {
 }
 
 @media screen and (max-width: 991.98px) {
-  .chat-fab {
-    left: 16px;
-    right: auto;
-  }
-
   .party-chat {
     width: 100%;
   }
