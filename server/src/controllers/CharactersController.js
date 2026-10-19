@@ -21,7 +21,8 @@ export class CharactersController extends BaseController {
 
   async getCharacters(req, res, next) {
     try {
-      const characters = await charactersService.searchCharacters(req.query.name)
+      // NOTE req.account is only there if the request came with a login
+      const characters = await charactersService.searchCharacters(req.query.name, req.account?.id)
       res.send(characters)
     } catch (error) {
       next(error)
@@ -31,7 +32,7 @@ export class CharactersController extends BaseController {
   async getCharacterById(req, res, next) {
     try {
       const characterId = req.params.characterId
-      const character = await charactersService.getCharacterById(characterId)
+      const character = await charactersService.getCharacterForViewer(characterId, req.account?.id)
       res.send(character)
     } catch (error) {
       next(error)

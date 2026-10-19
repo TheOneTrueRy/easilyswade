@@ -1877,10 +1877,15 @@ export default {
     // NOTE only watches the id itself, so changing the url's query (the mobile sheet's ?screen=) doesn't reload the character
     // eslint-disable-next-line space-before-function-paren
     watch(() => route.params.characterId, async (characterId) => {
-      if (characterId) {
-        await charactersService.getCharacterById(characterId)
+      try {
+        if (characterId) {
+          await charactersService.getCharacterById(characterId)
+        }
+      } catch (error) {
+        // NOTE like when the character is private and the viewer isn't allowed to see it
+        Pop.error(error)
       }
-      if (AppState.character.id) {
+      if (AppState.character?.id) {
         editable.value = { ...AppState.character }
         document.title = `${AppState.character.name}'s Sheet - EasilySwade'`
       }

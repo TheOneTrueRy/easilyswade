@@ -4,9 +4,9 @@ import { BadRequest, Forbidden } from "../utils/Errors.js";
 class JoinRequestsService {
   async getAllJoinRequests() {
     let joinRequests = await dbContext.JoinRequest.find()
-      .populate('creator')
+      .populate('creator', 'name picture')
       .populate('party')
-      .populate('character')
+      .populate('character', '-secret')
     return joinRequests
   }
 
