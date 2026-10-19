@@ -15,14 +15,18 @@
           <i class="mdi mdi-chat"></i> {{ chat.partyName || 'Party Chat' }}
         </h5>
         <div class="fs-small opacity-75">
-          {{ chat.joined ? 'Only the members of this party can see this chat.' : 'Connecting...' }}
+          {{ chat.noParty ? "This character isn't in a party yet." : chat.joined ? 'Only the members of this party can see this chat.' : 'Connecting...' }}
         </div>
       </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div ref="feedElement" class="feed">
-      <i v-if="chat.joined && !chat.messages.length" class="d-block text-center py-4">
+      <i v-if="chat.noParty" class="d-block text-center py-4">
+        Once this character is in a party, you'll be able to chat with the rest of the party here, and everyone's dice
+        rolls will be logged.
+      </i>
+      <i v-else-if="chat.joined && !chat.messages.length" class="d-block text-center py-4">
         Nothing here yet, say hello or roll some dice!
       </i>
       <div v-for="m in chat.messages" :key="m.id" class="entry" :class="{ mine: isMine(m), roll: m.roll }">
@@ -96,7 +100,7 @@ export default {
       partyChatService.setOpen(false)
     }
 
-    // NOTE being on the sheet is what puts the user in their party's chat, leaving it takes them out
+    // NOTE being on the sheet is what puts the user in their party's chat (if the server finds the character in a party), leaving it takes them out
     onMounted(() => {
       partyChatService.joinParty(props.characterId)
       panelElement.value.addEventListener('shown.bs.offcanvas', onShown)
@@ -160,9 +164,9 @@ export default {
   z-index: 1030;
   height: 56px;
   justify-content: center;
+  left: 16px;
   padding: 0;
   position: fixed;
-  right: 16px;
   width: 56px;
 
   // NOTE rides above the dice tray while it's open
@@ -244,11 +248,6 @@ export default {
 }
 
 @media screen and (max-width: 991.98px) {
-  .chat-fab {
-    left: 16px;
-    right: auto;
-  }
-
   .party-chat {
     width: 100%;
   }

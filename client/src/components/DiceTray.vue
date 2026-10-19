@@ -204,9 +204,9 @@ export default {
   z-index: 1030;
   height: 56px;
   justify-content: center;
+  left: 16px;
   padding: 0;
   position: fixed;
-  right: 16px;
   width: 56px;
 }
 
@@ -218,9 +218,9 @@ export default {
   bottom: 16px;
   max-height: 70vh;
   overflow-y: auto;
+  left: 16px;
   padding: 0.75rem;
   position: fixed;
-  right: 16px;
   width: 360px;
   z-index: 1030;
 }
@@ -309,13 +309,8 @@ export default {
   text-align: center;
 }
 
-// NOTE phones + tablets use the full width of the bottom of the screen
+// NOTE phones + tablets give the tray the full width of the bottom of the screen
 @media screen and (max-width: 991.98px) {
-  .dice-fab {
-    left: 16px;
-    right: auto;
-  }
-
   .dice-tray {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;

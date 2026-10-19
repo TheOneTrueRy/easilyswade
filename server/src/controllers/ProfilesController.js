@@ -35,7 +35,7 @@ export class ProfilesController extends BaseController {
 
   async getCharactersByProfile(req, res, next) {
     try {
-      const characters = await charactersService.getCharactersByProfile(req.params.profileId)
+      const characters = await charactersService.getCharactersByProfile(req.params.profileId, req.account?.id)
       res.send(characters)
     } catch (error) {
       next(error)

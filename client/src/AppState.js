@@ -34,5 +34,5 @@ export const AppState = reactive({
   lastRoll: null,
 
   // NOTE the chatroom of the party that the character sheet being viewed is in, only filled while on that sheet
-  partyChat: { characterId: null, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false }
+  partyChat: { characterId: null, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false, noParty: false }
 })

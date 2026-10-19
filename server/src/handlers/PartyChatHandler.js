@@ -23,8 +23,10 @@ export class PartyChatHandler extends SocketHandler {
       if (request != this.latestRequest) { return }
       this.leaveCurrentParty()
       // NOTE the room is what makes someone hear the party's rolls and messages, it's only joined while on a party member's sheet
-      this.socket.join(partyChatService.roomName(party.partyId))
-      this.socket.data.partyId = party.partyId
+      if (party.partyId) {
+        this.socket.join(partyChatService.roomName(party.partyId))
+        this.socket.data.partyId = party.partyId
+      }
       this.socket.emit('PARTY_JOINED', party)
     } catch (error) {
       this.socket.emit('error', { message: error.message })

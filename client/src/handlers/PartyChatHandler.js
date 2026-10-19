@@ -37,11 +37,13 @@ class PartyChatHandler extends SocketHandler {
     const chat = AppState.partyChat
     // NOTE ignores a join that finishes after the sheet was already left
     if (!chat.characterId) { return }
+    // NOTE the server found no party for this character
+    chat.noParty = !party.partyId
+    chat.joined = !chat.noParty
     chat.partyId = party.partyId
     chat.partyName = party.partyName
     chat.messages = party.messages.map(m => new PartyMessage(m))
     chat.unread = 0
-    chat.joined = true
   }
 
   onPartyMessage(messageData) {

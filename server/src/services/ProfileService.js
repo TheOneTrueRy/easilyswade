@@ -2,13 +2,16 @@ import { dbContext } from '../db/DbContext.js'
 
 // IMPORTANT profiles should not be updated or modified in any way here. Use the AccountService
 
+const PUBLIC_FIELDS = 'name picture description createdAt'
+
 class ProfileService {
   /**
     * Returns a user profile from its id
     * @param {string} id
    */
   async getProfileById(id) {
-    const profile = await dbContext.Account.findById(id)
+    // NOTE profiles are public, so only the parts of an account that are meant to be shown (not the email or login ids)
+    const profile = await dbContext.Account.findById(id).select(PUBLIC_FIELDS)
     return profile
   }
 
@@ -22,6 +25,8 @@ class ProfileService {
     return await dbContext.Account
       .aggregate([{
         $match: { name: filter }
+      }, {
+        $project: { name: 1, picture: 1, description: 1, createdAt: 1 }
       }])
       .collation({ locale: 'en_US', strength: 1 })
       // .skip(Number(offset))
