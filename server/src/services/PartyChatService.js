@@ -14,9 +14,9 @@ class PartyChatService {
   }
 
   /**
-   * Finds the requestor's character and makes sure it's in a party, only these characters can join a party's chat.
+   * Finds one of the requestor's own characters.
    */
-  async getPartyCharacter(characterId, requestorId) {
+  async getOwnCharacter(characterId, requestorId) {
     const character = await dbContext.Character.findById(characterId)
     if (!character) {
       throw new NotFound('Unable to find that character!')
@@ -24,20 +24,31 @@ class PartyChatService {
     if (String(character.creatorId) != String(requestorId)) {
       throw new Forbidden("Hey! That's not your character!")
     }
-    if (!character.partyId) {
-      throw new BadRequest("This character isn't in a party!")
-    }
     return character
   }
 
   /**
-   * @returns {Promise<{ partyId: string, partyName: string, messages: any[] }>} The party and its recent messages, oldest first.
+   * Finds the party a character is in, the character can point at its party with partyId or the party can list the character in characterIds.
+   * @returns {Promise<any>} The party, or null if the character isn't in one.
+   */
+  async findParty(character) {
+    if (character.partyId) {
+      const party = await dbContext.Party.findById(character.partyId)
+      if (party) {
+        return party
+      }
+    }
+    return await dbContext.Party.findOne({ characterIds: character._id })
+  }
+
+  /**
+   * @returns {Promise<{ partyId: string, partyName: string, messages: any[] }>} The party and its recent messages, oldest first. The partyId is null if the character isn't in a party.
    */
   async joinParty(characterId, requestorId) {
-    const character = await this.getPartyCharacter(characterId, requestorId)
-    const party = await dbContext.Party.findById(character.partyId)
+    const character = await this.getOwnCharacter(characterId, requestorId)
+    const party = await this.findParty(character)
     if (!party) {
-      throw new NotFound("Unable to find that character's party!")
+      return { partyId: null, partyName: '', messages: [] }
     }
     const messages = await dbContext.PartyMessage.find({ partyId: party._id }).sort({ createdAt: -1 }).limit(LOG_SIZE)
     return { partyId: String(party._id), partyName: party.name, messages: messages.reverse() }
@@ -47,8 +58,12 @@ class PartyChatService {
    * @param {string} joinedPartyId The party the sending socket is in the chat of.
    */
   async sendMessage(characterId, text, requestorId, joinedPartyId) {
-    const character = await this.getPartyCharacter(characterId, requestorId)
-    if (String(character.partyId) != String(joinedPartyId)) {
+    const character = await this.getOwnCharacter(characterId, requestorId)
+    const party = await this.findParty(character)
+    if (!party) {
+      throw new BadRequest("This character isn't in a party!")
+    }
+    if (String(party._id) != String(joinedPartyId)) {
       throw new Forbidden("Join your party's chat before sending messages!")
     }
     const trimmedText = String(text ?? '').trim()
@@ -58,14 +73,15 @@ class PartyChatService {
     if (trimmedText.length > MAX_TEXT_LENGTH) {
       throw new BadRequest(`Messages can only be ${MAX_TEXT_LENGTH} characters long!`)
     }
-    return await this.createMessage(character, { type: 'chat', text: trimmedText })
+    return await this.createMessage(character, party, { type: 'chat', text: trimmedText })
   }
 
   /**
    * Adds a roll to its party's log. A character without a party has no log, so its roll is just handed back.
    */
   async recordRoll(character, roll) {
-    if (!character.partyId) {
+    const party = await this.findParty(character)
+    if (!party) {
       return {
         id: roll.id,
         partyId: null,
@@ -78,12 +94,12 @@ class PartyChatService {
         createdAt: roll.rolledAt
       }
     }
-    return await this.createMessage(character, { type: 'roll', roll })
+    return await this.createMessage(character, party, { type: 'roll', roll })
   }
 
-  async createMessage(character, messageData) {
+  async createMessage(character, party, messageData) {
     return await dbContext.PartyMessage.create({
-      partyId: character.partyId,
+      partyId: party._id,
       creatorId: character.creatorId,
       characterId: character._id,
       characterName: character.name,

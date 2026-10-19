@@ -6,12 +6,12 @@ class PartyChatService {
    * Joins the chat of the character's party, for as long as their sheet is being viewed.
    */
   joinParty(characterId) {
-    AppState.partyChat = { characterId, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false }
+    AppState.partyChat = { characterId, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false, noParty: false }
     partyChatHandler.joinParty(characterId)
   }
 
   leaveParty() {
-    AppState.partyChat = { characterId: null, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false }
+    AppState.partyChat = { characterId: null, partyId: null, partyName: '', messages: [], unread: 0, open: false, joined: false, noParty: false }
     partyChatHandler.leaveParty()
   }
 

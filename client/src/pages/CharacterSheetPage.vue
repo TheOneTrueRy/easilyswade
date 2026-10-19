@@ -1465,8 +1465,8 @@
   <!-- SECTION Dice Tray, only the creator rolls for their character -->
   <DiceTray v-if="canEdit && character?.id" :character-id="character.id" />
 
-  <!-- SECTION Party Chat, for the creator of a character. If the character is in a party, being here is what puts them in the party's chat -->
-  <PartyChat v-if="canEdit && character?.id" :character-id="character.id" :party-id="character.partyId || ''" />
+  <!-- SECTION Party Chat, for the creator of a character. Being here is what puts them in their party's chat, the server works out if they have one -->
+  <PartyChat v-if="canEdit && character?.id" :character-id="character.id" />
 
   <!-- SECTION Add Skill Modal -->
   <Modal id="addSkillModal">

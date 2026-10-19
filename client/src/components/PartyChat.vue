@@ -15,14 +15,14 @@
           <i class="mdi mdi-chat"></i> {{ chat.partyName || 'Party Chat' }}
         </h5>
         <div class="fs-small opacity-75">
-          {{ !partyId ? "This character isn't in a party yet." : chat.joined ? 'Only the members of this party can see this chat.' : 'Connecting...' }}
+          {{ chat.noParty ? "This character isn't in a party yet." : chat.joined ? 'Only the members of this party can see this chat.' : 'Connecting...' }}
         </div>
       </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div ref="feedElement" class="feed">
-      <i v-if="!partyId" class="d-block text-center py-4">
+      <i v-if="chat.noParty" class="d-block text-center py-4">
         Once this character is in a party, you'll be able to chat with the rest of the party here, and everyone's dice
         rolls will be logged.
       </i>
@@ -53,8 +53,8 @@
 
     <form class="d-flex gap-2 p-2 border-top" @submit.prevent="sendMessage">
       <input v-model="text" type="text" maxlength="500" class="form-control" placeholder="Message your party..."
-        aria-label="Message your party" :disabled="!partyId || !chat.joined" autocomplete="off">
-      <button type="submit" class="btn btn-danger" :disabled="!partyId || !chat.joined || !text.trim()" title="Send">
+        aria-label="Message your party" :disabled="!chat.joined" autocomplete="off">
+      <button type="submit" class="btn btn-danger" :disabled="!chat.joined || !text.trim()" title="Send">
         <i class="mdi mdi-send"></i>
       </button>
     </form>
@@ -74,11 +74,6 @@ export default {
     characterId: {
       type: String,
       required: true
-    },
-    // NOTE blank when the character isn't in a party, the button is still shown but there's no chat to join
-    partyId: {
-      type: String,
-      default: ''
     }
   },
 
@@ -105,19 +100,15 @@ export default {
       partyChatService.setOpen(false)
     }
 
-    // NOTE being on the sheet is what puts the user in their party's chat, leaving it takes them out
+    // NOTE being on the sheet is what puts the user in their party's chat (if the server finds the character in a party), leaving it takes them out
     onMounted(() => {
-      if (props.partyId) {
-        partyChatService.joinParty(props.characterId)
-      }
+      partyChatService.joinParty(props.characterId)
       panelElement.value.addEventListener('shown.bs.offcanvas', onShown)
       panelElement.value.addEventListener('hidden.bs.offcanvas', onHidden)
     })
 
     onBeforeUnmount(() => {
-      if (props.partyId) {
-        partyChatService.leaveParty()
-      }
+      partyChatService.leaveParty()
     })
 
     watch(() => chat.value.messages.length, () => {

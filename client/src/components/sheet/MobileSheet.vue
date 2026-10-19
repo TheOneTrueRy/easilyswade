@@ -50,7 +50,8 @@
     </button>
 
     <!-- SECTION Menu -->
-    <div class="offcanvas offcanvas-bottom sheet-menu" tabindex="-1" id="sheetMenu" aria-labelledby="sheetMenuLabel">
+    <div ref="menuElement" class="offcanvas offcanvas-bottom sheet-menu" tabindex="-1" id="sheetMenu"
+      aria-labelledby="sheetMenuLabel">
       <div class="offcanvas-header pb-0">
         <h5 class="offcanvas-title fw-bold clip-text" id="sheetMenuLabel">
           {{ sheet.name }}
@@ -67,14 +68,15 @@
             </button>
           </div>
           <div class="col">
-            <a class="sheet-menu-tile btn" data-bs-dismiss="offcanvas" target="_blank"
+            <!-- NOTE these two links close the menu in code, data-bs-dismiss on a link cancels the link itself -->
+            <a class="sheet-menu-tile btn" target="_blank" rel="noopener" @click="closeMenu"
               href="https://udixydcfgbzwwnvpwubp.supabase.co/storage/v1/object/public/sandbox/God/SWADE%20Core%20Rulebook.pdf">
               <i class="mdi mdi-book-open-variant"></i>
               <span>Rulebook</span>
             </a>
           </div>
           <div class="col">
-            <router-link class="sheet-menu-tile btn" data-bs-dismiss="offcanvas"
+            <router-link class="sheet-menu-tile btn" @click="closeMenu"
               :to="{ name: 'Profile', params: { profileId: sheet.creatorId } }" title="Head back to the creator's Profile.">
               <i class="mdi mdi-arrow-left-bold"></i>
               <span>Profile</span>
@@ -88,7 +90,8 @@
 
 
 <script>
-import { computed } from 'vue';
+import { Offcanvas } from 'bootstrap';
+import { computed, onBeforeUnmount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { AppState } from '../../AppState.js';
 import { router } from '../../router.js';
@@ -135,8 +138,22 @@ export default {
 
   setup() {
     const route = useRoute()
+    const menuElement = ref(null)
+
+    function closeMenu() {
+      Offcanvas.getOrCreateInstance(menuElement.value).hide()
+    }
+
+    // NOTE leaving the sheet from the menu would otherwise leave its dark backdrop and scroll lock behind
+    onBeforeUnmount(() => {
+      if (menuElement.value) {
+        Offcanvas.getInstance(menuElement.value)?.hide()
+      }
+    })
 
     return {
+      menuElement,
+      closeMenu,
       screens: SCREENS,
       theme: computed(() => AppState.theme),
       // NOTE the screen lives in the url (?screen=powers) so reloading or sharing a link lands on the same screen
